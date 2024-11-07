@@ -4,8 +4,12 @@ include ../../mixins/form-search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/sort.pug
+include ../../mixins/alert.pug
 
 block content
+    +alert-success(5000)
+    +alert-error(5000)
+    
     h1.mb-3.header Danh sách sản phẩm
 
     .card.mb-3 
@@ -74,10 +78,20 @@ block content
                                 name="position"
                             )
                         td
-                            if item.status == "active"
-                                span(class="badge badge-success") Hoạt động
-                            else
-                                span(class="badge badge-danger") Dừng hoạt động
+                            if (item.status == "active")
+                                a(
+                                    href="javascript:;" 
+                                    data-status="active"
+                                    data-id=item.id
+                                    button-change-status
+                                    class="badge badge-success") Hoạt động
+                            else 
+                                a(
+                                    href="javascript:;"
+                                    data-status="inactive"
+                                    data-id=item.id
+                                    button-change-status
+                                    class="badge badge-danger") Dừng hoạt động
                         td
                             a(
                                 href="javascript:;"
@@ -92,3 +106,13 @@ block content
                                 data-id=item.id
                             ) Xóa
     +pagination(pagination)
+
+    form(
+        action=""
+        method="POST"
+        id="form-change-status"
+        data-path=`${prefixAdmin}/products/change-status`
+    )
+
+
+    script(src="/admin/js/product.js") 
