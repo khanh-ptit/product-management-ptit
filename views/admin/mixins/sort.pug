@@ -1,0 +1,22 @@
+mixin sort(prefix)
+    .col-4 
+        div(sort)
+            .sort
+                select(
+                    class="form-control"
+                    name="sort"
+                    sort-select
+                )
+                    option(disabled selected) ---Sắp xếp theo---
+                    option(value="position-asc") Vị trí tăng dần
+                    option(value="position-desc") Vị trí giảm dần 
+                    option(value="price-desc") Giá giảm dần
+                    option(value="price-asc") Giá tăng dần
+                    //- Chỉ hiển thị khi prefix là "songs" hoặc "topics"
+                    //- if prefix == "songs" || prefix == "topics"
+                    option(value="title-asc") Tiêu đề từ A - Z 
+                    option(value="title-desc") Tiêu đề từ Z - A 
+                button(
+                    class="btn btn-danger mt-2"
+                    sort-clear
+                ) Xóa

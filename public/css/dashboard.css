@@ -1,0 +1,6 @@
+/* styles.css */
+.chart-container {
+    position: relative;
+    height: 400px; /* Chiều cao cố định */
+    width: 100%; /* Chiều rộng đầy đủ */
+}

@@ -1,0 +1,64 @@
+//- Sidebar
+ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSidebar")
+
+    //- Sidebar - Brand
+    a.sidebar-brand.d-flex.align-items-center.justify-content-center(href=`${prefixAdmin}/dashboard`)
+        div.sidebar-brand-icon.rotate-n-15
+            //- Icon sản phẩm, ví dụ như icon hộp sản phẩm hoặc danh sách
+            i.fas.fa-box-open
+        div.sidebar-brand-text.mx-3 Quản Lý Sản Phẩm
+
+    //- Divider
+    hr.sidebar-divider.my-0
+
+    //- Nav Item - Dashboard
+    li.nav-item.active
+        a.nav-link(href=`${prefixAdmin}/dashboard`)
+            i.fas.fa-fw.fa-tachometer-alt
+            span Tổng quan
+
+    //- Nav Item - Products
+    li.nav-item
+        a.nav-link(href=`${prefixAdmin}/products`)
+            i.fas.fa-fw.fa-box
+            span Sản phẩm
+
+    //- Nav Item - Categories
+    li.nav-item
+        a.nav-link(href=`${prefixAdmin}/product-category`)
+            i.fas.fa-fw.fa-tags
+            span Danh mục sản phẩm
+
+    //- Divider
+    hr.sidebar-divider
+
+    //- Heading
+    div.sidebar-heading Tài khoản
+
+    //- Nav Item - Account
+    li.nav-item
+        a.nav-link.collapsed(href="#", data-toggle="collapse", data-target="#collapseAccount", aria-expanded="true", aria-controls="collapseAccount")
+            i.fas.fa-fw.fa-user
+            span Tài khoản của bạn
+        div#collapseAccount.collapse(aria-labelledby="headingAccount", data-parent="#accordionSidebar")
+            div.bg-white.py-2.collapse-inner.rounded
+                h6.collapse-header Menu:
+                a.collapse-item(href="/user/info") Thông tin tài khoản
+                a.collapse-item(href="/user/change-password") Đổi mật khẩu
+                a.collapse-item(href="/user/logout") Đăng xuất
+
+    //- Divider
+    hr.sidebar-divider.d-none.d-md-block
+
+    //- Sidebar Toggler (Sidebar)
+    div.text-center.d-none.d-md-inline
+        button.rounded-circle.border-0(id="sidebarToggle")
+
+    //- Sidebar Message
+    div.sidebar-card.d-none.d-lg-flex
+        img.sidebar-card-illustration.mb-2(src="https://img.icons8.com/ios-filled/100/fa314a/product.png", alt="Product Management Icon")
+        p.text-center.mb-2
+            strong Quản Lý Sản Phẩm
+            br
+            | Giúp bạn quản lý sản phẩm hiệu quả và tối ưu hóa kho hàng.
+        a.btn.btn-warning.btn-sm(href="/products") Xem tất cả sản phẩm

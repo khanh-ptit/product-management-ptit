@@ -1,0 +1,15 @@
+mixin form-search()
+    form.form-inline.mr-auto.w-100.navbar-search(id="form-search" style="max-width: 400px;")
+        .input-group
+            input.form-control.bg-light.border-0.small(
+                type="text" 
+                placeholder="Nhập từ khóa" 
+                aria-label="Search" 
+                aria-describedby="basic-addon2" 
+                name="keyword"
+                style="width: calc(100% - 42px);" 
+                value=keyword
+            )
+            .input-group-append
+                button.btn.btn-primary(type="submit" style="width: 42px;")
+                    i.fas.fa-search.fa-sm

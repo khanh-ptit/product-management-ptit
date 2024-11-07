@@ -1,0 +1,6 @@
+.bg-login-image {
+    background-image: url('https://cdn.thuvienphapluat.vn/phap-luat/2022/KhanhHuyen/pccc.jpg'); /* Replace with your image path */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}

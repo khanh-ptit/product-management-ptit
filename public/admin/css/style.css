@@ -1,0 +1,291 @@
+h1.header {
+    color: black;
+    font-weight: 600;
+}
+
+/* Target buttons specifically inside the filter-status container */
+.filter-status .btn-outline-success {
+    border-color: #28a745; /* Green border for success outline */
+    color: #28a745; /* Matching text color */
+    border-radius: 20px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+.filter-status .btn-outline-success:hover {
+    background-color: #2F57EE; /* Green background on hover */
+    color: #fff; /* White text on hover */
+}
+
+.filter-status .btn-sm {
+    padding: 0.375rem 0.75rem; /* Adjust for small button size */
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* Margin adjustment for spacing between buttons */
+.filter-status .btn.ml-1 {
+    margin-left: 0.25rem;
+}
+
+/* Active state for selected status */
+.filter-status .btn.active {
+    background-color: #218838; /* Darker green for active */
+    color: #fff;
+    border-color: #1e7e34;
+    border-radius: 20px; /* Rounded corners for active buttons as well */
+}
+
+
+/* Table container */
+.table-responsive {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+/* Table headers */
+.table thead th {
+    background-color: #3960D0;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Table rows */
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+/* Table rows hover effect */
+.table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Table cells */
+.table td, .table th {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Badge styles for status */
+.badge-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Action buttons */
+.btn-secondary, .btn-warning, .btn-danger {
+    padding: 5px 10px;
+    font-size: 0.9em;
+}
+
+/* Responsive image */
+.table img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Checkbox alignment */
+.table input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+/* Style cho ô input position */
+.position-input {
+    width: 50px; /* Đặt chiều rộng của ô nhập */
+    height: 38px; /* Chiều cao của ô nhập */
+    text-align: center; /* Căn giữa nội dung trong ô nhập */
+    font-size: 16px; /* Kích thước chữ trong ô nhập */
+    border: 1px solid #ced4da; /* Màu viền nhạt */
+    border-radius: 10px; /* Viền mềm mại */
+    padding: 5px; /* Padding cho ô nhập */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển màu khi hover/focus */
+}
+
+/* Hover và focus cho ô input */
+.position-input:hover,
+.position-input:focus {
+    border-color: #007bff; /* Đổi màu viền thành màu xanh khi hover/focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng bóng khi focus vào ô nhập */
+}
+
+/* Khi ô input bị lỗi (invalid input) */
+.position-input:invalid {
+    border-color: #dc3545; /* Đổi màu viền thành đỏ khi có lỗi */
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Hiệu ứng bóng đỏ khi lỗi */
+}
+
+/* Style cho badge trạng thái */
+.badge {
+    padding: 5px 10px; /* Padding cho badge */
+    font-size: 14px; /* Kích thước chữ trong badge */
+    font-weight: 700; /* Đậm chữ */
+    border-radius: 12px; /* Góc bo tròn */
+    text-transform: capitalize; /* Chữ hoa đầu mỗi từ */
+}
+
+/* Style cho badge hoạt động */
+.badge-success {
+    background-color: #28a745; /* Màu nền xanh cho trạng thái "Hoạt động" */
+    color: white; /* Màu chữ trắng */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+}
+
+/* Hiệu ứng hover cho badge "Hoạt động" */
+.badge-success:hover {
+    background-color: #218838; /* Màu nền tối hơn khi hover */
+}
+
+/* Style cho badge dừng hoạt động */
+.badge-danger {
+    background-color: #dc3545; /* Màu nền đỏ cho trạng thái "Dừng hoạt động" */
+    color: white; /* Màu chữ trắng */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+}
+
+/* Hiệu ứng hover cho badge "Dừng hoạt động" */
+.badge-danger:hover {
+    background-color: #c82333; /* Màu nền tối hơn khi hover */
+}
+
+/* Style cho các nút chung */
+.btn {
+    font-weight: 500; /* Đậm chữ */
+    text-transform: capitalize; /* Viết hoa đầu mỗi từ */
+    padding: 6px 12px; /* Tăng kích thước padding cho nút */
+    border-radius: 5px; /* Bo góc cho nút */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển động mượt mà khi hover */
+}
+
+/* Nút Chi tiết */
+.btn-secondary {
+    background-color: #6c757d; /* Màu xám */
+    color: white;
+    border: 1px solid #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Màu xám tối hơn khi hover */
+    border-color: #545b62; /* Thay đổi màu border khi hover */
+}
+
+/* Nút Sửa */
+.btn-warning {
+    background-color: #ffc107; /* Màu vàng */
+    color: black;
+    border: 1px solid #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800; /* Màu vàng tối hơn khi hover */
+    border-color: #d39e00; /* Thay đổi màu border khi hover */
+}
+
+/* Nút Xóa */
+.btn-danger {
+    background-color: #dc3545; /* Màu đỏ */
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Màu đỏ tối hơn khi hover */
+    border-color: #bd2130; /* Thay đổi màu border khi hover */
+}
+
+/* Cách khoảng cách giữa các nút */
+.ml-1 {
+    margin-left: 0.25rem; /* Đảm bảo khoảng cách giữa các nút */
+}
+
+/* Pagination */
+/* Style chung cho pagination */
+.pagination-container {
+    display: flex;
+    justify-content: center; /* Căn giữa pagination */
+    align-items: center;
+    margin: 20px 0; /* Khoảng cách trên dưới */
+}
+
+.pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px; /* Khoảng cách giữa các trang */
+}
+
+.page-item {
+    border-radius: 5px; /* Bo góc cho các trang */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển động khi hover */
+}
+
+.page-item:hover {
+    background-color: #f0f0f0; /* Màu nền nhẹ khi hover */
+    transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+/* Style cho nút trang */
+.page-link {
+    padding: 8px 12px;
+    color: #007bff; /* Màu xanh cho các nút */
+    text-decoration: none;
+    border: 1px solid #ddd; /* Viền nhẹ */
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: white;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển động */
+}
+
+/* Style cho nút trang đang được chọn (active) */
+.page-item.active .page-link {
+    background-color: #007bff; /* Màu nền xanh khi chọn trang */
+    color: white; /* Màu chữ trắng khi trang được chọn */
+    border-color: #007bff; /* Màu viền xanh khi chọn */
+}
+
+/* Style cho nút "Trang trước" và "Kế tiếp" */
+.page-item button {
+    font-weight: bold;
+}
+
+/* Style cho nút "Trang trước" và "Kế tiếp" khi hover */
+.page-item button:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* End pagination */
+
+/* Sort */
+/* Style cho phần sort */
+.sort {
+    display: flex; /* Dùng Flexbox để sắp xếp các phần tử ngang */
+    align-items: center; /* Căn chỉnh các phần tử theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa select và button */
+}
+
+.sort select {
+    flex-grow: 1; /* Chiều rộng của select sẽ tự động chiếm không gian còn lại */
+    min-width: 150px; /* Đảm bảo select không quá hẹp */
+}
+
+.sort button {
+    margin-top: 0px !important;
+}
+
+/* Nếu cần, có thể thêm kiểu cho các option */
+.sort select option {
+    padding: 8px 12px;
+    font-size: 14px;
+}
+/* End sort */

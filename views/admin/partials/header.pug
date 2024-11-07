@@ -1,0 +1,66 @@
+//- Topbar
+nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
+    //- Sidebar Toggle (Topbar)
+    button#sidebarToggleTop.btn.btn-link.d-md-none.rounded-circle.mr-3
+        i.fa.fa-bars
+
+    //- Topbar Search
+    form.d-none.d-sm-inline-block.form-inline.mr-auto.ml-md-3.my-2.my-md-0.mw-100.navbar-search
+        .input-group
+            input.form-control.bg-light.border-0.small(type="text" placeholder="Nhập từ khóa" aria-label="Search" aria-describedby="basic-addon2")
+            .input-group-append
+                button.btn.btn-primary(type="button")
+                    i.fas.fa-search.fa-sm
+
+    //- Topbar Navbar
+    ul.navbar-nav.ml-auto
+
+        //- Nav Item - Search Dropdown (Visible Only XS)
+        li.nav-item.dropdown.no-arrow.d-sm-none
+            a.nav-link.dropdown-toggle(href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                i.fas.fa-search.fa-fw
+            div.dropdown-menu.dropdown-menu-right.p-3.shadow.animated--grow-in(aria-labelledby="searchDropdown")
+                form.form-inline.mr-auto.w-100.navbar-search
+                    .input-group
+                        input.form-control.bg-light.border-0.small(type="text" placeholder="Nhập từ khóa" aria-label="Search" aria-describedby="basic-addon2")
+                        .input-group-append
+                            button.btn.btn-primary(type="button")
+                                i.fas.fa-search.fa-sm
+
+        //- Nav Item - Alerts
+        li.nav-item.dropdown.no-arrow.mx-1
+            a.nav-link.dropdown-toggle(href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                i.fas.fa-bell.fa-fw
+                span.badge.badge-danger.badge-counter 3+
+            div.dropdown-list.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby="alertsDropdown")
+                h6.dropdown-header Thông báo
+                //- Add Alerts Items Here
+
+        //- Nav Item - Messages
+        li.nav-item.dropdown.no-arrow.mx-1
+            a.nav-link.dropdown-toggle(href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                i.fas.fa-envelope.fa-fw
+                span.badge.badge-danger.badge-counter 7
+            div.dropdown-list.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby="messagesDropdown")
+                h6.dropdown-header Tin nhắn
+                //- Add Messages Items Here
+
+        div.topbar-divider.d-none.d-sm-block
+
+        //- Nav Item - User Information
+        li.nav-item.dropdown.no-arrow
+            a.nav-link.dropdown-toggle(href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                span.mr-2.d-none.d-lg-inline.text-gray-600.small Lê Quốc Khánh
+                img.img-profile.rounded-circle(src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg")
+            div.dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby="userDropdown")
+                a.dropdown-item(href="/user/info")
+                    i.fas.fa-user.fa-sm.fa-fw.mr-2.text-gray-400 
+                    | Thông tin tài khoản
+                //- Add More User Options Here
+                a.dropdown-item(href="#")
+                    i.fas.fa-cogs.fa-sm.fa-fw.mr-2.text-gray-400
+                    | Cài đặt
+                div.dropdown-divider
+                a.dropdown-item(href="/user/logout")
+                    i.fas.fa-sign-out-alt.fa-sm.fa-fw.mr-2.text-gray-400
+                    | Đăng xuất

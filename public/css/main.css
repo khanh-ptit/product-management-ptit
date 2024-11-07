@@ -1,0 +1,36 @@
+/* Show Alert */
+[show-alert] {
+    position: fixed;
+    top: 15px;
+    right: 5px;
+    z-index: 9999;
+}
+
+[show-alert].alert-hidden {
+    animation-name: alert-hidden;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+@keyframes alert-hidden {
+    from {
+        right: 15px;
+    }
+    to {
+        right: -100%;
+        display: none;
+    }
+}
+
+.btn-cancel {
+    background: #fff;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-weight: 600;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    margin-left: 10px;
+}
+/* End Show Alert */
