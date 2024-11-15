@@ -1,0 +1,61 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    if product
+        +alert-error(5000)
+        +alert-success(5000)
+
+        h1(class="mb-4 text-center header text-primary") Chi tiết sản phẩm
+
+        div(class="card shadow-sm border-0")
+            div(class="card-header bg-primary text-white text-center")
+                h2(class="mb-0") #{product.title}
+
+            div(class="card-body")
+                div(class="row mb-4")
+                    // Hình ảnh
+                    div(class="col-md-5 text-center")
+                        if product.thumbnail
+                            img(
+                                src=product.thumbnail
+                                class="rounded border"
+                                style="width: 100%; max-width: 300px; object-fit: cover;"
+                            )
+                        else
+                            p.text-muted Chưa có hình ảnh
+
+                    // Thông tin chi tiết
+                    div(class="col-md-7")
+                        table(class="table table-borderless")
+                            tbody
+                                tr
+                                    th(class="text-end text-muted") Mô tả:
+                                    td #{product.description}
+                                tr
+                                    th(class="text-end text-muted") Giá:
+                                    td.text-danger #{product.price} VND
+                                tr
+                                    th(class="text-end text-muted") Giảm giá:
+                                    td.text-success #{product.discountPercentage}%
+                                tr
+                                    th(class="text-end text-muted") Số lượng:
+                                    td #{product.stock}
+                                tr
+                                    th(class="text-end text-muted") Danh mục:
+                                    td #{product.product_category_id ? product.product_category_id.name : 'Không xác định'}
+                                tr
+                                    th(class="text-end text-muted") Vị trí:
+                                    td #{product.position || 'Tự động tăng'}
+                                tr
+                                    th(class="text-end text-muted") Trạng thái:
+                                    td= product.status == "active" ? "Hoạt động" : "Dừng hoạt động"
+                                tr
+                                    th(class="text-end text-muted") Nổi bật:
+                                    td= product.featured == true ? "Có" : "Không"
+
+        div(class="text-center mt-4")
+            a(href=`${prefixAdmin}/products/edit/${product._id}` class="btn btn-warning me-3") Chỉnh sửa sản phẩm
+            a(href=`${prefixAdmin}/products` class="btn btn-secondary") Quay lại danh sách
+    else
+        div(class="alert alert-danger text-center") Sản phẩm không tồn tại hoặc đã bị xóa.

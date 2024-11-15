@@ -12,22 +12,34 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
     hr.sidebar-divider.my-0
 
     //- Nav Item - Dashboard
-    li.nav-item.active
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/dashboard`) ? 'active' : ''))
         a.nav-link(href=`${prefixAdmin}/dashboard`)
             i.fas.fa-fw.fa-tachometer-alt
             span Tổng quan
 
     //- Nav Item - Products
-    li.nav-item
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/products`) ? 'active' : ''))
         a.nav-link(href=`${prefixAdmin}/products`)
             i.fas.fa-fw.fa-box
             span Sản phẩm
 
     //- Nav Item - Categories
-    li.nav-item
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/product-category`) ? 'active' : ''))
         a.nav-link(href=`${prefixAdmin}/product-category`)
             i.fas.fa-fw.fa-tags
             span Danh mục sản phẩm
+
+    //- Nav Item - Accounts
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/accounts`) ? 'active' : ''))
+        a.nav-link(href=`${prefixAdmin}/accounts`)
+            i.fas.fa-fw.fa-users
+            span Quản lý tài khoản
+
+    //- Nav Item - Roles (Group Permissions)
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/roles`) ? 'active' : ''))
+        a.nav-link(href=`${prefixAdmin}/roles`)
+            i.fas.fa-fw.fa-user-shield
+            span Quản lý nhóm quyền
 
     //- Divider
     hr.sidebar-divider

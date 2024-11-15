@@ -18,11 +18,12 @@ const accountSchema = new mongoose.Schema({
     deleted: {
         type: Boolean,
         default: false
-    }
+    },
+    role_id: String
 }, {
     timestamps: true
 })
 
-const Account = mongoose.model("User", accountSchema, "account")
+const Account = mongoose.model("Account", accountSchema, "accounts")
 
-module.exports = User
+module.exports = Account

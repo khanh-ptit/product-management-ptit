@@ -103,6 +103,15 @@ if (formChangeMulti) {
         const typeChange = e.target.elements.type.value;
         console.log(typeChange);
 
+        if (typeChange === "--Chọn hành động--") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Chưa chọn hành động!',
+                text: 'Vui lòng chọn hành động muốn thực hiện!'
+            });
+            return;
+        }
+
         // Xử lý delete-all
         if (typeChange == "delete-all") {
             Swal.fire({
@@ -229,3 +238,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 // End show success status
+
+// Upload image
+const uploadImages = document.querySelectorAll("[upload-image]");
+// console.log(uploadImages)
+
+if (uploadImages.length > 0) {
+    uploadImages.forEach(uploadImage => {
+        const btnCancel = uploadImage.querySelector(".image-container .button-cancel");
+        const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
+        const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
+
+        btnCancel.classList.add("hidden")
+
+        if (uploadImageInput && uploadImagePreview && btnCancel) {
+            uploadImageInput.addEventListener("change", (e) => {
+                const file = e.target.files[0]; // Lấy ra giá trị đầu tiên
+                if (file) {
+                    uploadImagePreview.src = URL.createObjectURL(file);
+                    btnCancel.classList.remove("hidden"); // Hiển thị nút khi có ảnh
+                }
+            });
+
+            btnCancel.addEventListener("click", () => {
+                btnCancel.classList.add("hidden");
+                uploadImagePreview.src = ""; // Xóa ảnh preview
+                uploadImageInput.value = ""; // Xóa giá trị input
+            });
+
+            // Kiểm tra nếu không có file được chọn, ẩn nút hủy
+            uploadImageInput.addEventListener("input", () => {
+                if (!uploadImageInput.value) {
+                    btnCancel.classList.add("hidden");
+                }
+            });
+        }
+    })
+}
+// End upload image

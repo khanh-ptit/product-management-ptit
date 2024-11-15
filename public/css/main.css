@@ -34,3 +34,8 @@
     margin-left: 10px;
 }
 /* End Show Alert */
+
+.nav-item.active .nav-link {
+    background-color: #4e73df; /* Màu nền khi mục được chọn */
+    color: white; /* Màu chữ */
+}

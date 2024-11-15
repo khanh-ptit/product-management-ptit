@@ -324,3 +324,40 @@ h1.header {
     margin-left: 10px;
 }
 /* End Show Alert */
+
+/* Image Preview */
+.image-preview {
+    width: 150px;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.image-preview[src=""] {
+    display: none;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.button-cancel {
+    position: absolute;
+    top: 15px; /* Thay đổi để nút nằm gọn bên trong container */
+    right: 15px; /* Thay đổi để nút nằm gọn bên trong container */
+    background-color: red;
+    color: white;
+    padding: 2px 5px; /* Thay đổi kích thước padding cho phù hợp */
+    border-radius: 50%; /* Tạo hình tròn cho nút nếu muốn */
+    font-size: 12px; /* Kích thước chữ nhỏ hơn cho nút */
+    line-height: 12px; /* Điều chỉnh line-height cho phù hợp */
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;   
+}
+/* End Image Preview */
