@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug
+include ../../mixins/moment.pug
+
+block content 
+    h1.mb-4.text-center.header.text-primary Chi Tiết Tài Khoản
+
+    div(class="card shadow rounded p-4 bg-white")
+        //- Thông tin cá nhân
+        h2.text-secondary.mb-3 Thông Tin Cá Nhân
+        div(class="row")
+            //- Avatar
+            div(class="col-md-4 text-center")
+                img(
+                    src=account.avatar
+                    alt="Avatar"
+                    class="rounded border"
+                    style="width: 150px; height: 150px; object-fit: cover;"
+                )
+            div(class="col-md-8")
+                p.mb-2
+                    strong Họ Tên: 
+                    | #{account.fullName}
+                p.mb-2
+                    strong Email: 
+                    | #{account.email}
+                p.mb-2
+                    strong Số Điện Thoại: 
+                    | #{account.phone || "Không có"}
+
+        hr.my-4
+
+        //- Thông tin hệ thống
+        h2.text-secondary.mb-3 Thông Tin Hệ Thống
+        div(class="row")
+            div(class="col-md-6")
+                p.mb-2
+                    strong Vai Trò: 
+                    | #{account.infoRole.title || "Chưa phân quyền"}
+                p.mb-2
+                    strong Trạng Thái: 
+                    if account.status === "active"
+                        span(class="badge bg-success") Hoạt Động
+                    else if account.status === "inactive"
+                        span(class="badge bg-danger") Dừng Hoạt Động
+                    else
+                        span(class="badge bg-secondary") Không xác định
+
+
+            div(class="col-md-6")
+                p.mb-2
+                    strong Ngày Tạo: 
+                    +format-dateTime(account.createdAt)
+                p.mb-2
+                    strong Lần Cập Nhật Gần Nhất: 
+                    | #{account.updated_at || "Chưa có"}
+
+        hr.my-4
+
+        //- Nút thao tác
+        div(class="text-center")
+            a(
+                href=`${prefixAdmin}/accounts/edit/${account.id}`
+                class="btn btn-warning me-3"
+            ) Chỉnh sửa
+            a(
+                href=`${prefixAdmin}/accounts`
+                class="btn btn-secondary"
+            ) Quay lại danh sách
