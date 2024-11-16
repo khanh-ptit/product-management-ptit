@@ -1,0 +1,54 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    if category
+        +alert-error(5000)
+        +alert-success(5000)
+
+        h1(class="mb-4 text-center header text-primary") Chi tiết danh mục sản phẩm
+
+        div(class="card shadow-sm border-0")
+            div(class="card-header bg-primary text-white text-center")
+                h2(class="mb-0") #{category.title}
+
+            div(class="card-body")
+                div(class="row mb-4")
+                    div(class="col-md-5 text-center")
+                        if category.thumbnail
+                            img(
+                                src=category.thumbnail
+                                class="rounded border"
+                                style="width: 100%; max-width: 300px; object-fit: cover;"
+                            )
+                        else
+                            p.text-muted Chưa có hình ảnh
+
+                    div(class="col-md-7")
+                        table(class="table table-borderless")
+                            tbody
+                                tr
+                                    th(class="text-end text-muted") Mô tả:
+                                    td #{category.description || "Không có mô tả"}
+                                tr
+                                    if parentCategory
+                                        th(class="text-end text-muted") Danh mục cha:
+                                        td #{parentCategory.title}
+                                    else 
+                                        th(class="text-end text-muted") Danh mục cha:
+                                        td Không có danh mục cha
+                                tr
+                                    th(class="text-end text-muted") Vị trí:
+                                    td #{category.position || 'Tự động tăng'}
+                                tr
+                                    th(class="text-end text-muted") Trạng thái:
+                                    td= category.status == "active" ? "Hoạt động" : "Dừng hoạt động"
+                                tr
+                                    th(class="text-end text-muted") Nổi bật:
+                                    td= category.featured == true ? "Có" : "Không"
+
+        div(class="text-center mt-4")
+            a(href=`${prefixAdmin}/product-category/edit/${category._id}` class="btn btn-warning me-3") Chỉnh sửa danh mục
+            a(href=`${prefixAdmin}/product-category` class="btn btn-secondary") Quay lại danh sách
+    else
+        div(class="alert alert-danger text-center") Danh mục không tồn tại hoặc đã bị xóa.
