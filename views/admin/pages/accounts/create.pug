@@ -1,0 +1,128 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content 
+    +alert-success(5000)
+    +alert-error(5000)
+
+    h1.mb-4.text-center.header.text-primary Tạo Mới Tài Khoản
+
+    form(
+        action=`${prefixAdmin}/accounts/create`
+        method="POST"
+        enctype="multipart/form-data"
+        class="p-4 shadow rounded bg-white"
+    )
+        //- Họ tên
+        div(class="form-group mb-3")
+            label(for="fullName" class="fw-bold") Họ tên *
+            input(
+                type="text"
+                class="form-control"
+                id="fullName"
+                name="fullName"
+                placeholder="Nhập họ tên"
+                required
+            )
+        
+        //- Email
+        div(class="form-group mb-3")
+            label(for="email" class="fw-bold") Email *
+            input(
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Nhập email"
+                required
+            )
+
+        //- Mật khẩu
+        div(class="form-group mb-3")
+            label(for="password" class="fw-bold") Mật khẩu *
+            input(
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Nhập mật khẩu"
+                required
+            )
+        
+        //- Số điện thoại
+        div(class="form-group mb-3")
+            label(for="phone" class="fw-bold") Số điện thoại
+            input(
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+                placeholder="Nhập số điện thoại"
+            )
+
+        //- Avatar
+        div(
+            class="form-group mb-3"
+            upload-image
+        )
+            label(for="avatar" class="fw-bold") Avatar
+            input(
+                type="file"
+                class="form-control-file"
+                id="avatar"
+                name="avatar"
+                accept="image/*"
+                upload-image-input
+            )
+            div(class="image-container mt-2 d-flex align-items-center")
+                img(
+                    src=""
+                    upload-image-preview
+                    class="image-preview rounded border"
+                    style="width: 150px; height: 150px; object-fit: cover;"
+                )
+                span.button-cancel.ms-3.btn.btn-sm.btn-outline-danger X
+
+        //- Phân quyền
+        div(class="form-group mb-3")
+            label(for="role_id" class="fw-bold") Phân quyền *
+            select(
+                name="role_id"
+                id="role_id"
+                class="form-control"
+                required
+            )
+                option(disabled selected) --Chọn nhóm quyền--
+                each item in roles
+                    option(value=item.id) #{item.title}
+
+        //- Trạng thái
+        div(class="form-group mb-3")
+            div(class="form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusActive"
+                    name="status"
+                    value="active"
+                    checked
+                )
+                label(for="statusActive" class="form-check-label") Hoạt động
+            div(class="form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusInActive"
+                    name="status"
+                    value="inactive"
+                )
+                label(for="statusInActive" class="form-check-label") Dừng hoạt động
+
+        //- Nút tạo mới
+        div(class="text-center mt-4")
+            button(
+                type="submit"
+                class="btn btn-primary px-5"
+            ) Tạo mới 
+
+    script(src="/admin/js/account.js")

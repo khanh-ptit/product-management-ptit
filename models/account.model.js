@@ -19,7 +19,11 @@ const accountSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    role_id: String
+    role_id: String,
+    status: {
+        type: String,
+        default: "active"
+    }
 }, {
     timestamps: true
 })
