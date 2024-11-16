@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    h1.text-center.mb-4.text-primary Chỉnh Sửa Nhóm Quyền
+
+    +alert-success(5000)
+
+    div.card.shadow.mb-4
+        div.card-header.py-3
+            h6.m-0.font-weight-bold.text-primary Cập nhật thông tin nhóm quyền
+        div.card-body
+            form(
+                action=`${prefixAdmin}/roles/edit/${role._id}?_method=PATCH` 
+                method="POST"
+            )
+                //- Tiêu đề nhóm quyền
+                div(class="form-group")
+                    label(for="title") Tiêu đề
+                    input#title.form-control(
+                        name="title"
+                        type="text"
+                        placeholder="Nhập tiêu đề nhóm quyền"
+                        value=role.title 
+                        required
+                    )
+                
+                //- Mô tả nhóm quyền
+                div(class="form-group")
+                    label(for="description") Mô tả nhóm quyền
+                    textarea#description.form-control(
+                        name="description"
+                        rows="4"
+                        placeholder="Mô tả chi tiết về nhóm quyền"
+                    ) #{role.description} 
+                
+                //- Nút hành động
+                div.text-right
+                    button.btn.btn-success(type="submit")
+                        i.fas.fa-save.mr-2
+                        | Lưu Thay Đổi

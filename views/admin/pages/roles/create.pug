@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    h1.text-center.mb-4.text-primary Thêm Mới Nhóm Quyền
+
+    +alert-success(5000)
+
+    div.card.shadow.mb-4
+        div.card-header.py-3
+            h6.m-0.font-weight-bold.text-primary Tạo nhóm quyền mới
+        div.card-body
+            form(
+                action=`${prefixAdmin}/roles/create`
+                method="POST"
+            )
+                //- Tiêu đề nhóm quyền
+                div(class="form-group")
+                    label(for="title") Tiêu đề 
+                    input#title.form-control(
+                        name="title"
+                        type="text"
+                        placeholder="Nhập tiêu đề"
+                        required
+                    )
+                
+                //- Mô tả nhóm quyền
+                div(class="form-group")
+                    label(for="description") Mô tả nhóm quyền
+                    textarea#description.form-control(
+                        name="description"
+                        rows="4"
+                        placeholder="Mô tả chi tiết"
+                    )
+                
+                //- Nút hành động
+                div.text-right
+                    button.btn.btn-primary(type="submit")
+                        i.fas.fa-save.mr-2
+                        | Thêm Nhóm Quyền
