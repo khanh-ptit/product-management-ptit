@@ -122,6 +122,12 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/accounts/edit/:id
 module.exports.editPatch = async (req, res) => {
     const id = req.params.id
+    if (req.body.password == "") {
+        delete req.body.password;
+    }
+    if (req.body.password) {
+        req.body.password = md5(req.body.password)
+    }
     await Account.updateOne({
         _id: id,
     }, req.body)

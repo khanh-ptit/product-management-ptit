@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block content 
     +alert-success(5000)
@@ -24,6 +25,17 @@ block content
                 placeholder="Nhập tiêu đề sản phẩm"
             )
         
+        div(class="form-group mb-3")
+            label(for="product_category_id" class="fw-bold") Danh mục
+            select(
+                id="product_category_id"
+                name="product_category_id"
+                class="form-control"
+            )
+                option(selected disabled) -- Chọn danh mục --
+                if (category)
+                    +select-tree(category)
+
         div(class="form-group mb-3")
             label(for="desc" class="fw-bold") Mô tả
             textarea(
@@ -147,4 +159,5 @@ block content
                 type="submit"
                 class="btn btn-primary px-5"
             ) Tạo mới 
-    script(src="/admin/js/product.js") 
+
+    script(src="/admin/js/product.js")

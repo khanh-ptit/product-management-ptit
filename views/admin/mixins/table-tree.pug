@@ -1,0 +1,70 @@
+mixin table-tree(items, level = 1)
+    each item, index in items
+        - const prefix = Array(level + 1).join("-- ")
+        tr
+            td 
+                input(
+                    type="checkbox"
+                    name="id"
+                    value=item.id
+                )
+            td #{item.index}
+            if (item.thumbnail)
+                td
+                    img(src=item.thumbnail 
+                        alt=item.title
+                        width="100px" 
+                        height="auto")
+            if (item.title)
+                td(class="text-left") #{prefix}#{item.title} <!-- Căn trái -->
+            if (item.position)
+                td 
+                    input(
+                        type="number"
+                        value=item.position 
+                        style="width: 60px"
+                        class="position-input"
+                        min="1"
+                        name="position"
+                    )
+            if (item.status)
+                td
+                    if (item.status == "active")
+                        a(
+                            href="javascript:;" 
+                            data-status="active"
+                            data-id=item.id
+                            button-change-status
+                            class="badge badge-success") Hoạt động
+                    else 
+                        a(
+                            href="javascript:;"
+                            data-status="inactive"
+                            data-id=item.id
+                            button-change-status
+                            class="badge badge-danger") Dừng hoạt động
+
+            td
+                a(
+                    href=`${prefixAdmin}/product-category/detail/${item.id}`
+                    class="btn btn-secondary btn-sm"
+                ) Xem
+                if (role.permissions.includes('product-category_edit'))
+                    a(
+                        href=`${prefixAdmin}/product-category/edit/${item.id}`
+                        class="btn btn-warning btn-sm ml-1"
+                ) Sửa
+                if (role.permissions.includes('product-category_delete'))
+                    button(
+                        class="btn btn-danger btn-sm ml-1"
+                        button-delete 
+                        data-id=item.id
+                    ) Xóa
+            td 
+                each account in accounts 
+                    if (account.id == item.createdBy.account_id)
+                        p #{account.fullName}
+                        +format-dateTime(item.createdBy.createdAt)
+
+        if item.children && item.children.length > 0
+            +table-tree(item.children, level + 1)

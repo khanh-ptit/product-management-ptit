@@ -1,9 +1,11 @@
 const Product = require("../../models/product.model")
+const ProductCategory = require("../../models/product-category.model")
 const Account = require("../../models/account.model")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const systemConfig = require("../../config/system")
 const paginationHelper = require("../../helpers/pagination")
+const createTreeHelper = require("../../helpers/createTree")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -151,8 +153,17 @@ module.exports.changeMulti = async (req, res) => {
 
 //[GET] /admin/products/create
 module.exports.create = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+
+    const category = await ProductCategory.find(find)
+    // console.log(category)
+    const treeCategory = createTreeHelper.tree(category)
+
     res.render("admin/pages/products/create.pug", {
-        pageTitle: "Tạo mới sản phẩm"
+        pageTitle: "Tạo mới sản phẩm",
+        category: treeCategory
     })
 }
 
@@ -186,10 +197,15 @@ module.exports.edit = async (req, res) => {
         _id: id,
         deleted: false
     })
+    const category = await ProductCategory.find({
+        deleted: false
+    })
+    const treeCategory = createTreeHelper.tree(category)
     // console.log(record)
     res.render("admin/pages/products/edit.pug", {
         pageTitle: "Chỉnh sửa sản phẩm",
-        product: record
+        product: record,
+        category: treeCategory
     })
 }
 
@@ -241,6 +257,13 @@ module.exports.detail = async (req, res) => {
             _id: id
         }
         const product = await Product.findOne(find)
+        if (product.product_category_id) {
+            const infoProductCategory = await ProductCategory.findOne({
+                _id: product.product_category_id,
+                deleted: false
+            })
+            product.infoProductCategory = infoProductCategory
+        }
         // console.log(product)
         res.render("admin/pages/products/detail", {
             pageTitle: product.title,
