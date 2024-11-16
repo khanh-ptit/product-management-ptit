@@ -10,8 +10,6 @@ html(lang="en")
         //- link(rel="icon" type="image/png" href="https://img.icons8.com/emoji/48/fire.png") 
         link(rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/50/000000/product.png")
 
-
-
         title Đăng nhập hệ thống
 
         //- Custom fonts for this template
@@ -45,7 +43,7 @@ html(lang="en")
                                     .p-5
                                         .text-center
                                             h1.h4.text-gray-900.mb-4 Hệ thống quản lý sản phẩm!
-                                        form(class="user" action="/user/login" method="POST")
+                                        form(class="user" action=`${prefixAdmin}/user/login` method="POST")
                                             .form-group
                                                 input#exampleInputEmail.form-control.form-control-user(type="email" name="email" aria-describedby="emailHelp" placeholder="Nhập email")
                                             .form-group
@@ -64,7 +62,7 @@ html(lang="en")
                                                 | Đăng nhập với Facebook
                                         hr
                                         .text-center
-                                            a.small(href="/user/forgot-password") Quên mật khẩu?
+                                            a.small(href=`${prefixAdmin}/user/forgot-password`) Quên mật khẩu?
                                         .text-center
                                             a.small(href="/user/register") Chưa có tài khoản? Đăng ký ngay!
 

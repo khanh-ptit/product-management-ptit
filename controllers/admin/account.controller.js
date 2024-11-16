@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
         find["status"] = req.query.status
     }
     const records = await Account.find(find).select("-password -token")
-    console.log(records)
+    // console.log(records)
     // const roles = await Role.find({
     //     deleted: false
     // })
