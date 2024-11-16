@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const controller = require("../../controllers/admin/user.controller")
+const authMiddleware = require("../../middlewares/admin/auth.middleware")
 
 router.get('/login', controller.login)
 
@@ -17,8 +18,8 @@ router.get('/otp-password', controller.otpPassword)
 
 router.post('/otp-password', controller.otpPasswordPost)
 
-router.get('/reset-password', controller.resetPassword)
+router.get('/reset-password', authMiddleware.requireAuth, controller.resetPassword)
 
-router.post('/reset-password', controller.resetPasswordPost)
+router.post('/reset-password', authMiddleware.requireAuth, controller.resetPasswordPost)
 
 module.exports = router
