@@ -75,3 +75,37 @@ module.exports.deleteItem = async (req, res) => {
     req.flash("success", "Xóa thành công nhóm quyền!")
     res.redirect("back")
 }
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+    const records = await Role.find(find)
+    // res.send("OK")
+    res.render("admin/pages/roles/permissions.pug", {
+        pageTitle: "Phân quyền",
+        records: records
+    })
+}
+
+// [PATCH] /admin/roles/permissions
+module.exports.permissionsPatch = async (req, res) => {
+    // console.log(req.body)
+    try {
+        let arr = JSON.parse(req.body.permissions)
+        arr.forEach(async element => {
+            // console.log(element)
+            await Role.updateOne({
+                _id: element.id
+            }, {
+                permissions: element.permissions
+            })
+        });
+        req.flash("success", "Cập nhật phân quyền thành công")
+        res.redirect("back")
+        // res.redirect(`${systemConfig.prefixAdmin}/roles/permissions`)
+    } catch (error) {
+        req.flash("error", "Cập nhật phân quyền thất bại")
+    }
+}

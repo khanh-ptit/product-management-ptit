@@ -41,6 +41,12 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
             i.fas.fa-fw.fa-user-shield
             span Quản lý nhóm quyền
 
+    //- Nav Item - Permissions
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/roles/permissions`) ? 'active' : ''))
+        a.nav-link(href=`${prefixAdmin}/roles/permissions`)
+            i.fas.fa-fw.fa-key
+            span Phân quyền
+
     //- Divider
     hr.sidebar-divider
 

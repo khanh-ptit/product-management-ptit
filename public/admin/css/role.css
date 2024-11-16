@@ -1,0 +1,121 @@
+/* Tiêu đề */
+h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #5a5c69; /* Màu tiêu đề Bootstrap */
+    margin-bottom: 1.5rem;
+}
+
+/* Nút Cập nhật */
+button[button-submit] {
+    background-color: #4e73df; /* Primary Bootstrap */
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+button[button-submit]:hover {
+    background-color: #2e59d9;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Bảng phân quyền */
+table[table-permissions] {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    overflow: hidden;
+    box-shadow: 0 0.15rem 0.75rem rgba(58, 59, 69, 0.15);
+}
+
+table[table-permissions] thead {
+    background-color: #f8f9fc; /* Màu nền nhạt */
+    color: #5a5c69;
+}
+
+table[table-permissions] th {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e3e6f0;
+}
+
+table[table-permissions] tbody tr td {
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+table[table-permissions] tbody tr:nth-child(even) {
+    background-color: #f8f9fc;
+}
+
+table[table-permissions] tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+/* Nhóm quyền tiêu đề */
+table[table-permissions] tr td[colspan="4"] {
+    background-color: #f1f3f6;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4e73df;
+    padding: 1rem;
+    text-align: left;
+}
+
+/* Checkbox */
+table[table-permissions] input[type="checkbox"] {
+    transform: scale(1.2);
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Link tạo nhóm quyền */
+a.btn-outline-success {
+    display: inline-block;
+    margin: 2rem auto;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1cc88a; /* Màu Success Bootstrap */
+    border: 1px solid #1cc88a;
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    transition: all 0.2s ease-in-out;
+}
+
+a.btn-outline-success:hover {
+    background-color: #1cc88a;
+    color: #fff;
+    text-decoration: none;
+    border-color: #17a673;
+}
+
+/* Alert boxes */
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    padding: 0.75rem 1rem;
+    border-radius: 0.35rem;
+    margin-bottom: 1rem;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+    padding: 0.75rem 1rem;
+    border-radius: 0.35rem;
+    margin-bottom: 1rem;
+}
