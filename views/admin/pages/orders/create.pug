@@ -1,0 +1,210 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block head
+    link(rel="stylesheet" href="/admin/css/order.css")
+
+block content
+    +alert-success(5000)
+    +alert-error(5000)
+
+    .container-fluid
+        .card.shadow.mb-4
+            .card-header.py-3
+                h6.m-0.font-weight-bold.text-primary Thông tin đơn hàng
+            .card-body
+                form#orderForm(action='/admin/orders/create', method='POST')
+                    //- Thông tin khách hàng
+                    .form-group
+                        label(for='customerName') Tên khách hàng
+                        input#customerName.form-control(type='text', name='customerInfo[fullName]', placeholder='Nhập tên khách hàng', required)
+                    .form-group
+                        label(for='customerPhone') Số điện thoại
+                        input#customerPhone.form-control(type='tel', name='customerInfo[phone]', placeholder='Nhập số điện thoại', required)
+                    .form-group
+                        label(for='customerAddress') Địa chỉ
+                        input#customerAddress.form-control(type='text', name='customerInfo[address]', placeholder='Nhập địa chỉ', required)
+
+                    hr
+
+                    //- Danh sách sản phẩm
+                    h6.font-weight-bold.text-primary Danh sách sản phẩm
+                    .product-list
+                        .product-item.card.shadow.mb-3
+                            .card-body
+                                .row
+                                    .col-md-6
+                                        label(for='product_0') Sản phẩm
+                                        select#product_0.form-control(name='products[0][product_id]', data-index=0, required)
+                                            option(value='') -- Chọn sản phẩm --
+                                            each product in products
+                                                option(value=product._id data-image=product.thumbnail data-price=product.price)= product.title
+                                    .col-md-6
+                                        label(for='quantity_0') Số lượng
+                                        input#quantity_0.form-control(type='number', name='products[0][quantity]', placeholder='Nhập số lượng', min='1', required)
+                                .row.mt-3
+                                    .col-md-4
+                                        img#productImage_0.img-thumbnail(src='', alt='Hình ảnh sản phẩm', hidden)
+                                    .col-md-8
+                                        h6#productPrice_0.font-weight-bold.text-primary.hidden Giá: 0 VNĐ
+
+                    button#addProductBtn.btn.btn-info.btn-sm.mt-3(type='button') Thêm sản phẩm
+
+                    hr
+
+                    //- Nút hành động
+                    .form-group.text-center
+                        button.btn.btn-primary.btn-lg.m-2(type='submit') Tạo đơn hàng
+                        button#resetFormBtn.btn.btn-secondary.btn-lg.m-2(type='button') Làm lại
+
+                    //- Hiển thị tổng tiền
+                    .form-group.text-center
+                        h6.font-weight-bold.text-primary Tổng tiền: 
+                        span#totalPrice 0 VNĐ
+
+    script.
+        const products = !{JSON.stringify(products)}; // Dữ liệu sản phẩm
+        let selectedProducts = []; // Mảng lưu các sản phẩm đã được chọn
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const addProductBtn = document.getElementById("addProductBtn");
+            const resetFormBtn = document.getElementById("resetFormBtn");
+            const productList = document.querySelector(".product-list");
+            const orderForm = document.getElementById("orderForm");
+            const totalPriceElement = document.getElementById("totalPrice");
+            let productIndex = 1;
+
+            // Hàm tính tổng tiền
+            const calculateTotalPrice = () => {
+                let total = 0;
+                // Lặp qua tất cả các sản phẩm trong đơn hàng
+                document.querySelectorAll(".product-item").forEach((item, index) => {
+                    const quantityInput = item.querySelector(`input[name="products[${index}][quantity]"]`);
+                    const selectProduct = item.querySelector(`select[name="products[${index}][product_id]"]`);
+                    const price = parseFloat(selectProduct.options[selectProduct.selectedIndex].getAttribute('data-price')) || 0;
+                    const quantity = parseInt(quantityInput.value) || 0;
+
+                    // Tính giá cho từng sản phẩm
+                    const productTotalPrice = price * quantity;
+                    total += productTotalPrice;
+
+                    // Cập nhật giá cho từng sản phẩm
+                    const productPriceElement = item.querySelector(`#productPrice_${index}`);
+                    productPriceElement.textContent = `Giá: ${productTotalPrice.toLocaleString()} VNĐ`;
+                    productPriceElement.classList.remove("hidden");
+                });
+                totalPriceElement.textContent = `${total.toLocaleString()} VNĐ`; // Hiển thị tổng tiền
+            };
+
+            // Cập nhật thông tin sản phẩm khi chọn
+            productList.addEventListener("change", (event) => {
+                if (event.target.tagName === "SELECT") {
+                    const selectedOption = event.target.options[event.target.selectedIndex];
+                    const index = event.target.dataset.index;
+                    const image = selectedOption.getAttribute("data-image");
+                    const price = selectedOption.getAttribute("data-price");
+
+                    // Thêm sản phẩm vào mảng selectedProducts
+                    const selectedProductId = selectedOption.value;
+                    if (!selectedProducts.includes(selectedProductId) && selectedProductId !== "") {
+                        selectedProducts.push(selectedProductId);
+                    }
+
+                    // Loại bỏ sản phẩm đã chọn khỏi các dropdown còn lại
+                    updateProductOptions();
+
+                    // Hiển thị hình ảnh và giá
+                    document.getElementById(`productImage_${index}`).src = image || '';
+                    document.getElementById(`productImage_${index}`).hidden = !image;
+                    document.getElementById(`productPrice_${index}`).textContent = `Giá: ${price} VNĐ`;
+                    document.getElementById(`productPrice_${index}`).classList.remove("hidden");
+
+                    calculateTotalPrice(); // Cập nhật tổng tiền sau khi chọn sản phẩm
+                }
+            });
+
+            // Tính tổng tiền khi thay đổi số lượng
+            productList.addEventListener("input", (event) => {
+                if (event.target.type === "number") {
+                    calculateTotalPrice();
+                }
+            });
+
+            // Xử lý thêm sản phẩm
+            addProductBtn.addEventListener("click", () => {
+                const newProduct = document.createElement("div");
+                newProduct.className = "product-item card shadow mb-3";
+                newProduct.innerHTML = `
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="product_${productIndex}">Sản phẩm</label>
+                                <select id="product_${productIndex}" class="form-control" name="products[${productIndex}][product_id]" data-index="${productIndex}" required>
+                                    <option value="">-- Chọn sản phẩm --</option>
+                                    ${products
+                                        .filter(product => !selectedProducts.includes(product._id))
+                                        .map(
+                                            (product) =>
+                                                `<option value="${product._id}" data-image="${product.thumbnail}" data-price="${product.price}">${product.title}</option>`
+                                        )
+                                        .join("")}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="quantity_${productIndex}">Số lượng</label>
+                                <input id="quantity_${productIndex}" class="form-control" type="number" name="products[${productIndex}][quantity]" placeholder="Nhập số lượng" min="1" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <img id="productImage_${productIndex}" class="img-thumbnail" src="" alt="Hình ảnh sản phẩm" hidden>
+                            </div>
+                            <div class="col-md-8">
+                                <h6 id="productPrice_${productIndex}" class="font-weight-bold text-primary hidden">Giá: 0 VNĐ</h6>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(newProduct);
+                productIndex++;
+            });
+
+            // Xử lý nút Làm lại
+            resetFormBtn.addEventListener("click", () => {
+                orderForm.reset(); // Reset các trường mặc định
+                // Xóa toàn bộ sản phẩm động
+                const productItems = document.querySelectorAll(".product-item");
+                productItems.forEach((item, index) => {
+                    if (index > 0) item.remove(); // Giữ lại sản phẩm đầu tiên
+                });
+                productIndex = 1; // Reset chỉ số sản phẩm
+
+                // Ẩn hình ảnh và giá sản phẩm đầu tiên
+                document.getElementById("productImage_0").hidden = true;
+                document.getElementById("productPrice_0").classList.add("hidden");
+
+                // Reset tổng tiền
+                totalPriceElement.textContent = "0 VNĐ";
+
+                // Reset mảng sản phẩm đã chọn
+                selectedProducts = [];
+            });
+
+            // Cập nhật các tùy chọn sản phẩm trong các dropdown
+            const updateProductOptions = () => {
+                const selects = document.querySelectorAll('select[name^="products["]');
+                selects.forEach(select => {
+                    const productId = select.value;
+                    Array.from(select.options).forEach(option => {
+                        if (selectedProducts.includes(option.value) && option.value !== productId) {
+                            option.disabled = true; // Disable sản phẩm đã chọn
+                        } else {
+                            option.disabled = false;
+                        }
+                    });
+                });
+            };
+
+            // Lần đầu gọi hàm cập nhật sản phẩm
+            updateProductOptions();
+        });
