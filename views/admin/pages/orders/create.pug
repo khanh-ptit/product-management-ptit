@@ -8,59 +8,61 @@ block content
     +alert-success(5000)
     +alert-error(5000)
 
-    .container-fluid
-        .card.shadow.mb-4
-            .card-header.py-3
-                h6.m-0.font-weight-bold.text-primary Thông tin đơn hàng
-            .card-body
-                form#orderForm(action='/admin/orders/create', method='POST')
-                    //- Thông tin khách hàng
-                    .form-group
-                        label(for='customerName') Tên khách hàng
-                        input#customerName.form-control(type='text', name='customerInfo[fullName]', placeholder='Nhập tên khách hàng', required)
-                    .form-group
-                        label(for='customerPhone') Số điện thoại
-                        input#customerPhone.form-control(type='tel', name='customerInfo[phone]', placeholder='Nhập số điện thoại', required)
-                    .form-group
-                        label(for='customerAddress') Địa chỉ
-                        input#customerAddress.form-control(type='text', name='customerInfo[address]', placeholder='Nhập địa chỉ', required)
+    .order-page
+        .container-fluid
+            .card.shadow.mb-4
+                .card-header.py-3
+                    h6.m-0.font-weight-bold.text-primary Thông tin đơn hàng
+                .card-body
+                    form#orderForm(action='/admin/orders/create', method='POST')
+                        //- Thông tin khách hàng
+                        .form-group
+                            label(for='customerName') Tên khách hàng
+                            input#customerName.form-control(type='text', name='customerInfo[fullName]', placeholder='Nhập tên khách hàng', required)
+                        .form-group
+                            label(for='customerPhone') Số điện thoại
+                            input#customerPhone.form-control(type='tel', name='customerInfo[phone]', placeholder='Nhập số điện thoại', required)
+                        .form-group
+                            label(for='customerAddress') Địa chỉ
+                            input#customerAddress.form-control(type='text', name='customerInfo[address]', placeholder='Nhập địa chỉ', required)
 
-                    hr
+                        hr
 
-                    //- Danh sách sản phẩm
-                    h6.font-weight-bold.text-primary Danh sách sản phẩm
-                    .product-list
-                        .product-item.card.shadow.mb-3
-                            .card-body
-                                .row
-                                    .col-md-6
-                                        label(for='product_0') Sản phẩm
-                                        select#product_0.form-control(name='products[0][product_id]', data-index=0, required)
-                                            option(value='') -- Chọn sản phẩm --
-                                            each product in products
-                                                option(value=product._id data-image=product.thumbnail data-price=product.price)= product.title
-                                    .col-md-6
-                                        label(for='quantity_0') Số lượng
-                                        input#quantity_0.form-control(type='number', name='products[0][quantity]', placeholder='Nhập số lượng', min='1', required)
-                                .row.mt-3
-                                    .col-md-4
-                                        img#productImage_0.img-thumbnail(src='', alt='Hình ảnh sản phẩm', hidden)
-                                    .col-md-8
-                                        h6#productPrice_0.font-weight-bold.text-primary.hidden Giá: 0 VNĐ
+                        //- Danh sách sản phẩm
+                        h6.font-weight-bold.text-primary Danh sách sản phẩm
+                        .product-list
+                            .product-item.card.shadow.mb-3
+                                .card-body
+                                    .row
+                                        .col-md-6
+                                            label(for='product_0') Sản phẩm
+                                            select#product_0.form-control(name='products[0][product_id]', data-index=0, required)
+                                                option(value='') -- Chọn sản phẩm --
+                                                each product in products
+                                                    option(value=product._id data-image=product.thumbnail data-price=product.price)= product.title
+                                        .col-md-6
+                                            label(for='quantity_0') Số lượng
+                                            input#quantity_0.form-control(type='number', name='products[0][quantity]', placeholder='Nhập số lượng', min='1', required)
+                                    .row.mt-3
+                                        .col-md-4
+                                            img#productImage_0.img-thumbnail(src='', alt='Hình ảnh sản phẩm', hidden)
+                                        .col-md-8
+                                            h6#productPrice_0.font-weight-bold.text-primary.hidden Giá: 0 VNĐ
 
-                    button#addProductBtn.btn.btn-info.btn-sm.mt-3(type='button') Thêm sản phẩm
+                        button#addProductBtn.btn.btn-info.btn-sm.mt-3(type='button') Thêm sản phẩm
 
-                    hr
+                        hr
+                        //- Hiển thị tổng tiền
+                        .form-group.text-center
+                            h6.font-weight-bold.text-primary Tổng tiền: 
+                            span#totalPrice 0 VNĐ
 
-                    //- Nút hành động
-                    .form-group.text-center
-                        button.btn.btn-primary.btn-lg.m-2(type='submit') Tạo đơn hàng
-                        button#resetFormBtn.btn.btn-secondary.btn-lg.m-2(type='button') Làm lại
+                        //- Nút hành động
+                        .form-group.text-center
+                            button.btn.btn-primary.btn-lg.m-2(type='submit') Tạo đơn hàng
+                            button#resetFormBtn.btn.btn-secondary.btn-lg.m-2(type='button') Làm lại
 
-                    //- Hiển thị tổng tiền
-                    .form-group.text-center
-                        h6.font-weight-bold.text-primary Tổng tiền: 
-                        span#totalPrice 0 VNĐ
+                    
 
     script.
         const products = !{JSON.stringify(products)}; // Dữ liệu sản phẩm

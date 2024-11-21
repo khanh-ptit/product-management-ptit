@@ -1,84 +1,84 @@
-/* Căn chỉnh ảnh sản phẩm */
-.img-thumbnail {
-    max-width: 100%; /* Đảm bảo ảnh không vượt quá chiều rộng container */
-    max-height: 160px; /* Giới hạn chiều cao ảnh */
-    object-fit: cover; /* Đảm bảo ảnh không bị méo */
-    border: 1px solid #ddd; /* Tạo đường viền nhẹ */
-    border-radius: 5px; /* Bo góc ảnh */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
+/* Giới hạn phạm vi cho trang đơn hàng */
+.order-page .img-thumbnail {
+    max-width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Phong cách cho giá tiền */
-.font-weight-bold.text-primary {
-    font-size: 1rem; /* Giảm kích thước font cho phù hợp */
-    color: #28a745; /* Đổi màu chữ thành màu xanh lá cho nổi bật */
-    margin-top: 10px; /* Tạo khoảng cách trên */
-    white-space: nowrap; /* Giữ giá tiền trên một dòng */
+/* Phong cách cho giá tiền chỉ áp dụng cho trang đơn hàng */
+.order-page .font-weight-bold.text-primary {
+    font-size: 1rem;
+    color: #28a745;
+    margin-top: 10px;
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Nếu nội dung quá dài, thêm "..." */
+    text-overflow: ellipsis;
 }
 
 /* Bố cục sản phẩm */
-.product-item {
+.order-page .product-item {
     padding: 15px;
-    border: 1px solid #f0f0f0; /* Đường viền nhẹ */
-    border-radius: 10px; /* Bo góc toàn khung */
-    background: #f9f9f9; /* Màu nền nhẹ nhàng */
-    transition: transform 0.2s, box-shadow 0.2s; /* Hiệu ứng khi di chuột */
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    background: #f9f9f9;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.product-item:hover {
-    transform: scale(1.02); /* Phóng to nhẹ khi di chuột */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tạo hiệu ứng nổi */
+.order-page .product-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Điều chỉnh bố cục giữa hình ảnh và giá */
-.product-item .row {
-    align-items: center; /* Căn giữa dọc giữa các cột */
+.order-page .product-item .row {
+    align-items: center;
 }
 
-/* Sửa các thông số trong form để tạo cảm giác gọn gàng */
-.container-fluid {
+/* Điều chỉnh padding của các phần tử mà không ảnh hưởng đến header */
+.order-page .container-fluid {
     max-width: 1200px;
     margin-top: 20px;
 }
 
-.card-body {
+.order-page .card-body {
     padding: 20px;
 }
 
-h6.font-weight-bold.text-primary {
+.order-page h6.font-weight-bold.text-primary {
     margin-top: 10px;
 }
 
-/* Cải thiện nút hành động */
-button.btn {
+/* Nút hành động */
+.order-page button.btn {
     padding: 10px 30px;
     font-size: 16px;
 }
 
-button.btn-lg {
+.order-page button.btn-lg {
     font-size: 18px;
 }
 
 /* Cải thiện bố cục sản phẩm */
-.product-list .product-item {
+.order-page .product-list .product-item {
     margin-bottom: 20px;
 }
 
-.product-item .row {
+.order-page .product-item .row {
     margin-bottom: 10px;
 }
 
 /* Hiển thị và ẩn hình ảnh sản phẩm */
-.product-item img {
+.order-page .product-item img {
     width: 100px;
     height: 100px;
     object-fit: cover;
 }
 
 /* Tổng tiền */
-#totalPrice {
+.order-page #totalPrice {
     font-size: 20px;
     color: green;
     font-weight: bold;
