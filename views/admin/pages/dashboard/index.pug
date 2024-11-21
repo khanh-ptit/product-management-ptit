@@ -1,4 +1,111 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
-block content 
-    h1 Trang tổng quan
+block content
+    +alert-success(5000)
+    +alert-error(5000)
+
+    .container-fluid
+        .d-sm-flex.align-items-center.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 Trang tổng quan
+            a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href='/admin/reports')
+                i.fas.fa-download.fa-sm.text-white-50
+                |  Tạo báo cáo
+
+        .row
+            .col-xl-3.col-md-6.mb-4
+                .card.border-left-primary.shadow.h-100.py-2
+                    .card-body
+                        .row.no-gutters.align-items-center
+                            .col.mr-2
+                                .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Tổng người dùng
+                                .h5.mb-0.font-weight-bold.text-gray-800 #{countAccounts}
+                            .col-auto
+                                i.fas.fa-users.fa-2x.text-gray-300
+
+            .col-xl-3.col-md-6.mb-4
+                .card.border-left-success.shadow.h-100.py-2
+                    .card-body
+                        .row.no-gutters.align-items-center
+                            .col.mr-2
+                                .text-xs.font-weight-bold.text-success.text-uppercase.mb-1 Doanh thu (Tháng này)
+                                .h5.mb-0.font-weight-bold.text-gray-800 $#{monthlyRevenue}
+                            .col-auto
+                                i.fas.fa-dollar-sign.fa-2x.text-gray-300
+
+            .col-xl-3.col-md-6.mb-4
+                .card.border-left-warning.shadow.h-100.py-2
+                    .card-body
+                        .row.no-gutters.align-items-center
+                            .col.mr-2
+                                .text-xs.font-weight-bold.text-warning.text-uppercase.mb-1 Đơn hàng chờ
+                                .h5.mb-0.font-weight-bold.text-gray-800 #{pendingOrders}
+                            .col-auto
+                                i.fas.fa-shopping-cart.fa-2x.text-gray-300
+
+            .col-xl-3.col-md-6.mb-4
+                .card.border-left-info.shadow.h-100.py-2
+                    .card-body
+                        .row.no-gutters.align-items-center
+                            .col.mr-2
+                                .text-xs.font-weight-bold.text-info.text-uppercase.mb-1 Sản phẩm đang bán
+                                .h5.mb-0.font-weight-bold.text-gray-800 #{countProducts}
+                            .col-auto
+                                i.fas.fa-box-open.fa-2x.text-gray-300
+
+        .row
+            .col-xl-8.col-lg-7
+                .card.shadow.mb-4
+                    .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                        h6.m-0.font-weight-bold.text-primary Biểu đồ doanh thu hàng tháng
+                    .card-body
+                        .chart-area
+                            canvas#revenueChart
+
+            //- // Biểu đồ tròn: Nguồn sản phẩm
+            .col-xl-4.col-lg-5
+                .card.shadow.mb-4
+                    .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                        h6.m-0.font-weight-bold.text-primary Thống kê sản phẩm
+                    .card-body
+                        .chart-pie.pt-4.pb-2
+                            canvas#sourceChart
+                        .mt-4.text-center.small
+                            .d-flex.justify-content-center.align-items-center
+                                span.mr-2
+                                    i.fas.fa-circle.text-primary
+                                    |  Hoạt động
+                                span.mr-2
+                                    i.fas.fa-circle.text-success
+                                    |  Dừng hoạt động
+
+    script.
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('sourceChart').getContext('2d');
+
+            // Dữ liệu từ server-side rendering
+            const activePercentage = !{JSON.stringify(activePercentage)};
+            const inactivePercentage = !{JSON.stringify(inactivePercentage)};
+
+            // Tạo biểu đồ tròn
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Hoạt động', 'Dừng hoạt động'],
+                    datasets: [{
+                        data: [activePercentage, inactivePercentage],
+                        backgroundColor: ['#4e73df', '#1cc88a'], // Màu sắc
+                        hoverBackgroundColor: ['#2e59d9', '#17a673'],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });

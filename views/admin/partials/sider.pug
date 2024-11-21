@@ -4,7 +4,6 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
     //- Sidebar - Brand
     a.sidebar-brand.d-flex.align-items-center.justify-content-center(href=`${prefixAdmin}/dashboard`)
         div.sidebar-brand-icon.rotate-n-15
-            //- Icon sản phẩm, ví dụ như icon hộp sản phẩm hoặc danh sách
             i.fas.fa-box-open
         div.sidebar-brand-text.mx-3 Quản Lý Sản Phẩm
 
@@ -21,7 +20,13 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
     li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/products`) ? 'active' : ''))
         a.nav-link(href=`${prefixAdmin}/products`)
             i.fas.fa-fw.fa-box
-            span Sản phẩm
+            span Quản lý sản phẩm
+
+    //- Nav Item - Orders (Newly Added)
+    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/orders`) ? 'active' : ''))
+        a.nav-link(href=`${prefixAdmin}/orders`)
+            i.fas.fa-fw.fa-receipt
+            span Quản lý đơn hàng
 
     //- Nav Item - Categories
     li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/product-category`) ? 'active' : ''))

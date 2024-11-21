@@ -1,0 +1,22 @@
+.chart-pie {
+    display: flex;
+    justify-content: center;  /* Căn giữa biểu đồ */
+    align-items: center;      /* Căn giữa theo chiều dọc */
+    height: 300px;            /* Đảm bảo biểu đồ có chiều cao hợp lý */
+}
+
+.mt-4.text-center.small {
+    display: flex;
+    justify-content: center;  /* Căn giữa các phần tử label */
+    align-items: center;
+}
+
+.mt-4.text-center.small span.mr-2 {
+    display: flex;
+    align-items: center;      /* Căn giữa các icon và văn bản */
+    margin-right: 15px;       /* Khoảng cách giữa các mục */
+}
+
+.mt-4.text-center.small i.fas {
+    margin-right: 5px;        /* Khoảng cách giữa icon và text */
+}
