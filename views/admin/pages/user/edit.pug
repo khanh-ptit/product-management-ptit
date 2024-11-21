@@ -1,0 +1,81 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    +alert-success(5000)
+    +alert-error(5000)
+
+    .container.mt-5
+        .row.justify-content-center
+            .col-lg-10
+                .card.shadow.border-0
+                    .card-header.bg-primary.text-white.text-center
+                        h4 Chỉnh sửa tài khoản
+
+                    .card-body.px-4.px-md-5
+                        .row
+                            //- Left Column for Avatar with Hover Icon
+                            .col-12.col-md-4.text-center.position-relative.mb-4.mb-md-0
+                                form(action=`${prefixAdmin}/user/change-avatar?_method=PATCH` method="POST" enctype="multipart/form-data")
+                                    label(for="avatar-upload").position-relative
+                                        img.rounded-circle.mb-3(src=user.avatar alt="User Avatar" width="120" height="120")
+                                        input#avatar-upload(type="file" name="avatar" class="d-none" onchange="this.form.submit()")
+                                        //- Icon shown on hover
+                                        .change-avatar-icon.position-absolute
+                                            i.fas.fa-camera-retro
+
+                            //- Right Column for Form
+                            .col-12.col-md-8
+                                form.user(action=`${prefixAdmin}/user/edit?_method=PATCH` method="POST")
+                                    .form-group
+                                        label(for="name") Họ và tên
+                                        input#name.form-control.form-control-user(type="text" name="name" value=user.fullName required placeholder="Enter your full name")
+
+                                    .form-group
+                                        label(for="email") Email
+                                        input#email.form-control.form-control-user(type="email" name="email" value=user.email readonly placeholder="Your email")
+
+                                    .form-group.row
+                                        .col-12.col-md-6.mb-3.mb-md-0
+                                            label(for="password") Mật khẩu mới
+                                            input#password.form-control.form-control-user(type="password" name="password" placeholder="Để trống nếu không thay đổi")
+
+                                        .col-12.col-md-6
+                                            label(for="confirm-password") Xác nhận mật khẩu
+                                            input#confirm-password.form-control.form-control-user(type="password" name="confirm_password" placeholder="Để trống nếu không thay đổi")
+
+                                    .text-center.mt-4
+                                        button.btn.btn-primary.btn-user(type="submit") Lưu thông tin 
+                                        a.btn.btn-secondary.btn-user.ml-2(href=`${prefixAdmin}/user/info`) Hủy
+
+                    .card-footer.text-center.text-muted
+                        p Đảm bảo thông tin được lưu trước khi rời trang web
+
+    //- Additional styling for the avatar hover effect and responsive adjustments
+    style.
+        .change-avatar-icon {
+            display: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 10px;
+        }
+        label[for="avatar-upload"]:hover .change-avatar-icon,
+        .change-avatar-icon:hover {
+            display: block;
+            cursor: pointer;
+        }
+        @media (max-width: 767px) {
+            .card-body.px-4 {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            img.rounded-circle {
+                width: 100px;
+                height: 100px;
+            }
+        }

@@ -1,4 +1,5 @@
 const Account = require("../../models/account.model")
+const Role = require("../../models/role.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const systemConfig = require("../../config/system")
 const md5 = require("md5")
@@ -134,7 +135,7 @@ module.exports.resetPassword = (req, res) => {
     res.render("admin/pages/user/reset-password")
 }
 
-// [POST] /user/reset-password
+// [POST] /admin/user/reset-password
 module.exports.resetPasswordPost = async (req, res) => {
     const token = req.cookies.token
     const password = md5(req.body.password)
@@ -158,3 +159,101 @@ module.exports.resetPasswordPost = async (req, res) => {
     req.flash("success", "Cập nhật mật khẩu thành công. Vui lòng đăng nhập để tiếp tục")
     res.redirect(`${systemConfig.prefixAdmin}/user/login`)
 }
+
+// [GET] /admin/user/info
+module.exports.info = async (req, res) => {
+    const user = res.locals.user
+    const createdAt = new Date(user.createdAt)
+    
+    // Extract day, month, and year as numbers
+    const day = createdAt.getDate()       // Day of the month (1-31)
+    const month = createdAt.getMonth() + 1 // Month (0-11), so add 1 to get 1-12
+    const year = createdAt.getFullYear()   // Full year (e.g., 2023)
+
+    // console.log(user)
+    const infoRole = await Role.findOne({
+        _id: user.role_id,
+        deleted: false
+    }).select("title")
+    user.infoRole = infoRole
+
+    res.render("admin/pages/user/info.pug", {
+        user: user,
+        day: day,
+        month: month,
+        year: year,
+        pageTitle: "Thông tin tài khoản"
+    })
+}
+
+// [GET] /admin/user/edit
+module.exports.edit = (req, res) => {
+    const user = res.locals.user
+    res.render("admin/pages/user/edit.pug", {
+        user: user,
+        pageTitle: "Chỉnh sửa tài khoản"
+    })
+}
+
+// [PATCH] /change-avatar
+module.exports.changeAvatar = async (req, res) => {
+    try {
+        const id = res.locals.user.id
+        console.log(id)
+        console.log(req.body)
+        console.log(req.body.avatar)
+        await Account.updateOne({
+            _id: id
+        }, {
+            avatar: req.body.avatar
+        })
+        req.flash("success", "Đã cập nhật avatar thành công !")
+        res.redirect("back")
+    } catch (error) {
+        res.redirect("back")
+    }
+};
+
+const crypto = require("crypto");
+
+// [PATCH] /admin/user/edit
+module.exports.editPatch = async (req, res) => {
+    try {
+        const userId = res.locals.user.id; // Lấy ID người dùng từ thông tin session
+        const { name, password, confirm_password } = req.body;
+        console.log(req.body)
+
+        // Kiểm tra tên không được rỗng
+        if (!name) {
+            req.flash("error", "Họ và tên không được để trống.");
+            return res.redirect("back");
+        }
+
+        // Kiểm tra mật khẩu và xác nhận mật khẩu khớp nhau (nếu có thay đổi)
+        if (password || confirm_password) {
+            if (password !== confirm_password) {
+                req.flash("error", "Mật khẩu và xác nhận mật khẩu không khớp.");
+                return res.redirect("back");
+            }
+        }
+
+        // Tạo đối tượng cập nhật
+        const updateData = { fullName: name };
+
+        // Nếu có mật khẩu mới, mã hóa bằng MD5 và thêm vào đối tượng cập nhật
+        if (password) {
+            const hashedPassword = md5(password)
+            updateData.password = hashedPassword;
+        }
+
+        // Cập nhật thông tin người dùng
+        await Account.updateOne({ _id: userId }, updateData);
+
+        req.flash("success", "Cập nhật thông tin thành công!");
+        res.redirect("back");
+    } catch (error) {
+        console.error("Error updating user:", error);
+        req.flash("error", "Có lỗi xảy ra khi cập nhật thông tin.");
+        res.redirect("back");
+    }
+};

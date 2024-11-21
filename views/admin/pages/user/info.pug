@@ -1,0 +1,56 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    +alert-success(5000)
+    +alert-error(5000)
+
+    .container.mt-5
+        .row.justify-content-center
+            .col-lg-8.col-md-10
+                .card.shadow-lg.border-0
+                    .card-body.p-4.p-md-5
+                        .text-center
+                            //- Profile Picture with Hover and Responsive Styling
+                            img.rounded-circle.shadow.mb-4(src=user.avatar alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;")
+                            
+                            h2.text-primary.mb-0 #{user.fullName}
+                            p.text-muted.mt-2.mb-4 
+                                i.fas.fa-calendar-alt.mr-2
+                                | Đăng ký từ: Ngày #{day} Tháng #{month} Năm #{year}
+
+                        hr.my-4
+
+                        .row.text-left
+                            .col-md-12.mb-3.mb-md-0
+                                ul.list-unstyled
+                                    li.mb-3
+                                        i.fas.fa-envelope.text-primary.mr-2
+                                        strong  Email:
+                                        span.text-muted.ml-2 #{user.email}
+                            .col-md-12
+                                ul.list-unstyled
+                                    li.mb-3
+                                        i.fas.fa-user-tag.text-primary.mr-2
+                                        strong Quyền:
+                                        span.text-muted.ml-2 #{user.infoRole.title}
+                                    
+                    .card-footer.text-center.bg-light
+                        a.btn.btn-primary.mr-2.mb-2.mb-md-0(href=`${prefixAdmin}/dashboard`)
+                            i.fas.fa-arrow-left.mr-1
+                            | Trở về trang chủ
+                        a.btn.btn-outline-secondary(href=`${prefixAdmin}/user/edit`)
+                            i.fas.fa-user-edit.mr-1
+                            | Sửa thông tin
+
+    //- Additional styling for responsive adjustments
+    style.
+        @media (max-width: 767px) {
+            .card-body.p-4 {
+                padding: 1.5rem !important;
+            }
+            img.rounded-circle {
+                width: 120px;
+                height: 120px;
+            }
+        }
