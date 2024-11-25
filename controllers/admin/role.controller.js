@@ -109,3 +109,38 @@ module.exports.permissionsPatch = async (req, res) => {
         req.flash("error", "Cập nhật phân quyền thất bại")
     }
 }
+
+// [GET] /admin/roles/detail/:id
+module.exports.detail = async (req, res) => {
+    const id = req.params.id
+    const role = await Role.find({
+        _id: id
+    })
+    res.render("admin/pages/roles/detail.pug", {
+        pageTitle: "Chi tiết nhóm quyền",
+        role: role
+    })
+}
+
+//[PATCH] /admin/orders/change-multi
+module.exports.changeMulti = async (req, res) => {
+    const type = req.body.type;
+    const ids = req.body.ids.split(", ");
+
+    switch (type) {
+        case "delete-all":
+            await Role.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                deleted: true,
+            })
+            req.flash("success", `Xóa ${ids.length} nhóm quyền thành công`)
+            break
+        default:
+            break
+    }
+    res.redirect("back")
+    // res.send("OK")
+}

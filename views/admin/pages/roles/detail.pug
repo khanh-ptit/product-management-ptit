@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    h1.text-center.mb-4.text-primary Chi Tiết Nhóm Quyền
+
+    +alert-success(5000)
+
+    .card.shadow.mb-4
+        .card-header.py-3
+            h6.m-0.font-weight-bold.text-primary Chi Tiết Nhóm Quyền
+        .card-body
+            .row
+                .col-md-6
+                    .form-group
+                        label Tiêu đề nhóm quyền
+                        p.text-muted.font-weight-bold #{role[0].title}
+                .col-md-6
+                    .form-group
+                        label Ngày tạo
+                        p.text-muted.font-weight-bold #{role[0].createdAt.toLocaleString()}
+
+            .form-group
+                label Mô tả nhóm quyền
+                p.text-muted.font-weight-bold #{role[0].description || "Không có mô tả"}
+
+            .row.mt-4
+                .col-md-12.text-center
+                    a.btn.btn-outline-secondary(href=`${prefixAdmin}/roles`) Quay lại
+                    a.btn.btn-warning.ml-2(href=`${prefixAdmin}/roles/edit/${role[0]._id}`) Sửa
+

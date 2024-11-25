@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/sort.pug
 include ../../mixins/alert.pug
+include ../../mixins/moment.pug
 
 block content
     +alert-success(5000)
@@ -41,6 +42,7 @@ block content
                     th Tiêu đề
                     th Mô tả ngắn
                     th Hành động
+                    th Thời gian tạo
             tbody
                 each item, index in roles
                     tr
@@ -67,6 +69,8 @@ block content
                                 data-id=item.id
                                 button-delete
                             ) Xóa
+                        td 
+                            +format-dateTime(item.createdAt)
     +pagination(pagination)
 
     form(
