@@ -61,8 +61,9 @@ module.exports.create = async (req, res) => {
     try {
         const products = await Product.find({
             deleted: false,
-            status: "active"
-        }); // Lấy danh sách sản phẩm với id và tên
+            status: "active",
+            stock: { $gt: 0 } // Chỉ lấy sản phẩm có stock > 0
+        }); // Lấy danh sách sản phẩm
         // console.log(products)
         res.render("admin/pages/orders/create.pug", {
             pageTitle: "Tạo mới đơn hàng",
@@ -193,7 +194,7 @@ module.exports.changeStatus = async (req, res) => {
 module.exports.print = async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id)
+        // console.log(id)
         // Tìm hóa đơn dựa trên id
         // const order = await Order.findById(id).populate("products.infoProduct").exec();
         const order = await Order.findOne({

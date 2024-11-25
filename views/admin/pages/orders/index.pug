@@ -14,12 +14,12 @@ block content
     h1.mb-3.header Danh sách đơn hàng
 
     .card.mb-3 
-        .card-header Bộ lọc và sắp xếp
+        .card-header Bộ lọc và sắp xếp 
         .card-body 
             .row    
-                .col-8
+                .col-6
                     +filter-status(filterStatus)
-                .col-4 
+                .col-6
                     +sort()
 
     .card.mb-3
@@ -29,10 +29,10 @@ block content
                     .col-8
                         +form-change-multi(`${prefixAdmin}/orders/change-multi?_method=PATCH`)
                     .col-4
-                        a(
-                            href=`${prefixAdmin}/orders/create`
-                            class="btn btn-outline-success"
-                        ) + Thêm mới
+                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/orders/create`)
+                            i.fas.fa-plus.fa-sm.text-white-50
+                            |  Tạo mới đơn hàng
+
 
     .table-responsive
         table(

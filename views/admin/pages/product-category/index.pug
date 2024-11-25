@@ -32,10 +32,9 @@ block content
                     .col-8
                         +form-change-multi(`${prefixAdmin}/product-category/change-multi?_method=PATCH`)
                     .col-4
-                        a(
-                            href=`${prefixAdmin}/product-category/create`
-                            class="btn btn-outline-success"
-                        ) + Thêm mới
+                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/product-category/create`)
+                            i.fas.fa-plus.fa-sm.text-white-50
+                            |  Tạo mới danh mục
 
     //- Bảng danh sách sản phẩm
     .table-responsive

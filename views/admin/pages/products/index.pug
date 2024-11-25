@@ -31,10 +31,9 @@ block content
                     .col-8
                         +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
                     .col-4
-                        a(
-                            href=`${prefixAdmin}/products/create`
-                            class="btn btn-outline-success"
-                        ) + Thêm mới
+                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/products/create`)
+                            i.fas.fa-plus.fa-sm.text-white-50
+                            |  Tạo mới sản phẩm
 
     //- Bảng danh sách sản phẩm
     .table-responsive
@@ -80,14 +79,16 @@ block content
                                 name="position"
                             )
                         td
-                            if (item.status == "active")
+                            if (item.stock == 0) 
+                                span(class="badge badge-warning") Hết hàng
+                            else if (item.status == "active")
                                 a(
                                     href="javascript:;" 
                                     data-status="active"
                                     data-id=item.id
                                     button-change-status
                                     class="badge badge-success") Hoạt động
-                            else 
+                            else if (item.status == "inactive")
                                 a(
                                     href="javascript:;"
                                     data-status="inactive"

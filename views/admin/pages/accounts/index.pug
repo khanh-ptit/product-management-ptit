@@ -31,10 +31,9 @@ block content
                     .col-8
                         +form-change-multi(`${prefixAdmin}/accounts/change-multi?_method=PATCH`)
                     .col-4
-                        a(
-                            href=`${prefixAdmin}/accounts/create`
-                            class="btn btn-outline-success"
-                        ) + Thêm mới
+                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/accounts/create`)
+                            i.fas.fa-plus.fa-sm.text-white-50
+                            |  Tạo mới tài khoản
 
     //- Bảng danh sách sản phẩm
     .table-responsive
