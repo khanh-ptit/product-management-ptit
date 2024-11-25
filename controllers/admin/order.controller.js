@@ -4,6 +4,7 @@ const Account = require("../../models/account.model")
 const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helpers/filterStatusOrder")
 const paginationHelper = require("../../helpers/pagination")
+const searchHelper = require("../../helpers/search")
 
 // [GET] /admin/orders
 module.exports.index = async (req, res) => {
@@ -17,6 +18,13 @@ module.exports.index = async (req, res) => {
             find["status"] = req.query.status
         }
 
+        // Form search
+        const objectSearch = searchHelper(req.query)
+        if (objectSearch["regex"]) {
+            // Dùng regex để tìm kiếm tên khách hàng (customerInfo.fullName)
+            find["customerInfo.fullName"] = objectSearch["regex"]
+        }   
+
         // Pagination
         const countOrders = await Order.countDocuments(find)
         let objectPagination = paginationHelper({
@@ -24,18 +32,33 @@ module.exports.index = async (req, res) => {
             limitItems: 4
         }, req.query, countOrders)
 
+        // Sort
+        let sort = {}
+
+        if (req.query.sortKey && req.query.sortValue) {
+            sort[req.query.sortKey] = req.query.sortValue
+        } else {
+            sort.createdAt = "desc"
+        }
+        // end sort products
+
+        // Truy vấn danh sách đơn hàng với điều kiện đã lọc
         const orders = await Order
             .find(find)
             .skip(objectPagination.skip)
             .limit(objectPagination.limitItems)
-            .sort({ createdAt: "desc" }) // Sắp xếp theo ngày tạo mới nhất
+            .sort(sort) 
 
+        // Lấy thông tin bổ sung cho mỗi đơn hàng
         for (const item of orders) {
+            // Lấy thông tin tài khoản tạo đơn hàng
             const infoAccountCreate = await Account.findOne({
                 _id: item.createdBy.account_id,
                 deleted: false
             })
             item.infoAccountCreate = infoAccountCreate
+
+            // Lấy thông tin sản phẩm trong đơn hàng
             for (const product of item.products) {
                 const infoProduct = await Product.findOne({
                     _id: product.product_id,
@@ -45,14 +68,17 @@ module.exports.index = async (req, res) => {
             }
         }
 
+        // Trả về dữ liệu để render vào view
         res.render("admin/pages/orders/index.pug", {
             pageTitle: "Danh sách đơn hàng",
             orders, // Truyền danh sách đơn hàng sang view
             filterStatus: filterStatus,
-            pagination: objectPagination
+            pagination: objectPagination,
+            keyword: objectSearch.keyword,
         });
     } catch (error) {
-        res.status(500).send("Lỗi khi lấy danh sách đơn hàng.");
+        req.flash("error", "Lỗi khi lấy danh sách đơn hàng !")
+        res.redirect("back")
     }
 };
 

@@ -1,9 +1,10 @@
-mixin form-search()
+mixin form-search(prefix)
     form.form-inline.mr-auto.w-100.navbar-search(id="form-search" style="max-width: 400px;")
         .input-group
+            - var placeholders = { 'products': 'Nhập tên sản phẩm', 'orders': 'Nhập tên khách hàng', 'product-category': 'Nhập tên danh mục', 'accounts': "Nhập họ tên"}
             input.form-control.bg-light.border-0.small(
                 type="text" 
-                placeholder="Nhập từ khóa" 
+                placeholder=placeholders[prefix] || 'Nhập từ khóa'
                 aria-label="Search" 
                 aria-describedby="basic-addon2" 
                 name="keyword"

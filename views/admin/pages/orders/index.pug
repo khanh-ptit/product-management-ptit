@@ -17,10 +17,12 @@ block content
         .card-header Bộ lọc và sắp xếp 
         .card-body 
             .row    
-                .col-6
+                .col-4
                     +filter-status(filterStatus)
-                .col-6
-                    +sort()
+                .col-4 
+                    +form-search('orders')
+                .col-4
+                    +sort('orders')
 
     .card.mb-3
         .card-header Thao tác và thêm mới

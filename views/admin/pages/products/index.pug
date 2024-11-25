@@ -20,16 +20,16 @@ block content
                 .col-4 
                     +filter-status(filterStatus)
                 .col-4 
-                    +form-search()
+                    +form-search('products')
                 .col-4 
-                    +sort() 
+                    +sort('products') 
 
     .card.mb-3
         .card-header Thao tác và thêm mới
         .card-body
                 .row
                     .col-8
-                        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, 'products')
                     .col-4
                         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/products/create`)
                             i.fas.fa-plus.fa-sm.text-white-50

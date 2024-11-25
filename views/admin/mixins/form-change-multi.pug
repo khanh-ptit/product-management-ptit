@@ -11,9 +11,11 @@ mixin form-change-multi(path, prefix)
                     class="form-control"
                 )
                     option(disabled selected) --Chọn hành động--
-                    option(value="active") Hoạt động
-                    option(value="inactive") Dừng hoạt động
-                    option(value="change-position") Thay đổi vị trí
+                    if (prefix != "roles")
+                        option(value="active") Hoạt động
+                        option(value="inactive") Dừng hoạt động
+                    if (prefix == "products" || prefix == "product-category")
+                        option(value="change-position") Thay đổi vị trí
                     option(value="delete-all") Xóa tất cả
                     
             .form-group

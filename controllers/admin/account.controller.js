@@ -17,17 +17,35 @@ module.exports.index = async (req, res) => {
         find["status"] = req.query.status
     }
     
+    // Pagination
     const countAccounts = await Account.countDocuments(find)
     let objectPagination = paginationHelper({
         currentPage: 1,
         limitItems: 4
     }, req.query, countAccounts)
 
+    // Form search
+    const objectSearch = searchHelper(req.query)
+    if (objectSearch["regex"]) {
+        find["fullName"] = objectSearch["regex"]
+    }
+
+    // Sort
+    let sort = {}
+
+    if (req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue
+    } else {
+        sort.createdAt = "desc"
+    }
+    // end sort products
+
     // const records = await Account.find(find).select("-password -token")
     const records = await Account.find(find)
         .select("-password -token")
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip)
+        .sort(sort)
 
     for (const record of records) {
         const role = await Role.findOne({
@@ -45,8 +63,8 @@ module.exports.index = async (req, res) => {
         pageTitle: "Danh sách tài khoản",
         filterStatus: filterStatus,
         records: records,
-        pagination: objectPagination
-        // recordRoles: roles
+        pagination: objectPagination,
+        keyword: objectSearch.keyword
     })
 }
 

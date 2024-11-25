@@ -17,7 +17,7 @@ block content
         .card-body
                 .row
                     .col-4
-                        +form-change-multi(`${prefixAdmin}/roles/change-multi?_method=PATCH`)
+                        +form-change-multi(`${prefixAdmin}/roles/change-multi?_method=PATCH`, "roles")
                     .col-4
                         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/roles/create`)
                             i.fas.fa-plus.fa-sm.text-white-50
