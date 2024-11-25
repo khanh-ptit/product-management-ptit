@@ -230,7 +230,7 @@ module.exports.print = async (req, res) => {
     }
 };
 
-//[PATCH] /admin/products/change-multi
+//[PATCH] /admin/orders/change-multi
 module.exports.changeMulti = async (req, res) => {
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
@@ -253,7 +253,7 @@ module.exports.changeMulti = async (req, res) => {
     // res.send("OK")
 }
 
-// [DELETE] /admin/products/delete/:id
+// [DELETE] /admin/orders/delete/:id
 module.exports.deleteItem = async (req, res) => {
     const id = req.params.id
 

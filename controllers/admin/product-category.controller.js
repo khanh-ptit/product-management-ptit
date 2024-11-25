@@ -180,3 +180,48 @@ module.exports.detail = async (req, res) => {
         res.redirect(`${systemConfig.prefixAdmin}/product-category`)
     }
 }
+
+//[PATCH] /admin/product-category/change-multi
+module.exports.changeMulti = async (req, res) => {
+    // console.log(req)
+    // console.log(req.body) // { status: 'active', id: '1' }
+    const type = req.body.type;
+    const ids = req.body.ids.split(", ");
+
+    switch (type) {
+        case "active":
+            await ProductCategory.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                status: "active",
+            })
+            req.flash("success", `Cập nhật trạng thái cho ${ids.length} danh mục thành công`)
+
+            break
+        case "inactive":
+            await ProductCategory.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                status: "inactive"
+            })
+            req.flash("success", `Cập nhật trạng thái cho ${ids.length} danh mục thành công`)
+            break
+        case "delete-all":
+            await ProductCategory.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                deleted: true,
+            })
+            req.flash("success", `Xóa ${ids.length} danh mục thành công`)
+            break
+        default:
+            break
+    }
+    res.redirect("back")
+}

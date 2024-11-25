@@ -22,4 +22,6 @@ router.patch("/edit/:id", upload.single('thumbnail'), uploadCloud.upload, contro
 
 router.get("/detail/:id", controller.detail)
 
+router.patch("/change-multi", controller.changeMulti)
+
 module.exports = router
