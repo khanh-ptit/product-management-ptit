@@ -77,6 +77,43 @@ block content
                                 span.mr-2
                                     i.fas.fa-circle.text-success
                                     |  Dừng hoạt động
+        .row
+            .col-12.col-md-6.mb-4
+                .card.shadow.mb-4
+                    .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                        h6.m-0.font-weight-bold.text-primary Top 3 sản phẩm bán chạy
+                    .card-body
+                        .d-flex.justify-content-center.align-items-center
+                            .podium
+                                //- Top 2 - Bên trái
+                                .podium-item.podium-left
+                                    .product-card
+                                        img(src=top3Products[1].thumbnail alt=top3Products[1].title class="product-image")
+                                        h5 #{top3Products[1].title}
+                                        p Lượt bán: #{top3Products[1].sold}
+                                        .medal
+                                            .medal-number(data-rank="2") 2
+                                
+                                //- Top 1 - Ở giữa
+                                .podium-item.podium-center
+                                    .product-card
+                                        img(src=top3Products[0].thumbnail alt=top3Products[0].title class="product-image")
+                                        h5 #{top3Products[0].title}
+                                        p Lượt bán: #{top3Products[0].sold}
+                                        .medal
+                                            .medal-number(data-rank="1") 1
+                                
+                                //- Top 3 - Bên phải
+                                .podium-item.podium-right
+                                    .product-card
+                                        img(src=top3Products[2].thumbnail alt=top3Products[2].title class="product-image")
+                                        h5 #{top3Products[2].title}
+                                        p Lượt bán: #{top3Products[2].sold}
+                                        .medal
+                                            .medal-number(data-rank="3") 3
+
+
+
 
     script.
         document.addEventListener('DOMContentLoaded', () => {

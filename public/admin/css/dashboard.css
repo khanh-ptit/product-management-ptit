@@ -20,3 +20,105 @@
 .mt-4.text-center.small i.fas {
     margin-right: 5px;        /* Khoảng cách giữa icon và text */
 }
+
+.podium {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    gap: 1rem;
+    flex-wrap: wrap;  /* Cho phép các phần tử "nâng lên" khi màn hình nhỏ */
+}
+
+.podium-item {
+    text-align: center;
+    width: 100%; /* Mặc định mỗi item chiếm toàn bộ chiều rộng */
+    max-width: 150px; /* Giới hạn chiều rộng tối đa */
+}
+
+.podium-left, .podium-center, .podium-right {
+    flex: 1; /* Cho phép các phần tử giãn ra khi cần */
+    max-width: 150px;
+}
+
+/* Điều chỉnh cho màn hình nhỏ (mobile first) */
+@media (max-width: 768px) {
+    .podium {
+        flex-direction: column; /* Các item sẽ xếp chồng lên nhau trên màn hình nhỏ */
+    }
+
+    .podium-item {
+        width: 100%; /* Mỗi item chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+    }
+}
+
+/* Điều chỉnh cho màn hình lớn hơn */
+@media (min-width: 768px) {
+    .podium-item {
+        width: 33%; /* Mỗi item chiếm 1/3 chiều rộng trên màn hình tablet trở lên */
+    }
+}
+
+.product-card {
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.product-card h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-card p {
+    font-size: 0.875rem;
+    color: #777;
+}
+
+.medal {
+    position: absolute;
+    bottom: -25px; /* Khoảng cách từ chân ảnh */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.medal-number {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.medal-number[data-rank="1"] {
+    background-color: #ffd700; /* Huy chương vàng */
+    color: #333; /* Màu chữ tương phản */
+}
+
+.medal-number[data-rank="2"] {
+    background-color: #c0c0c0; /* Huy chương bạc */
+    color: #333; /* Màu chữ tương phản */
+}
+
+.medal-number[data-rank="3"] {
+    background-color: #cd7f32; /* Huy chương đồng */
+    color: white; /* Màu chữ tương phản */
+}

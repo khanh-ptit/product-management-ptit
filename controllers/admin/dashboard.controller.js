@@ -115,6 +115,12 @@ module.exports.index = async (req, res) => {
             profits
         } = await getLastSixMonths();
 
+        const top3Products = await Product.find({
+            deleted: false // Lọc các sản phẩm không bị xóa nếu cần
+        })
+            .sort({ sold: -1 }) // Sắp xếp giảm dần theo trường 'sold'
+            .limit(3); // Lấy tối đa 3 sản phẩm
+        
         // Render view với dữ liệu
         res.render("admin/pages/dashboard.pug", {
             pageTitle: "Trang tổng quan",
@@ -125,7 +131,8 @@ module.exports.index = async (req, res) => {
             inactivePercentage,
             totalThisMonthProfit,
             lastSixMonthsProfits: JSON.stringify(profits), // Truyền dữ liệu doanh thu
-            lastSixMonthsLabels: JSON.stringify(labels) // Truyền dữ liệu tên tháng
+            lastSixMonthsLabels: JSON.stringify(labels), // Truyền dữ liệu tên tháng
+            top3Products: top3Products
         });
     } catch (error) {
         console.error("Lỗi khi lấy dữ liệu dashboard:", error);

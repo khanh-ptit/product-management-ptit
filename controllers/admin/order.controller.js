@@ -115,6 +115,8 @@ module.exports.createPost = async (req, res) => {
             deleted: false
         })
         const currentStock = infoProduct.stock
+        const currentSold = infoProduct.sold
+        const newSold = currentSold + product.quantity
         if (product.quantity > currentStock) {
             req.flash("error", "Bạn đã mua quá số lượng sản phẩm còn lại !")
             res.redirect("back")
@@ -123,10 +125,11 @@ module.exports.createPost = async (req, res) => {
         await Product.updateOne({
             _id: id
         }, {
-            stock: currentStock - product.quantity
+            stock: currentStock - product.quantity,
+            sold: newSold
         })
     }
-    console.log(newOrder)
+    // console.log(newOrder)
     await newOrder.save()
     req.flash("success", "Tạo đơn hàng thành công !")
     res.redirect(`${systemConfig.prefixAdmin}/orders`)

@@ -40,6 +40,9 @@ block content
                                     th(class="text-end text-muted") Số lượng:
                                     td #{product.stock}
                                 tr
+                                    th(class="text-end text-muted") Đã bán:
+                                    td #{product.sold}
+                                tr
                                     if (product.infoProductCategory)
                                         th(class="text-end text-muted") Danh mục:
                                         td #{product.infoProductCategory.title}
