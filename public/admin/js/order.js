@@ -30,7 +30,7 @@ if (btnDelete.length > 0) {
     btnDelete.forEach(button => {
         button.addEventListener("click", () => {
             Swal.fire({
-                title: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
+                title: 'Bạn có chắc chắn muốn xóa đơn hàng này?',
                 text: "Hành động này không thể phục hồi!",
                 icon: 'warning',
                 showCancelButton: true,

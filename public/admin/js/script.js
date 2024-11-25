@@ -114,8 +114,17 @@ if (formChangeMulti) {
 
         // Xử lý delete-all
         if (typeChange == "delete-all") {
+            if (inputsChecked.length == 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng chọn ít nhất một bản ghi!',
+                });
+                return; 
+            } 
+            
             Swal.fire({
-                title: 'Bạn có muốn xóa tất cả các sản phẩm này?',
+                title: 'Bạn có muốn xóa tất cả các bản ghi này?',
                 text: "Không thể phục hồi sau khi xóa!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -126,7 +135,17 @@ if (formChangeMulti) {
                     return; // Dừng lại nếu người dùng chọn Hủy
                 }
 
-                // Tiếp tục xử lý sau khi xác nhận xóa
+                // Lấy mảng ids từ các checkbox đã chọn
+                let ids = [];
+                inputsChecked.forEach(input => {
+                    ids.push(input.value); // Lấy giá trị từ attribute "value" của từng checkbox
+                });
+
+                // Đưa mảng ids vào input hidden trong form
+                const inputIds = formChangeMulti.querySelector("input[name='ids']");
+                inputIds.value = ids.join(", "); // Chuyển mảng thành chuỗi và gán vào input
+
+                // Tiếp tục gửi form sau khi đã set ids
                 processFormSubmit();
             });
             return; // Ngừng xử lý submit cho đến khi xác nhận xóa
@@ -164,6 +183,13 @@ if (formChangeMulti) {
         }
     });
 }
+
+// Hàm xử lý gửi form
+function processFormSubmit() {
+    const formChangeMulti = document.querySelector("[form-change-multi]");
+    formChangeMulti.submit(); // Chỉ gửi form khi người dùng xác nhận xóa hoặc khi không phải thao tác delete-all
+}
+
 
 // Hàm xử lý gửi form
 function processFormSubmit() {

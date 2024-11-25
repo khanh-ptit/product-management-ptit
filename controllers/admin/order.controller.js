@@ -132,37 +132,6 @@ module.exports.createPost = async (req, res) => {
     res.redirect(`${systemConfig.prefixAdmin}/orders`)
 }
 
-// [GET] /admin/orders/edit/:id
-module.exports.edit = async (req, res) => {
-    try {
-        const id = req.params.id
-        const order = await Order.findOne({
-            _id: id,
-            deleted: false
-        })
-        // console.log(order)
-        for (const product of order.products) {
-            const infoProduct = await Product.findOne({
-                _id: product.product_id,
-                deleted: false
-            })
-            product.infoProduct = infoProduct
-            // console.log(infoProduct)
-        }
-        const products = await Product.find({
-            deleted: false
-        })
-        res.render("admin/pages/orders/edit.pug", {
-            pageTitle: "Chỉnh sửa đơn hàng",
-            order: order,
-            products: products
-        })
-    } catch (error) {
-        req.flash("error", "Đường dẫn không tồn tại !")
-        res.redirect("back")
-    }
-}
-
 // [GET] /admin/orders/detail/:id
 module.exports.detail = async (req, res) => {
     try {
@@ -239,7 +208,15 @@ module.exports.print = async (req, res) => {
         })
         order.infoAccountCreate = infoAccountCreate
         if (!order) {
-            return res.status(404).send("Hóa đơn không tồn tại!");
+            req.flash("error", "Hóa đơn không tồn tại !")
+            res.redirect("back")
+            return
+        }
+
+        if (order.status != "paid") {
+            req.flash("error", "Đơn hàng cần phải được thanh toán trước khi in hóa đơn !")
+            res.redirect("back")
+            return
         }
 
         // Render giao diện in hóa đơn
@@ -252,3 +229,39 @@ module.exports.print = async (req, res) => {
         res.status(500).send("Đã xảy ra lỗi khi in hóa đơn.");
     }
 };
+
+//[PATCH] /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+    const type = req.body.type;
+    const ids = req.body.ids.split(", ");
+
+    switch (type) {
+        case "delete-all":
+            await Order.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                deleted: true,
+            })
+            req.flash("success", `Xóa ${ids.length} đơn hàng thành công`)
+            break
+        default:
+            break
+    }
+    res.redirect("back")
+    // res.send("OK")
+}
+
+// [DELETE] /admin/products/delete/:id
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id
+
+    await Order.updateOne({
+        _id: id
+    }, {
+        deleted: true
+    })
+    req.flash("success", "Xóa đơn hàng thành công!")
+    res.redirect("back")
+}

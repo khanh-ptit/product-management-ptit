@@ -79,11 +79,7 @@ block content
                                     span #{product.infoProduct.title} (SL: #{product.quantity})
                         td
                             if (order.status == "paid")
-                                a(
-                                    href="javascript:;" 
-                                    data-status="paid"
-                                    data-id=order.id
-                                    button-change-status
+                                span(
                                     class="badge badge-success") Đã Thanh Toán
                             else if (order.status == "unpaid")
                                 a(
