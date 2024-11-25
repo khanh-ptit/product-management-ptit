@@ -22,7 +22,8 @@ async function getLastSixMonths() {
                 $gte: startOfMonth,
                 $lt: endOfMonth
             },
-            deleted: false
+            deleted: false,
+            status: "paid"
         }).populate({
             path: 'products.product_id',
             model: 'Product',
@@ -39,23 +40,40 @@ async function getLastSixMonths() {
         }
 
         // Lấy tên tháng từ đối tượng `startOfMonth`
-        const monthName = startOfMonth.toLocaleString("vi-VN", { month: "long" });
+        const monthName = startOfMonth.toLocaleString("vi-VN", {
+            month: "long"
+        });
         labels.push(monthName.charAt(0).toUpperCase() + monthName.slice(1)); // Capitalize first letter
         profits.push(totalProfit);
     }
 
-    return { labels: labels.reverse(), profits: profits.reverse() }; // Đảo ngược thứ tự để hiển thị từ cũ đến mới
+    return {
+        labels: labels.reverse(),
+        profits: profits.reverse()
+    }; // Đảo ngược thứ tự để hiển thị từ cũ đến mới
 }
 
 // [GET] /admin/dashboard
 module.exports.index = async (req, res) => {
     try {
-        const countProducts = await Product.countDocuments({ deleted: false });
-        const countAccounts = await Account.countDocuments({ deleted: false });
-        const countOrderUnpaid = await Order.countDocuments({ status: "unpaid" });
+        const countProducts = await Product.countDocuments({
+            deleted: false
+        });
+        const countAccounts = await Account.countDocuments({
+            deleted: false
+        });
+        const countOrderUnpaid = await Order.countDocuments({
+            status: "unpaid"
+        });
 
-        const countProductsActive = await Product.countDocuments({ deleted: false, status: "active" });
-        const countProductsInactive = await Product.countDocuments({ deleted: false, status: "inactive" });
+        const countProductsActive = await Product.countDocuments({
+            deleted: false,
+            status: "active"
+        });
+        const countProductsInactive = await Product.countDocuments({
+            deleted: false,
+            status: "inactive"
+        });
         const totalProducts = countProducts || 1;
         const activePercentage = ((countProductsActive / totalProducts) * 100).toFixed(2);
         const inactivePercentage = ((countProductsInactive / totalProducts) * 100).toFixed(2);
@@ -74,7 +92,8 @@ module.exports.index = async (req, res) => {
                 $gte: startOfMonth,
                 $lt: endOfMonth
             },
-            deleted: false
+            deleted: false,
+            status: "paid"
         }).populate({
             path: 'products.product_id',
             model: 'Product',
@@ -91,7 +110,10 @@ module.exports.index = async (req, res) => {
         }
 
         // Gọi hàm lấy dữ liệu doanh thu 6 tháng gần nhất
-        const { labels, profits } = await getLastSixMonths();
+        const {
+            labels,
+            profits
+        } = await getLastSixMonths();
 
         // Render view với dữ liệu
         res.render("admin/pages/dashboard.pug", {
