@@ -108,6 +108,7 @@ module.exports.createPost = async (req, res) => {
         account_id: res.locals.user.id
     }
     const newOrder = new Order(req.body)
+
     for (const product of newOrder.products) {
         const id = product.product_id
         const infoProduct = await Product.findOne({
@@ -128,6 +129,7 @@ module.exports.createPost = async (req, res) => {
             stock: currentStock - product.quantity,
             sold: newSold
         })
+        
     }
     // console.log(newOrder)
     await newOrder.save()
@@ -175,18 +177,56 @@ module.exports.detail = async (req, res) => {
 
 // [PATCH] /admin/orders/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-    const status = req.params.status
-    const id = req.params.id
-    console.log(status, id)
+    try {
+        const status = req.params.status;
+        const id = req.params.id;
 
-    await Order.updateOne({
-        _id: id
-    }, {
-        status: status
-    })
-    req.flash("success", "Cập nhật trạng thái thành công cho đơn hàng !")
-    res.redirect("back")
-}
+        // Cập nhật trạng thái đơn hàng
+        const order = await Order.findOneAndUpdate(
+            { _id: id },
+            { status: status },
+            { new: true } // Trả về bản ghi sau khi cập nhật
+        );
+
+        if (!order) {
+            req.flash("error", "Không tìm thấy đơn hàng!");
+            return res.redirect("back");
+        }
+
+        // Chỉ tính profit nếu trạng thái là "paid"
+        if (status === "paid") {
+            // Lấy thông tin nhân viên từ người tạo đơn hàng
+            const user = await Account.findOne({ _id: order.createdBy.account_id });
+
+            if (!user) {
+                req.flash("error", "Không tìm thấy tài khoản người tạo đơn hàng!");
+                return res.redirect("back");
+            }
+
+            // Tính toán profit
+            const productIds = order.products.map((p) => p.product_id); // Lấy danh sách product_id
+            const products = await Product.find({ _id: { $in: productIds } }); // Lấy thông tin các sản phẩm
+
+            let totalProfit = user.profit;
+            for (const product of order.products) {
+                const productInfo = products.find((p) => p._id.equals(product.product_id));
+                if (productInfo) {
+                    totalProfit += productInfo.price * product.quantity;
+                }
+            }
+
+            // Cập nhật profit cho nhân viên
+            await Account.updateOne({ _id: user._id }, { profit: totalProfit });
+        }
+
+        req.flash("success", "Cập nhật trạng thái thành công cho đơn hàng!");
+        res.redirect("back");
+    } catch (error) {
+        console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
+        req.flash("error", "Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.");
+        res.redirect("back");
+    }
+};
 
 // [GET] /admin/orders/print/:id
 module.exports.print = async (req, res) => {

@@ -128,3 +128,7 @@
     background-color: #cd7f32;
     color: white;
 }
+
+.top-3 .card-body {
+    height: 300px;
+}
