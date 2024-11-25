@@ -22,4 +22,6 @@ router.patch("/edit/:id", upload.single("avatar"), uploadCloud.upload, controlle
 
 router.get("/detail/:id", controller.detail)
 
+router.patch("/change-multi", controller.changeMulti);
+
 module.exports = router

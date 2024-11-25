@@ -1,0 +1,6 @@
+mixin format-dateTime(time)
+    span #{moment(time).format("DD/MM/YYYY HH:mm:ss")}
+mixin format-date(time)
+    span #{moment(time).format("DD/MM/YYYY")}
+mixin format-time(time)
+    span #{moment(time).format("HH:mm:ss")}

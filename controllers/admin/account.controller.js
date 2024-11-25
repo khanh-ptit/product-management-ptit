@@ -169,3 +169,26 @@ module.exports.detail = async (req, res) => {
         account: account
     })
 }
+
+//[PATCH] /admin/orders/change-multi
+module.exports.changeMulti = async (req, res) => {
+    const type = req.body.type;
+    const ids = req.body.ids.split(", ");
+
+    switch (type) {
+        case "delete-all":
+            await Account.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                deleted: true,
+            })
+            req.flash("success", `Xóa ${ids.length} tài khoản thành công`)
+            break
+        default:
+            break
+    }
+    res.redirect("back")
+    // res.send("OK")
+}
