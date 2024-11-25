@@ -34,20 +34,24 @@ block content
                             .product-item.card.shadow.mb-3
                                 .card-body
                                     .row
-                                        .col-md-6
+                                        .col-md-4
                                             label(for='product_0') Sản phẩm
                                             select#product_0.form-control(name='products[0][product_id]', data-index=0, required)
                                                 option(value='') -- Chọn sản phẩm --
                                                 each product in products
-                                                    option(value=product._id data-image=product.thumbnail data-price=product.price)= product.title
-                                        .col-md-6
+                                                    option(value=product._id data-image=product.thumbnail data-price=product.price data-stock=product.stock)= product.title
+                                        .col-md-4
                                             label(for='quantity_0') Số lượng
                                             input#quantity_0.form-control(type='number', name='products[0][quantity]', placeholder='Nhập số lượng', min='1', required)
+                                        .col-md-4
+                                            label Số lượng còn lại
+                                            h6#productStock_0.font-weight-bold.text-success.hidden
+
                                     .row.mt-3
                                         .col-md-4
                                             img#productImage_0.img-thumbnail(src='', alt='Hình ảnh sản phẩm', hidden)
                                         .col-md-8
-                                            h6#productPrice_0.font-weight-bold.text-primary.hidden Giá: 0 VNĐ
+                                            h6#productPrice_0.font-weight-bold.text-primary.hidden Giá: 0 $
 
                         button#addProductBtn.btn.btn-info.btn-sm.mt-3(type='button') Thêm sản phẩm
 
@@ -55,14 +59,12 @@ block content
                         //- Hiển thị tổng tiền
                         .form-group.text-center
                             h6.font-weight-bold.text-primary Tổng tiền: 
-                            span#totalPrice 0 VNĐ
+                            span#totalPrice 0 $
 
                         //- Nút hành động
                         .form-group.text-center
                             button.btn.btn-primary.btn-lg.m-2(type='submit') Tạo đơn hàng
                             button#resetFormBtn.btn.btn-secondary.btn-lg.m-2(type='button') Làm lại
-
-                    
 
     script.
         const products = !{JSON.stringify(products)}; // Dữ liệu sản phẩm
@@ -79,7 +81,6 @@ block content
             // Hàm tính tổng tiền
             const calculateTotalPrice = () => {
                 let total = 0;
-                // Lặp qua tất cả các sản phẩm trong đơn hàng
                 document.querySelectorAll(".product-item").forEach((item, index) => {
                     const quantityInput = item.querySelector(`input[name="products[${index}][quantity]"]`);
                     const selectProduct = item.querySelector(`select[name="products[${index}][product_id]"]`);
@@ -92,10 +93,10 @@ block content
 
                     // Cập nhật giá cho từng sản phẩm
                     const productPriceElement = item.querySelector(`#productPrice_${index}`);
-                    productPriceElement.textContent = `Giá: ${productTotalPrice.toLocaleString()} VNĐ`;
+                    productPriceElement.textContent = `Giá: ${productTotalPrice.toLocaleString()} $`;
                     productPriceElement.classList.remove("hidden");
                 });
-                totalPriceElement.textContent = `${total.toLocaleString()} VNĐ`; // Hiển thị tổng tiền
+                totalPriceElement.textContent = `${total.toLocaleString()} $`; // Hiển thị tổng tiền
             };
 
             // Cập nhật thông tin sản phẩm khi chọn
@@ -105,6 +106,7 @@ block content
                     const index = event.target.dataset.index;
                     const image = selectedOption.getAttribute("data-image");
                     const price = selectedOption.getAttribute("data-price");
+                    const stock = selectedOption.getAttribute("data-stock");
 
                     // Thêm sản phẩm vào mảng selectedProducts
                     const selectedProductId = selectedOption.value;
@@ -115,11 +117,13 @@ block content
                     // Loại bỏ sản phẩm đã chọn khỏi các dropdown còn lại
                     updateProductOptions();
 
-                    // Hiển thị hình ảnh và giá
+                    // Hiển thị hình ảnh, giá, và số lượng còn lại
                     document.getElementById(`productImage_${index}`).src = image || '';
                     document.getElementById(`productImage_${index}`).hidden = !image;
-                    document.getElementById(`productPrice_${index}`).textContent = `Giá: ${price} VNĐ`;
+                    document.getElementById(`productPrice_${index}`).textContent = `Giá: ${price} $`;
                     document.getElementById(`productPrice_${index}`).classList.remove("hidden");
+                    document.getElementById(`productStock_${index}`).textContent = `Còn: ${stock} sản phẩm`;
+                    document.getElementById(`productStock_${index}`).classList.remove("hidden");
 
                     calculateTotalPrice(); // Cập nhật tổng tiền sau khi chọn sản phẩm
                 }
@@ -139,7 +143,7 @@ block content
                 newProduct.innerHTML = `
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="product_${productIndex}">Sản phẩm</label>
                                 <select id="product_${productIndex}" class="form-control" name="products[${productIndex}][product_id]" data-index="${productIndex}" required>
                                     <option value="">-- Chọn sản phẩm --</option>
@@ -147,14 +151,18 @@ block content
                                         .filter(product => !selectedProducts.includes(product._id))
                                         .map(
                                             (product) =>
-                                                `<option value="${product._id}" data-image="${product.thumbnail}" data-price="${product.price}">${product.title}</option>`
+                                                `<option value="${product._id}" data-image="${product.thumbnail}" data-price="${product.price}" data-stock="${product.stock}">${product.title}</option>`
                                         )
                                         .join("")}
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="quantity_${productIndex}">Số lượng</label>
                                 <input id="quantity_${productIndex}" class="form-control" type="number" name="products[${productIndex}][quantity]" placeholder="Nhập số lượng" min="1" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Số lượng còn lại</label>
+                                <h6 id="productStock_${productIndex}" class="font-weight-bold text-success hidden"></h6>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -162,7 +170,7 @@ block content
                                 <img id="productImage_${productIndex}" class="img-thumbnail" src="" alt="Hình ảnh sản phẩm" hidden>
                             </div>
                             <div class="col-md-8">
-                                <h6 id="productPrice_${productIndex}" class="font-weight-bold text-primary hidden">Giá: 0 VNĐ</h6>
+                                <h6 id="productPrice_${productIndex}" class="font-weight-bold text-primary hidden">Giá: 0 $</h6>
                             </div>
                         </div>
                     </div>
@@ -173,40 +181,34 @@ block content
 
             // Xử lý nút Làm lại
             resetFormBtn.addEventListener("click", () => {
-                orderForm.reset(); // Reset các trường mặc định
-                // Xóa toàn bộ sản phẩm động
+                orderForm.reset();
                 const productItems = document.querySelectorAll(".product-item");
                 productItems.forEach((item, index) => {
-                    if (index > 0) item.remove(); // Giữ lại sản phẩm đầu tiên
+                    if (index > 0) item.remove();
                 });
-                productIndex = 1; // Reset chỉ số sản phẩm
-
-                // Ẩn hình ảnh và giá sản phẩm đầu tiên
+                productIndex = 1;
                 document.getElementById("productImage_0").hidden = true;
                 document.getElementById("productPrice_0").classList.add("hidden");
-
-                // Reset tổng tiền
-                totalPriceElement.textContent = "0 VNĐ";
-
-                // Reset mảng sản phẩm đã chọn
+                document.getElementById("productStock_0").classList.add("hidden");
+                totalPriceElement.textContent = "0 $";
                 selectedProducts = [];
             });
 
-            // Cập nhật các tùy chọn sản phẩm trong các dropdown
+            // Cập nhật dropdown khi sản phẩm được chọn
             const updateProductOptions = () => {
-                const selects = document.querySelectorAll('select[name^="products["]');
-                selects.forEach(select => {
-                    const productId = select.value;
-                    Array.from(select.options).forEach(option => {
-                        if (selectedProducts.includes(option.value) && option.value !== productId) {
-                            option.disabled = true; // Disable sản phẩm đã chọn
-                        } else {
-                            option.disabled = false;
-                        }
-                    });
+                document.querySelectorAll("select[name^='products']").forEach((select) => {
+                    const currentSelectedValue = select.value;
+                    select.innerHTML = `
+                        <option value="">-- Chọn sản phẩm --</option>
+                        ${products
+                            .filter((product) => !selectedProducts.includes(product._id) || product._id === currentSelectedValue)
+                            .map(
+                                (product) =>
+                                    `<option value="${product._id}" data-image="${product.thumbnail}" data-price="${product.price}" data-stock="${product.stock}">${product.title}</option>`
+                            )
+                            .join("")}
+                    `;
+                    select.value = currentSelectedValue;
                 });
             };
-
-            // Lần đầu gọi hàm cập nhật sản phẩm
-            updateProductOptions();
         });

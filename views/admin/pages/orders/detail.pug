@@ -1,0 +1,72 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block head
+    link(rel="stylesheet" href="/admin/css/order.css")
+
+block content
+    +alert-success(5000)
+    +alert-error(5000)
+
+    .order-detail-page
+        .container-fluid
+            .card.shadow.mb-4
+                .card-header.py-3
+                    h6.m-0.font-weight-bold.text-primary Chi tiết hóa đơn
+                .card-body
+                    //- Thông tin khách hàng và trạng thái đơn hàng
+                    .row
+                        .col-md-6
+                            h6.font-weight-bold.text-primary Thông tin khách hàng
+                            p Tên khách hàng: #{order.customerInfo.fullName}
+                            p Số điện thoại: #{order.customerInfo.phone}
+                            p Địa chỉ: #{order.customerInfo.address}
+                        .col-md-6.text-right
+                            h6.font-weight-bold.text-primary Trạng thái đơn hàng
+                            if (order.status == "unpaid")
+                                span.badge.badge-warning Chưa thanh toán
+                            else if (order.status == "paid")
+                                span.badge.badge-success Đã thanh toán
+                            else
+                                span.badge.badge-secondary Khác
+                            br
+                            h6.font-weight-bold.text-primary.mt-2 Ngày đặt hàng
+                            p #{new Date(order.createdAt).toLocaleString('vi-VN')}
+
+                    hr
+
+                    //- Danh sách sản phẩm
+                    h6.font-weight-bold.text-primary Danh sách sản phẩm
+                    table.table.table-bordered.table-hover
+                        thead
+                            tr
+                                th Hình ảnh
+                                th Tên sản phẩm
+                                th Số lượng
+                                th Giá
+                                th Tổng
+                        tbody
+                            each product in order.products
+                                tr
+                                    td
+                                        if product.infoProduct && product.infoProduct.thumbnail
+                                            img(src=product.infoProduct.thumbnail alt="Thumbnail" width="60")
+                                        else
+                                            span Chưa có hình ảnh
+                                    td= product.infoProduct ? product.infoProduct.title : "Sản phẩm không tồn tại"
+                                    td #{product.quantity}
+                                    td #{product.infoProduct ? product.infoProduct.price.toLocaleString() : "0"} $
+                                    td #{product.infoProduct ? (product.quantity * product.infoProduct.price).toLocaleString() : "0"} $
+
+                    hr
+
+                    //- Tổng cộng
+                    .row
+                        .col-md-12.text-right
+                            h5.font-weight-bold.text-primary Tổng cộng: 
+                            span #{order.products.reduce((sum, p) => sum + (p.quantity * (p.infoProduct ? p.infoProduct.price : 0)), 0).toLocaleString()} $
+
+                    //- Nút quay lại
+                    .form-group.text-center
+                        a.btn.btn-secondary.btn-lg.m-2(href=`${prefixAdmin}/orders`) Quay lại
+                        a.btn.btn-warning.btn-lg.m-2(href=`${prefixAdmin}/orders/print/${order._id}`) In Hóa Đơn

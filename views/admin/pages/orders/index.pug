@@ -1,0 +1,132 @@
+extends ../../layouts/default.pug
+include ../../mixins/filter-status.pug
+include ../../mixins/form-search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/form-change-multi.pug
+include ../../mixins/sort.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+
+block content
+    +alert-success(5000)
+    +alert-error(5000)
+
+    h1.mb-3.header Danh sách đơn hàng
+
+    .card.mb-3 
+        .card-header Bộ lọc và sắp xếp
+        .card-body 
+            .row    
+                .col-8
+                    +filter-status(filterStatus)
+                .col-4 
+                    +sort()
+
+    .card.mb-3
+        .card-header Thao tác và thêm mới
+        .card-body
+                .row
+                    .col-8
+                        +form-change-multi(`${prefixAdmin}/orders/change-multi?_method=PATCH`)
+                    .col-4
+                        a(
+                            href=`${prefixAdmin}/orders/create`
+                            class="btn btn-outline-success"
+                        ) + Thêm mới
+
+    .table-responsive
+        table(
+            class="table table-hover table-sm"
+            checkbox-multi
+        )
+            thead
+                tr
+                    th
+                        input(type="checkbox" name="checkall")
+                    th STT
+                    th Tên khách hàng
+                    th Số điện thoại
+                    th Địa chỉ
+                    th Sản phẩm
+                    th Trạng thái
+                    th Người tạo
+                    th Hành động
+            tbody
+                each order, index in orders
+                    tr
+                        td
+                            input(
+                                type="checkbox"
+                                name="id"
+                                value=order._id
+                            )
+                        td #{index + 1}
+                        td #{order.customerInfo.fullName}
+                        td #{order.customerInfo.phone}
+                        td #{order.customerInfo.address}
+                        td 
+                            each product in order.products
+                                .d-flex.align-items-center.mb-2
+                                    img(
+                                        src=product.infoProduct.thumbnail 
+                                        alt=product.infoProduct.title
+                                        width="50"
+                                        height="50"
+                                        class="rounded mr-2"
+                                    )
+                                    span #{product.infoProduct.title} (SL: #{product.quantity})
+                        td
+                            if (order.status == "paid")
+                                a(
+                                    href="javascript:;" 
+                                    data-status="paid"
+                                    data-id=order.id
+                                    button-change-status
+                                    class="badge badge-success") Đã Thanh Toán
+                            else if (order.status == "unpaid")
+                                a(
+                                    href="javascript:;"
+                                    data-status="unpaid"
+                                    data-id=order.id
+                                    button-change-status
+                                    class="badge badge-warning") Chưa Thanh Toán
+                            else 
+                                a(
+                                    class="badge badge-secondary") Khác
+                        if (order.infoAccountCreate)
+                            td 
+                                p #{order.infoAccountCreate.fullName}
+                                +format-dateTime(order.createdAt)
+                        else 
+                            td N/A
+                        td
+                            a(
+                                href=`/admin/orders/detail/${order._id}`
+                                class="btn btn-secondary btn-sm"
+                            ) Xem
+                            a(
+                                href=`/admin/orders/print/${order._id}`
+                                class="btn btn-info btn-sm ml-1"
+                            ) In
+                            button(
+                                class="btn btn-danger btn-sm ml-1"
+                                data-id=order._id
+                                button-delete
+                            ) Xóa
+    +pagination(pagination)
+
+    form(
+        action=""
+        method="POST"
+        id="form-change-status"
+        data-path="/admin/orders/change-status"
+    )
+
+    form(
+        action=""
+        method="POST"
+        id="form-delete-item"
+        data-path="/admin/orders/delete"
+    )
+
+    script(src="/admin/js/order.js") 
