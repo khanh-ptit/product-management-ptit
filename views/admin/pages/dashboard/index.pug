@@ -29,7 +29,7 @@ block content
                         .row.no-gutters.align-items-center
                             .col.mr-2
                                 .text-xs.font-weight-bold.text-success.text-uppercase.mb-1 Doanh thu (Tháng này)
-                                .h5.mb-0.font-weight-bold.text-gray-800 $#{monthlyRevenue}
+                                .h5.mb-0.font-weight-bold.text-gray-800 $ #{totalThisMonthProfit}
                             .col-auto
                                 i.fas.fa-dollar-sign.fa-2x.text-gray-300
 
@@ -38,8 +38,8 @@ block content
                     .card-body
                         .row.no-gutters.align-items-center
                             .col.mr-2
-                                .text-xs.font-weight-bold.text-warning.text-uppercase.mb-1 Đơn hàng chờ
-                                .h5.mb-0.font-weight-bold.text-gray-800 #{pendingOrders}
+                                .text-xs.font-weight-bold.text-warning.text-uppercase.mb-1 Đơn hàng chưa thanh toán
+                                .h5.mb-0.font-weight-bold.text-gray-800 #{countOrderUnpaid}
                             .col-auto
                                 i.fas.fa-shopping-cart.fa-2x.text-gray-300
 
@@ -57,12 +57,11 @@ block content
             .col-xl-8.col-lg-7
                 .card.shadow.mb-4
                     .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
-                        h6.m-0.font-weight-bold.text-primary Biểu đồ doanh thu hàng tháng
+                        h6.m-0.font-weight-bold.text-primary Biểu đồ doanh thu 6 tháng gần nhất
                     .card-body
                         .chart-area
                             canvas#revenueChart
 
-            //- // Biểu đồ tròn: Nguồn sản phẩm
             .col-xl-4.col-lg-5
                 .card.shadow.mb-4
                     .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
@@ -81,29 +80,92 @@ block content
 
     script.
         document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('sourceChart').getContext('2d');
+            const ctxSource = document.getElementById('sourceChart').getContext('2d');
 
-            // Dữ liệu từ server-side rendering
+            // Dữ liệu từ server-side rendering cho biểu đồ tròn (hoạt động và dừng hoạt động sản phẩm)
             const activePercentage = !{JSON.stringify(activePercentage)};
             const inactivePercentage = !{JSON.stringify(inactivePercentage)};
 
             // Tạo biểu đồ tròn
-            new Chart(ctx, {
+            new Chart(ctxSource, {
                 type: 'pie',
                 data: {
-                    labels: ['Hoạt động', 'Dừng hoạt động'],
+                    //- labels: ['Hoạt động', 'Dừng hoạt động'],
                     datasets: [{
                         data: [activePercentage, inactivePercentage],
-                        backgroundColor: ['#4e73df', '#1cc88a'], // Màu sắc
-                        hoverBackgroundColor: ['#2e59d9', '#17a673'],
-                        borderColor: '#fff',
-                        borderWidth: 2
+                        backgroundColor: ['#4e73df', '#1cc88a']
+                    }]
+                }
+            });
+
+            // Dữ liệu từ server-side rendering cho biểu đồ line (doanh thu 6 tháng gần nhất)
+            const lastSixMonthsProfits = !{lastSixMonthsProfits};  // Dữ liệu doanh thu 6 tháng gần nhất
+            const lastSixMonthsLabels = !{lastSixMonthsLabels}; // Lấy danh sách tên tháng
+            
+            // Vẽ biểu đồ line cho doanh thu 6 tháng
+            const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctxRevenue, {
+                type: 'line',
+                data: {
+                    labels: lastSixMonthsLabels,
+                    datasets: [{
+                        label: 'Doanh thu',
+                        data: lastSixMonthsProfits,
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)', // Màu nền trong suốt
+                        borderColor: '#4e73df',                      // Màu đường viền
+                        pointRadius: 3,                              // Kích thước điểm
+                        pointBackgroundColor: '#4e73df',             // Màu nền điểm
+                        pointBorderColor: '#4e73df',                 // Màu viền điểm
+                        pointHoverRadius: 5,                         // Kích thước điểm khi hover
+                        pointHoverBackgroundColor: '#4e73df',        // Màu nền khi hover
+                        pointHoverBorderColor: '#4e73df',            // Màu viền khi hover
+                        pointHitRadius: 10,                          // Kích thước điểm khi click
+                        pointBorderWidth: 2,                         // Độ rộng viền điểm
+                        tension: 0.4                                 // Độ cong đường kẻ
                     }]
                 },
                 options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false, // Ẩn lưới dọc
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                // Thêm $ vào các giá trị trục Y
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: 'rgb(234, 236, 244)',
+                                zeroLineColor: 'rgb(234, 236, 244)',
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }
+                    },
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            display: false // Ẩn chú thích biểu đồ
                         }
                     }
                 }

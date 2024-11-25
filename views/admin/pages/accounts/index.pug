@@ -29,7 +29,7 @@ block content
         .card-body
                 .row
                     .col-8
-                        +form-change-multi(`${prefixAdmin}/accounts/change-multi?_method=PATCH`)
+                        +form-change-multi(`${prefixAdmin}/accounts/change-multi?_method=PATCH`, 'accounts')
                     .col-4
                         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/accounts/create`)
                             i.fas.fa-plus.fa-sm.text-white-50
