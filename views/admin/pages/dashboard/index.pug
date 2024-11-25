@@ -77,7 +77,8 @@ block content
                                 span.mr-2
                                     i.fas.fa-circle.text-success
                                     |  Dừng hoạt động
-        .row
+        .row.top-3
+            //- Cột cho Top 3 Sản phẩm bán chạy (chiếm 6 cột)
             .col-12.col-md-6.mb-4
                 .card.shadow.mb-4
                     .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
@@ -87,8 +88,8 @@ block content
                             .podium
                                 //- Top 2 - Bên trái
                                 .podium-item.podium-left
-                                    .product-card
-                                        img(src=top3Products[1].thumbnail alt=top3Products[1].title class="product-image")
+                                    .top-card
+                                        img(src=top3Products[1].thumbnail alt=top3Products[1].title class="top-image")
                                         h5 #{top3Products[1].title}
                                         p Lượt bán: #{top3Products[1].sold}
                                         .medal
@@ -96,8 +97,8 @@ block content
                                 
                                 //- Top 1 - Ở giữa
                                 .podium-item.podium-center
-                                    .product-card
-                                        img(src=top3Products[0].thumbnail alt=top3Products[0].title class="product-image")
+                                    .top-card
+                                        img(src=top3Products[0].thumbnail alt=top3Products[0].title class="top-image")
                                         h5 #{top3Products[0].title}
                                         p Lượt bán: #{top3Products[0].sold}
                                         .medal
@@ -105,13 +106,47 @@ block content
                                 
                                 //- Top 3 - Bên phải
                                 .podium-item.podium-right
-                                    .product-card
-                                        img(src=top3Products[2].thumbnail alt=top3Products[2].title class="product-image")
+                                    .top-card
+                                        img(src=top3Products[2].thumbnail alt=top3Products[2].title class="top-image")
                                         h5 #{top3Products[2].title}
                                         p Lượt bán: #{top3Products[2].sold}
                                         .medal
                                             .medal-number(data-rank="3") 3
 
+            //- Cột cho Top 3 Nhân viên xuất sắc (tương lai)
+            .col-12.col-md-6.mb-4
+                .card.shadow.mb-4
+                    .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                        h6.m-0.font-weight-bold.text-primary Top 3 nhân viên xuất sắc theo doanh thu
+                    .card-body
+                        .d-flex.justify-content-center.align-items-center
+                            .podium
+                                //- Top 2 - Bên trái
+                                .podium-item.podium-left
+                                    .top-card.employee-card
+                                        img(src=top3Accounts[1].avatar alt=top3Accounts[1].fullName class="top-image")
+                                        h5 #{top3Accounts[1].fullName}
+                                        p Doanh thu: #{top3Accounts[1].profit} $
+                                        .medal
+                                            .medal-number(data-rank="2") 2
+                                
+                                //- Top 1 - Ở giữa
+                                .podium-item.podium-center
+                                    .top-card.employee-card
+                                        img(src=top3Accounts[0].avatar alt=top3Accounts[0].fullName class="top-image")
+                                        h5 #{top3Accounts[0].fullName}
+                                        p Doanh thu: #{top3Accounts[0].profit} $
+                                        .medal
+                                            .medal-number(data-rank="1") 1
+                                
+                                //- Top 3 - Bên phải
+                                .podium-item.podium-right
+                                    .top-card.employee-card
+                                        img(src=top3Accounts[2].avatar alt=top3Accounts[2].fullName class="top-image")
+                                        h5 #{top3Accounts[2].fullName}
+                                        p Doanh thu: #{top3Accounts[2].profit} $
+                                        .medal
+                                            .medal-number(data-rank="3") 3
 
 
 

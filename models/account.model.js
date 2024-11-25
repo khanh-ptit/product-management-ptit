@@ -23,6 +23,10 @@ const accountSchema = new mongoose.Schema({
     status: {
         type: String,
         default: "active"
+    },
+    profit: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

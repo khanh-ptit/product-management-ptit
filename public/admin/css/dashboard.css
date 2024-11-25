@@ -21,45 +21,44 @@
     margin-right: 5px;        /* Khoảng cách giữa icon và text */
 }
 
+.row.top-3 {
+    display: flex; /* Sử dụng Flexbox cho hàng */
+    gap: 1rem; /* Khoảng cách giữa các cột */
+}
+
+.col-12.col-md-6.mb-4 {
+    display: flex;
+    flex-direction: column; /* Đảm bảo các card trong cột sắp xếp theo chiều dọc */
+    flex: 1; /* Làm cho các cột có chiều cao bằng nhau */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column; /* Đảm bảo nội dung card sắp xếp theo chiều dọc */
+    flex-grow: 1; /* Cung cấp không gian tự do cho phần thân của card */
+}
+
 .podium {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     gap: 1rem;
-    flex-wrap: wrap;  /* Cho phép các phần tử "nâng lên" khi màn hình nhỏ */
+    flex-wrap: wrap;
 }
 
 .podium-item {
     text-align: center;
-    width: 100%; /* Mặc định mỗi item chiếm toàn bộ chiều rộng */
-    max-width: 150px; /* Giới hạn chiều rộng tối đa */
-}
-
-.podium-left, .podium-center, .podium-right {
-    flex: 1; /* Cho phép các phần tử giãn ra khi cần */
+    width: 100%;
     max-width: 150px;
 }
 
-/* Điều chỉnh cho màn hình nhỏ (mobile first) */
-@media (max-width: 768px) {
-    .podium {
-        flex-direction: column; /* Các item sẽ xếp chồng lên nhau trên màn hình nhỏ */
-    }
-
-    .podium-item {
-        width: 100%; /* Mỗi item chiếm toàn bộ chiều rộng trên màn hình nhỏ */
-    }
+.podium-left, .podium-center, .podium-right {
+    flex: 1;
+    max-width: 150px;
 }
 
-/* Điều chỉnh cho màn hình lớn hơn */
-@media (min-width: 768px) {
-    .podium-item {
-        width: 33%; /* Mỗi item chiếm 1/3 chiều rộng trên màn hình tablet trở lên */
-    }
-}
-
-.product-card {
+.top-card {
     background: #fff;
     padding: 10px;
     border-radius: 10px;
@@ -67,27 +66,34 @@
     position: relative;
 }
 
-.product-image {
+.top-image {
     width: 100%;
     height: auto;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
-.product-card h5 {
+.top-card h5 {
     font-size: 1rem;
     font-weight: bold;
     color: #333;
 }
 
-.product-card p {
+.top-card p {
     font-size: 0.875rem;
     color: #777;
 }
 
+.employee-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
 .medal {
     position: absolute;
-    bottom: -25px; /* Khoảng cách từ chân ảnh */
+    bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -109,16 +115,16 @@
 }
 
 .medal-number[data-rank="1"] {
-    background-color: #ffd700; /* Huy chương vàng */
-    color: #333; /* Màu chữ tương phản */
+    background-color: #ffd700;
+    color: #333;
 }
 
 .medal-number[data-rank="2"] {
-    background-color: #c0c0c0; /* Huy chương bạc */
-    color: #333; /* Màu chữ tương phản */
+    background-color: #c0c0c0;
+    color: #333;
 }
 
 .medal-number[data-rank="3"] {
-    background-color: #cd7f32; /* Huy chương đồng */
-    color: white; /* Màu chữ tương phản */
+    background-color: #cd7f32;
+    color: white;
 }
