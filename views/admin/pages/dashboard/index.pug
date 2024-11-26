@@ -9,7 +9,7 @@ block content
         .d-sm-flex.align-items-center.justify-content-between.mb-4
             h1.h3.mb-0.text-gray-800 Trang tổng quan
             a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href=`${prefixAdmin}/dashboard/print`)
-                i.fas.fa-download.fa-sm.text-white-50
+                i.fas.fa-print.fa-sm.text-white-50
                 |  In báo cáo
 
         .row
@@ -176,6 +176,13 @@ block content
 
     script.
         document.addEventListener('DOMContentLoaded', () => {
+            const printButton = document.querySelector('a.btn.btn-sm.btn-primary'); // Chọn nút "In báo cáo"
+
+            printButton.addEventListener('click', (event) => {
+                event.preventDefault(); // Ngừng hành động mặc định của link (điều hướng)
+                window.print(); // Mở giao diện in
+            });
+
             const ctxSource = document.getElementById('sourceChart').getContext('2d');
 
             // Dữ liệu từ server-side rendering cho biểu đồ tròn (hoạt động và dừng hoạt động sản phẩm)
