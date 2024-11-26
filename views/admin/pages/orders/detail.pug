@@ -18,9 +18,13 @@ block content
                     .row
                         .col-md-6
                             h6.font-weight-bold.text-primary Thông tin khách hàng
-                            p Tên khách hàng: #{order.customerInfo.fullName}
-                            p Số điện thoại: #{order.customerInfo.phone}
-                            p Địa chỉ: #{order.customerInfo.address}
+                            p <b>Tên khách hàng</b>: #{order.customerInfo.fullName}
+                            p <b>Số điện thoại:</b>: #{order.customerInfo.phone}
+                            p <b>Địa chỉ:</b> #{order.customerInfo.address}
+                            if (order.customerInfo.email)
+                                p <b>Email:</b> #{order.customerInfo.email}
+                            else 
+                                p <b>Email:</b> Chưa cập nhật
                         .col-md-6.text-right
                             h6.font-weight-bold.text-primary Trạng thái đơn hàng
                             if (order.status == "unpaid")

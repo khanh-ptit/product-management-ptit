@@ -18,6 +18,10 @@ html
         p Tên khách hàng: #{order.customerInfo.fullName}
         p Số điện thoại: #{order.customerInfo.phone}
         p Địa chỉ: #{order.customerInfo.address}
+        if (order.customerInfo.email)
+            p Email: #{order.customerInfo.email}
+        else 
+            p Email: Chưa cập nhật
 
         h3 Sản phẩm:
         table

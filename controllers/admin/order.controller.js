@@ -5,6 +5,7 @@ const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helpers/filterStatusOrder")
 const paginationHelper = require("../../helpers/pagination")
 const searchHelper = require("../../helpers/search")
+const sendMailHelper = require("../../helpers/sendMail")
 
 // [GET] /admin/orders
 module.exports.index = async (req, res) => {
@@ -101,41 +102,143 @@ module.exports.create = async (req, res) => {
     }
 };
 
-// [POST] /admin/orders/create
 module.exports.createPost = async (req, res) => {
-    // console.log(req.body)
-    req.body.createdBy = {
-        account_id: res.locals.user.id
-    }
-    const newOrder = new Order(req.body)
+    try {
+        req.body.createdBy = {
+            account_id: res.locals.user.id,
+        };
+        const newOrder = new Order(req.body);
 
-    for (const product of newOrder.products) {
-        const id = product.product_id
-        const infoProduct = await Product.findOne({
-            _id: id,
-            deleted: false
-        })
-        const currentStock = infoProduct.stock
-        const currentSold = infoProduct.sold
-        const newSold = currentSold + product.quantity
-        if (product.quantity > currentStock) {
-            req.flash("error", "Bạn đã mua quá số lượng sản phẩm còn lại !")
-            res.redirect("back")
-            return
+        for (const product of newOrder.products) {
+            const infoProduct = await Product.findOne({
+                _id: product.product_id,
+                deleted: false,
+            });
+
+            if (!infoProduct) {
+                req.flash("error", "Sản phẩm không tồn tại hoặc đã bị xóa!");
+                res.redirect("back");
+                return;
+            }
+
+            // Kiểm tra số lượng tồn kho
+            if (product.quantity > infoProduct.stock) {
+                req.flash("error", "Bạn đã mua quá số lượng sản phẩm còn lại!");
+                res.redirect("back");
+                return;
+            }
+
+            // Cập nhật số lượng tồn kho và số lượng bán
+            product.infoProduct = infoProduct; // Gắn thông tin sản phẩm vào đơn hàng
+            await Product.updateOne(
+                { _id: infoProduct._id },
+                {
+                    stock: infoProduct.stock - product.quantity,
+                    sold: infoProduct.sold + product.quantity,
+                }
+            );
         }
-        await Product.updateOne({
-            _id: id
-        }, {
-            stock: currentStock - product.quantity,
-            sold: newSold
-        })
-        
+
+        // Render HTML email
+        const customerEmail = newOrder.customerInfo.email;
+        const subject = `Xác nhận đặt hàng thành công`;
+        const html = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Order Confirmation</title>
+                <style>
+                    body { font-family: Arial, sans-serif; background: #f9f9f9; color: #333; }
+                    .container { max-width: 600px; margin: 20px auto; background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+                    .header { background: #4e73df; color: #fff; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; }
+                    .header h1 { margin: 0; font-size: 24px; }
+                    .content { padding: 20px; }
+                    .content p { margin: 10px 0; font-size: 16px; line-height: 1.5; }
+                    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+                    table th, table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    table th { background-color: #4e73df; color: #fff; }
+                    table tr:nth-child(even) { background-color: #f2f2f2; }
+                    .total { font-size: 18px; font-weight: bold; margin-top: 15px; }
+                    .footer { margin-top: 20px; text-align: center; color: #888; font-size: 14px; }
+                    .footer a { color: #4e73df; text-decoration: none; }
+                    .highlight {
+                        color: #e74a3b; 
+                        font-size: 18px; 
+                        font-weight: bold; 
+                        text-align: center; 
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>Đặt hàng thành công</h1>
+                    </div>
+                    <div class="content">
+                        <p>Xin chào <b>${newOrder.customerInfo.fullName}</b>,</p>
+                        <p>Cảm ơn bạn đã đặt hàng tại cửa hàng 1st Store!</p>
+                        <p><strong>Thông tin đơn hàng:</strong></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${newOrder.products
+                                    .map(
+                                        (product) => `
+                                    <tr>
+                                        <td>${product.infoProduct.title}</td>
+                                        <td>${product.quantity}</td>
+                                        <td>$${product.infoProduct.price.toFixed(2)}</td>
+                                        <td>$${(product.quantity * product.infoProduct.price).toFixed(2)}</td>
+                                    </tr>`
+                                    )
+                                    .join("")}
+                            </tbody>
+                        </table>
+                        <p class="total">Tổng giá trị đơn hàng: $${newOrder.products
+                            .reduce(
+                                (total, product) =>
+                                    total +
+                                    product.quantity * product.infoProduct.price,
+                                0
+                            )
+                            .toFixed(2)}</p>
+                        <p class="highlight">Vui lòng thanh toán số tiền trên cho nhân viên khi nhận hàng.</p>
+                        <p>Trân trọng,</p>
+                        <p>Đội ngũ hỗ trợ khách hàng</p>
+                    </div>
+                    <div class="footer">
+                        <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua <a href="mailto:khanhhs11vtt@gmail.com">khanhhs11vtt@gmail.com</a>.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+
+        // Gửi email
+        await sendMailHelper.sendMail(customerEmail, subject, html);
+
+        // Lưu đơn hàng
+        await newOrder.save();
+        // res.send("OK")
+        req.flash("success", "Tạo đơn hàng thành công!");
+        res.redirect(`${systemConfig.prefixAdmin}/orders`);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Đã xảy ra lỗi khi tạo đơn hàng!");
+        res.redirect("back");
     }
-    // console.log(newOrder)
-    await newOrder.save()
-    req.flash("success", "Tạo đơn hàng thành công !")
-    res.redirect(`${systemConfig.prefixAdmin}/orders`)
-}
+};
+
 
 // [GET] /admin/orders/detail/:id
 module.exports.detail = async (req, res) => {
@@ -181,6 +284,7 @@ module.exports.changeStatus = async (req, res) => {
         const status = req.params.status;
         const id = req.params.id;
 
+
         // Cập nhật trạng thái đơn hàng
         const order = await Order.findOneAndUpdate(
             { _id: id },
@@ -192,6 +296,135 @@ module.exports.changeStatus = async (req, res) => {
             req.flash("error", "Không tìm thấy đơn hàng!");
             return res.redirect("back");
         }
+
+        for (const product of order.products) {
+            const infoProduct = await Product.findOne({
+                _id: product.product_id,
+                deleted: false,
+            });
+
+            if (!infoProduct) {
+                req.flash("error", "Sản phẩm không tồn tại hoặc đã bị xóa!");
+                res.redirect("back");
+                return;
+            }
+
+            product.infoProduct = infoProduct; // Gắn thông tin sản phẩm vào đơn hàng
+        }
+
+        const customerEmail = order.customerInfo.email; // Email khách hàng từ thông tin đơn hàng
+        const subject = "Xác nhận thanh toán đơn hàng";
+        const html = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Xác nhận thanh toán đơn hàng</title>
+                <style>
+                    body {
+                        font-family: "Nunito", Arial, sans-serif;
+                        background-color: #f8f9fc;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        max-width: 600px;
+                        margin: 20px auto;
+                        background-color: #ffffff;
+                        border-radius: 0.35rem;
+                        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+                    }
+
+                    /* Header */
+                    .header {
+                        background-color: #4e73df;
+                        color: #ffffff;
+                        padding: 20px;
+                        text-align: center;
+                        border-top-left-radius: 0.35rem;
+                        border-top-right-radius: 0.35rem;
+                    }
+                    .header h2 {
+                        margin: 0;
+                        font-size: 24px;
+                        font-weight: 700;
+                    }
+
+                    /* Nội dung */
+                    .content {
+                        padding: 20px;
+                        color: #5a5c69;
+                    }
+                    .content p {
+                        margin: 10px 0;
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }
+                    .content .highlight {
+                        color: #4e73df;
+                        font-weight: 700;
+                    }
+
+                    /* Footer */
+                    .footer {
+                        background-color: #f8f9fc;
+                        padding: 15px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: #858796;
+                        border-bottom-left-radius: 0.35rem;
+                        border-bottom-right-radius: 0.35rem;
+                    }
+                    .footer a {
+                        color: #4e73df;
+                        text-decoration: none;
+                    }
+                    .footer a:hover {
+                        text-decoration: underline;
+                    }
+
+                    /* Tổng giá trị */
+                    .total {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #1cc88a;
+                        margin-top: 15px;
+                        text-align: right;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <!-- Header -->
+                    <div class="header">
+                        <h2>Xác nhận thanh toán đơn hàng</h2>
+                    </div>
+
+                    <!-- Nội dung -->
+                    <div class="content">
+                        <p>Xin chào <b>${order.customerInfo.fullName}</b>,</p>
+                        <p>Đơn hàng của bạn đã được thanh toán thành công!</p>
+                        <p><strong>Mã đơn hàng:</strong> ${order._id}</p>
+                        <p><strong>Tổng giá trị đơn hàng:</strong> $${order.products
+                            .reduce((total, product) => total + product.quantity * product.infoProduct.price, 0)
+                            .toFixed(2)}</p>
+
+                        <p>Cảm ơn bạn đã mua hàng tại cửa hàng <span class="highlight">1st Store</span>!</p>
+                        <p>Trân trọng,</p>
+                        <p>Đội ngũ hỗ trợ khách hàng</p>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer">
+                        <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua <a href="mailto:khanhhs11vtt@gmail.com">khanhhs11vtt@gmail.com</a>.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+
+        sendMailHelper.sendMail(customerEmail, subject, html)
 
         // Chỉ tính profit nếu trạng thái là "paid"
         if (status === "paid") {
