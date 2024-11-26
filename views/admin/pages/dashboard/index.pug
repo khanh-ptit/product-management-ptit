@@ -8,9 +8,9 @@ block content
     .container-fluid
         .d-sm-flex.align-items-center.justify-content-between.mb-4
             h1.h3.mb-0.text-gray-800 Trang tổng quan
-            a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href='/admin/reports')
+            a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href=`${prefixAdmin}/dashboard/print`)
                 i.fas.fa-download.fa-sm.text-white-50
-                |  Tạo báo cáo
+                |  In báo cáo
 
         .row
             .col-xl-3.col-md-6.mb-4
@@ -77,6 +77,7 @@ block content
                                 span.mr-2
                                     i.fas.fa-circle.text-success
                                     |  Dừng hoạt động
+
         .row.top-3
             //- Cột cho Top 3 Sản phẩm bán chạy (chiếm 6 cột)
             .col-12.col-md-6.mb-4
@@ -148,6 +149,29 @@ block content
                                         .medal
                                             .medal-number(data-rank="3") 3
 
+        .row
+            .col-xl-4.col-lg-5
+                .card.shadow.mb-4
+                    .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                        h6.m-0.font-weight-bold.text-primary Thống kê đơn hàng
+                    .card-body
+                        .chart-pie.pt-4.pb-2
+                            canvas#orderChart
+                        .mt-4.text-center.small
+                            .d-flex.justify-content-center.align-items-center
+                                span.mr-2
+                                    i.fas.fa-circle.text-primary
+                                    |  Đã thanh toán
+                                span.mr-2
+                                    i.fas.fa-circle.text-success
+                                    |  Chưa thanh toán
+            .col-xl-8.col-lg-7
+                .card.shadow.mb-4
+                    .card-header.py-3.d-flex.flex-row.align-items-center.justify-content-between
+                        h6.m-0.font-weight-bold.text-primary Biểu đồ dư nợ 6 tháng gần nhất
+                    .card-body
+                        .chart-area
+                            canvas#debtChart
 
 
     script.
@@ -170,10 +194,29 @@ block content
                 }
             });
 
+            const ctxOrder = document.getElementById('orderChart').getContext('2d');
+
+            // Dữ liệu từ server-side rendering cho biểu đồ tròn 
+            const paidPercentage = !{JSON.stringify(paidPercentage)};
+            const unpaidPercentage = !{JSON.stringify(unpaidPercentage)};
+
+            // Tạo biểu đồ tròn
+            new Chart(ctxOrder, {
+                type: 'pie',
+                data: {
+                    //- labels: ['Hoạt động', 'Dừng hoạt động'],
+                    datasets: [{
+                        data: [paidPercentage, unpaidPercentage],
+                        backgroundColor: ['#4e73df', '#1cc88a']
+                    }]
+                }
+            });
+
             // Dữ liệu từ server-side rendering cho biểu đồ line (doanh thu 6 tháng gần nhất)
             const lastSixMonthsProfits = !{lastSixMonthsProfits};  // Dữ liệu doanh thu 6 tháng gần nhất
             const lastSixMonthsLabels = !{lastSixMonthsLabels}; // Lấy danh sách tên tháng
-            
+            const lastSixMonthsDebts = !{lastSixMonthsDebts}
+
             // Vẽ biểu đồ line cho doanh thu 6 tháng
             const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
             new Chart(ctxRevenue, {
@@ -183,6 +226,75 @@ block content
                     datasets: [{
                         label: 'Doanh thu',
                         data: lastSixMonthsProfits,
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)', // Màu nền trong suốt
+                        borderColor: '#4e73df',                      // Màu đường viền
+                        pointRadius: 3,                              // Kích thước điểm
+                        pointBackgroundColor: '#4e73df',             // Màu nền điểm
+                        pointBorderColor: '#4e73df',                 // Màu viền điểm
+                        pointHoverRadius: 5,                         // Kích thước điểm khi hover
+                        pointHoverBackgroundColor: '#4e73df',        // Màu nền khi hover
+                        pointHoverBorderColor: '#4e73df',            // Màu viền khi hover
+                        pointHitRadius: 10,                          // Kích thước điểm khi click
+                        pointBorderWidth: 2,                         // Độ rộng viền điểm
+                        tension: 0.4                                 // Độ cong đường kẻ
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false, // Ẩn lưới dọc
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                // Thêm $ vào các giá trị trục Y
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: 'rgb(234, 236, 244)',
+                                zeroLineColor: 'rgb(234, 236, 244)',
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Ẩn chú thích biểu đồ
+                        }
+                    }
+                }
+            });
+
+            // Vẽ biểu đồ line cho dư nợ 6 tháng
+            const ctxDebt = document.getElementById('debtChart').getContext('2d');
+            new Chart(ctxDebt, {
+                type: 'line',
+                data: {
+                    labels: lastSixMonthsLabels,
+                    datasets: [{
+                        label: 'Dư nợ',
+                        data: lastSixMonthsDebts,
                         backgroundColor: 'rgba(78, 115, 223, 0.05)', // Màu nền trong suốt
                         borderColor: '#4e73df',                      // Màu đường viền
                         pointRadius: 3,                              // Kích thước điểm

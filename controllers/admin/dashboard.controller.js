@@ -53,6 +53,57 @@ async function getLastSixMonths() {
     }; // Đảo ngược thứ tự để hiển thị từ cũ đến mới
 }
 
+// Hàm lấy danh sách dư nợ 6 tháng gần nhất
+async function getDebtLastSixMonths() {
+    const debts = [];
+    const labels = [];
+    for (let i = 0; i < 6; i++) {
+        const startOfMonth = new Date();
+        startOfMonth.setMonth(startOfMonth.getMonth() - i);
+        startOfMonth.setDate(1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        const endOfMonth = new Date();
+        endOfMonth.setMonth(endOfMonth.getMonth() - i + 1);
+        endOfMonth.setDate(0);
+        endOfMonth.setHours(23, 59, 59, 999);
+
+        const orders = await Order.find({
+            createdAt: {
+                $gte: startOfMonth,
+                $lt: endOfMonth
+            },
+            deleted: false,
+            status: "unpaid"
+        }).populate({
+            path: 'products.product_id',
+            model: 'Product',
+            select: 'price'
+        });
+
+        let totalDebt = 0;
+        for (const order of orders) {
+            for (const product of order.products) {
+                if (product.product_id && product.product_id.price !== undefined) {
+                    totalDebt += product.product_id.price * product.quantity;
+                }
+            }
+        }
+
+        // Lấy tên tháng từ đối tượng `startOfMonth`
+        const monthName = startOfMonth.toLocaleString("vi-VN", {
+            month: "long"
+        });
+        labels.push(monthName.charAt(0).toUpperCase() + monthName.slice(1)); // Capitalize first letter
+        debts.push(totalDebt);
+    }
+
+    return debts.reverse()
+
+        // labels: labels.reverse(),
+     // Đảo ngược thứ tự để hiển thị từ cũ đến mới
+}
+
 // [GET] /admin/dashboard
 module.exports.index = async (req, res) => {
     try {
@@ -74,6 +125,18 @@ module.exports.index = async (req, res) => {
             deleted: false,
             status: "inactive"
         });
+
+        const countOrders = await Order.countDocuments({
+            deleted: false
+        })
+        const countOrderPaid = await Order.countDocuments({
+            status: "paid"
+        });
+
+        const totalOrders = countOrders || 1;
+        const paidPercentage = ((countOrderPaid / totalOrders) * 100).toFixed(2);
+        const unpaidPercentage = ((countOrderUnpaid / totalOrders) * 100).toFixed(2);
+
         const totalProducts = countProducts || 1;
         const activePercentage = ((countProductsActive / totalProducts) * 100).toFixed(2);
         const inactivePercentage = ((countProductsInactive / totalProducts) * 100).toFixed(2);
@@ -115,6 +178,10 @@ module.exports.index = async (req, res) => {
             profits
         } = await getLastSixMonths();
 
+        const debts = await getDebtLastSixMonths()
+
+        // console.log(labels, profits, debts)
+
         const top3Products = await Product.find({
                 deleted: false // Lọc các sản phẩm không bị xóa nếu cần
             })
@@ -141,9 +208,12 @@ module.exports.index = async (req, res) => {
             inactivePercentage,
             totalThisMonthProfit,
             lastSixMonthsProfits: JSON.stringify(profits), // Truyền dữ liệu doanh thu
-            lastSixMonthsLabels: JSON.stringify(labels), // Truyền dữ liệu tên tháng
+            lastSixMonthsLabels: JSON.stringify(labels), // Truyền dữ liệu tên tháng,
+            lastSixMonthsDebts: JSON.stringify(debts),
             top3Products: top3Products,
-            top3Accounts: top3Accounts
+            top3Accounts: top3Accounts,
+            unpaidPercentage: unpaidPercentage,
+            paidPercentage: paidPercentage
         });
     } catch (error) {
         console.error("Lỗi khi lấy dữ liệu dashboard:", error);
