@@ -4,6 +4,13 @@ const paginationHelper = require("../../helpers/pagination")
 
 // [GET] /admin/roles
 module.exports.index = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("roles_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     let find = {
         deleted: false
     }
@@ -25,6 +32,13 @@ module.exports.index = async (req, res) => {
 
 // [GET] /admin/roles/create
 module.exports.create = (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("roles_create")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     res.render("admin/pages/roles/create.pug", {
         pageTitle: "Tạo mới nhóm quyền"
     })
@@ -42,15 +56,27 @@ module.exports.createPost = async (req, res) => {
 
 // [GET] /admin/roles/edit/:id
 module.exports.edit = async (req, res) => {
-    const id = req.params.id
-    const role = await Role.findOne({
-        _id: id,
-        deleted: false
-    })
-    res.render("admin/pages/roles/edit.pug", {
-        pageTitle: "Chỉnh sửa nhóm quyền",
-        role: role
-    })
+    const roles = res.locals.role;
+
+    if (!roles.permissions.includes("roles_edit")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
+    try {
+        const id = req.params.id
+        const role = await Role.findOne({
+            _id: id,
+            deleted: false
+        })
+        res.render("admin/pages/roles/edit.pug", {
+            pageTitle: "Chỉnh sửa nhóm quyền",
+            role: role
+        })
+    } catch (error) {
+        req.flash("error", "Nhóm quyền không tồn tại")
+        res.redirect(`${systemConfig.prefixAdmin}/roles`)
+    }
 }
 
 // [PATCH] /admin/roles/edit/:id
@@ -78,6 +104,13 @@ module.exports.deleteItem = async (req, res) => {
 
 // [GET] /admin/roles/permissions
 module.exports.permissions = async (req, res) => {
+    const roles = res.locals.role;
+
+    if (!roles.permissions.includes("roles_permissions")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     let find = {
         deleted: false
     }
@@ -112,14 +145,26 @@ module.exports.permissionsPatch = async (req, res) => {
 
 // [GET] /admin/roles/detail/:id
 module.exports.detail = async (req, res) => {
-    const id = req.params.id
-    const role = await Role.find({
-        _id: id
-    })
-    res.render("admin/pages/roles/detail.pug", {
-        pageTitle: "Chi tiết nhóm quyền",
-        role: role
-    })
+    const roles = res.locals.role;
+
+    if (!roles.permissions.includes("roles_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
+    try {
+        const id = req.params.id
+        const role = await Role.find({
+            _id: id
+        })
+        res.render("admin/pages/roles/detail.pug", {
+            pageTitle: "Chi tiết nhóm quyền",
+            role: role
+        })
+    } catch (error) {
+        req.flash("error", "Nhóm quyền không tồn tại")
+        res.redirect(`${systemConfig.prefixAdmin}/roles`)
+    }
 }
 
 //[PATCH] /admin/orders/change-multi

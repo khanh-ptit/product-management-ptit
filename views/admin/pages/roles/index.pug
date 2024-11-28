@@ -13,20 +13,23 @@ block content
 
     h1.mb-3.header Nhóm quyền
 
-    .card.mb-3
-        .card-header Thao tác và thêm mới
-        .card-body
-                .row
-                    .col-4
-                        +form-change-multi(`${prefixAdmin}/roles/change-multi?_method=PATCH`, "roles")
-                    .col-4
-                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/roles/create`)
-                            i.fas.fa-plus.fa-sm.text-white-50
-                            |  Tạo mới nhóm quyền
-                    .col-4
-                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href=`${prefixAdmin}/roles/permissions`)
-                            i.fas.fa-key.fa-sm.text-white-50
-                            |  Phân quyền
+    if (role.permissions.includes("roles_create") || (role.permissions.includes("roles_permissions")) || (role.permissions.includes("roles_delete")))
+        .card.mb-3
+            .card-header Thao tác và thêm mới
+            .card-body
+                    .row
+                        .col-4
+                            +form-change-multi(`${prefixAdmin}/roles/change-multi?_method=PATCH`, "roles")
+                        .col-4
+                            if (role.permissions.includes("roles_create"))
+                                a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/roles/create`)
+                                    i.fas.fa-plus.fa-sm.text-white-50
+                                    |  Tạo mới nhóm quyền
+                        .col-4
+                            if (role.permissions.includes("roles_permissions"))
+                                a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href=`${prefixAdmin}/roles/permissions`)
+                                    i.fas.fa-key.fa-sm.text-white-50
+                                    |  Phân quyền
 
     //- Bảng danh sách sản phẩm
     .table-responsive
@@ -60,15 +63,17 @@ block content
                                 href=`${prefixAdmin}/roles/detail/${item.id}`
                                 class="btn btn-secondary btn-sm"
                             ) Xem
-                            a(
-                                href=`${prefixAdmin}/roles/edit/${item.id}`
-                                class="btn btn-warning btn-sm ml-1"
-                            ) Sửa
-                            button(
-                                class="btn btn-danger btn-sm ml-1"
-                                data-id=item.id
-                                button-delete
-                            ) Xóa
+                            if (role.permissions.includes("roles_edit"))
+                                a(
+                                    href=`${prefixAdmin}/roles/edit/${item.id}`
+                                    class="btn btn-warning btn-sm ml-1"
+                                ) Sửa
+                            if (role.permissions.includes("roles_delete"))
+                                button(
+                                    class="btn btn-danger btn-sm ml-1"
+                                    data-id=item.id
+                                    button-delete
+                                ) Xóa
                         td 
                             +format-dateTime(item.createdAt)
     +pagination(pagination)

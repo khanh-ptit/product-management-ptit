@@ -10,7 +10,6 @@ const paginationHelper = require("../../helpers/pagination")
 module.exports.index = async (req, res) => {
     const role = res.locals.role;
 
-    // Kiểm tra quyền "products_view"
     if (!role.permissions.includes("accounts_view")) {
         res.redirect(`${systemConfig.prefixAdmin}/error/403`)
         return
@@ -144,19 +143,24 @@ module.exports.edit = async (req, res) => {
         return
     }
 
-    const id = req.params.id
-    const account = await Account.findOne({
-        _id: id,
-        deleted: false
-    })
-    const roles = await Role.find({
-        deleted: false
-    })
-    res.render("admin/pages/accounts/edit.pug", {
-        pageTitle: "Chỉnh sửa tài khoản",
-        account: account,
-        roles: roles
-    })
+    try {
+        const id = req.params.id
+        const account = await Account.findOne({
+            _id: id,
+            deleted: false
+        })
+        const roles = await Role.find({
+            deleted: false
+        })
+        res.render("admin/pages/accounts/edit.pug", {
+            pageTitle: "Chỉnh sửa tài khoản",
+            account: account,
+            roles: roles
+        })
+    } catch (error) {
+        req.flash("error", "Tài khoản không tồn tại")
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+    }
 }
 
 // [PATCH] /admin/accounts/edit/:id
@@ -184,19 +188,24 @@ module.exports.detail = async (req, res) => {
         return
     }
 
-    const id = req.params.id
-    const account = await Account.findOne({
-        _id: id
-    })
-    const infoRole = await Role.findOne({
-        _id: account.role_id
-    })
-    account.infoRole = infoRole
+    try {
+        const id = req.params.id
+        const account = await Account.findOne({
+            _id: id
+        })
+        const infoRole = await Role.findOne({
+            _id: account.role_id
+        })
+        account.infoRole = infoRole
 
-    res.render("admin/pages/accounts/detail.pug", {
-        pageTitle: "Chi tiết tài khoản",
-        account: account
-    })
+        res.render("admin/pages/accounts/detail.pug", {
+            pageTitle: "Chi tiết tài khoản",
+            account: account
+        })
+    } catch (error) {
+        req.flash("error", "Tài khoản không tồn tại")
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+    }
 }
 
 //[PATCH] /admin/orders/change-multi
