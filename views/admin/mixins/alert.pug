@@ -15,3 +15,14 @@ mixin alert-error(time)
                 show-alert
                 data-time=time
             ) #{messages.error} <span class="btn-cancel">x</span>
+
+mixin alert-info(time)
+    if (messages.info)
+        .message.info
+            div(
+                class="alert alert-info"
+                show-alert
+                data-time=time
+            ) 
+                span(class="alert-text") #{messages.info}
+                span(class="btn-cancel") x

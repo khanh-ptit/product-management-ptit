@@ -25,9 +25,14 @@ html(lang="en")
 
         //- Main CSS File
         link(rel="stylesheet" href="/client/assets/css/main.css")
+        link(rel="stylesheet", href="/admin/css/style.css")
 
     body(class="index-page")
+
+        include ../../../admin/mixins/alert.pug
     
+        +alert-info(5000)
+
         header#header.header.d-flex.align-items-center.fixed-top
             .header-container.container-fluid.container-xl.position-relative.d-flex.align-items-center.justify-content-between
                 a(href="index.html" class="logo d-flex align-items-center me-auto me-xl-0")
@@ -48,11 +53,11 @@ html(lang="en")
                         li
                             a(href="#product") Sản phẩm
                         li
-                            a(href="#contact") Liên hệ
+                            a(href="#contact") Đăng ký
 
                     i.mobile-nav-toggle.d-xl-none.bi.bi-list
 
-                a.btn-getstarted(href=`${prefixAdmin}/dashboard`) Bắt đầu quản lý
+                a.btn-getstarted(href=`${prefixAdmin}/dashboard`) Đăng nhập
 
         main.main
             section#intro.hero.section
@@ -223,65 +228,73 @@ html(lang="en")
                                 img.img-fluid(src="https://iconape.com/wp-content/png_logo_vector/grand-sport-logo.png", alt="Converse Logo")
                         .swiper-pagination
 
-            //- // Contact Section
+            //- Contact Section
             section#contact.contact.section.light-background
-                //- // Section Title
+                //- Section Title
                 .container.section-title(data-aos="fade-up")
-                    h2 Contact
-                    p Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit
+                    h2 Đăng Ký Nhân Viên
+                    p Bạn có muốn gia nhập đội ngũ của chúng tôi? Hãy điền thông tin vào mẫu dưới đây!
 
-                //- // Section Content
+                //- Section Content
                 .container(data-aos="fade-up", data-aos-delay="100")
                     .row.g-4.g-lg-5
                         .col-lg-5
                             .info-box(data-aos="fade-up", data-aos-delay="200")
-                                h3 Contact Info
-                                p Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis.
+                                h3 Thông Tin Liên Hệ
+                                p Đây là nơi bạn có thể điền các thông tin cá nhân của mình để chúng tôi liên hệ với bạn.
 
                                 .info-item(data-aos="fade-up", data-aos-delay="300")
                                     .icon-box
                                         i.bi.bi-geo-alt
                                     .content
-                                        h4 Our Location
-                                        p A108 Adam Street
-                                        p New York, NY 535022
+                                        h4 Địa Chỉ Cửa Hàng
+                                        p Số 96A, đường Trần Phú
+                                        p quận Hà Đông, Tp.Hà Nội
 
                                 .info-item(data-aos="fade-up", data-aos-delay="400")
                                     .icon-box
                                         i.bi.bi-telephone
                                     .content
-                                        h4 Phone Number
-                                        p +1 5589 55488 55
-                                        p +1 6678 254445 41
+                                        h4 Số Điện Thoại
+                                        p +84 979 126 098
 
                                 .info-item(data-aos="fade-up", data-aos-delay="500")
                                     .icon-box
                                         i.bi.bi-envelope
                                     .content
-                                        h4 Email Address
-                                        p info@example.com
-                                        p contact@example.com
+                                        h4 Email Liên Hệ
+                                        p khanhhs11vtt@gmail.com
+                                        p khanhlq.b21at110@stu.ptit.edu.vn
 
                         .col-lg-7
                             .contact-form(data-aos="fade-up", data-aos-delay="300")
-                                h3 Get In Touch
-                                p Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis.
+                                h3 Đăng Ký
+                                p Điền thông tin vào biểu mẫu dưới đây để đăng ký làm nhân viên của chúng tôi.
 
-                                form.php-email-form(action="forms/contact.php", method="post", data-aos="fade-up", data-aos-delay="200")
-                                    .row.gy-4
+                                form(action="/register-staff", method="POST")
+                                    .row.g-4
                                         .col-md-6
-                                            input.form-control(type="text", name="name", placeholder="Your Name", required="")
+                                            .form-group
+                                                label(for="fullName") Họ và Tên
+                                                input.form-control(type="text", name="fullName", id="fullName", placeholder="Nhập họ và tên")
                                         .col-md-6
-                                            input.form-control(type="email", name="email", placeholder="Your Email", required="")
+                                            .form-group
+                                                label(for="email") Email
+                                                input.form-control(type="email", name="email", id="email", placeholder="Nhập email")
                                         .col-12
-                                            input.form-control(type="text", name="subject", placeholder="Subject", required="")
+                                            .form-group
+                                                label(for="subject") Tiêu đề
+                                                input.form-control(type="text", name="subject", id="subject", placeholder="Nhập chức vụ")
                                         .col-12
-                                            textarea.form-control(name="message", rows="6", placeholder="Message", required="")
+                                            .form-group
+                                                label(for="subject") Chức Vụ Mong Muốn
+                                                input.form-control(type="text", name="role", id="role", placeholder="Nhập chức vụ")
+                                        .col-12
+                                            .form-group
+                                                label(for="message") Lý Do Đăng Ký
+                                                textarea.form-control(name="message", id="message", rows="4", placeholder="Lý do đăng ký")
                                         .col-12.text-center
-                                            .loading Loading
-                                            .error-message
-                                            .sent-message Your message has been sent. Thank you!
-                                            button.btn(type="submit") Send Message
+                                            button.btn.btn-primary.btn-lg(type="submit") Gửi Đơn Đăng Ký
 
 
         a(href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center")
@@ -297,5 +310,7 @@ html(lang="en")
 
     //- Main JS File
     script(src="/client/assets/js/main.js")
+    script(src="/admin/js/script.js")
+
     script.
         AOS.init();
