@@ -18,7 +18,8 @@ mixin form-change-multi(path, prefix)
                     if role.permissions.includes(`${prefix}_edit`)
                         if (prefix == "products")
                             option(value="change-position") Thay đổi vị trí
-                    option(value="delete-all") Xóa tất cả
+                    if role.permissions.includes(`${prefix}_delete`)
+                        option(value="delete-all") Xóa tất cả
                     
             .form-group
                 input(

@@ -30,10 +30,11 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
             span Quản lý đơn hàng
 
     //- Nav Item - Categories
-    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/product-category`) ? 'active' : ''))
-        a.nav-link(href=`${prefixAdmin}/product-category`)
-            i.fas.fa-fw.fa-tags
-            span Danh mục sản phẩm
+    if (role.permissions.includes('product-category_view'))
+        li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/product-category`) ? 'active' : ''))
+            a.nav-link(href=`${prefixAdmin}/product-category`)
+                i.fas.fa-fw.fa-tags
+                span Danh mục sản phẩm
 
     //- Nav Item - Accounts
     li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/accounts`) ? 'active' : ''))

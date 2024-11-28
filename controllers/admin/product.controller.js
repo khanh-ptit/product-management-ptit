@@ -11,7 +11,6 @@ const createTreeHelper = require("../../helpers/createTree")
 module.exports.index = async (req, res) => {
     const role = res.locals.role;
 
-    // console.log(role.permissions)
     // Kiểm tra quyền "products_view"
     if (!role.permissions.includes("products_view")) {
         res.redirect(`${systemConfig.prefixAdmin}/error/403`)
@@ -257,7 +256,7 @@ module.exports.edit = async (req, res) => {
             category: treeCategory
         })
     } catch (error) {
-        req.flash("error", "Đường dẫn không hợp lệ !")
+        req.flash("error", "Sản phẩm không tồn tại !")
         res.redirect(`${systemConfig.prefixAdmin}/products`)
     } 
 }
@@ -331,7 +330,7 @@ module.exports.detail = async (req, res) => {
             product: product
         })
     } catch (error) {
-        req.flash("error", "Đường dẫn không hợp lệ !")
+        req.flash("error", "Sản phẩm không tồn tại !")
         res.redirect(`${systemConfig.prefixAdmin}/products`)
     }
 }

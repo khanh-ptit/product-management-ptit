@@ -23,16 +23,18 @@ block content
                 .col-6
                     +form-search('product-category')
 
-    .card.mb-3
-        .card-header Thao tác và thêm mới
-        .card-body
-                .row
-                    .col-8
-                        +form-change-multi(`${prefixAdmin}/product-category/change-multi?_method=PATCH`, 'product-category')
-                    .col-4
-                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/product-category/create`)
-                            i.fas.fa-plus.fa-sm.text-white-50
-                            |  Tạo mới danh mục
+    if (role.permissions.includes("product-category_create") || role.permissions.includes("product-category_edit") || role.permissions.includes("product-category_delete"))
+        .card.mb-3
+            .card-header Thao tác và thêm mới
+            .card-body
+                    .row
+                        .col-8
+                            +form-change-multi(`${prefixAdmin}/product-category/change-multi?_method=PATCH`, 'product-category')
+                        if (role.permissions.includes("product-category_create"))
+                            .col-4
+                                a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/product-category/create`)
+                                    i.fas.fa-plus.fa-sm.text-white-50
+                                    |  Tạo mới danh mục
 
     //- Bảng danh sách sản phẩm
     .table-responsive

@@ -7,6 +7,13 @@ const Account = require('../../models/account.model')
 
 // [GET] /admin/product-category
 module.exports.index = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("product-category_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     const filterStatus = filterStatusHelper(req.query)
     let find = {
         deleted: false
@@ -40,6 +47,13 @@ module.exports.index = async (req, res) => {
 
 // [GET] admin/product-category/create
 module.exports.create = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("product-category_create")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     let find = {
         deleted: false
     }
@@ -104,6 +118,13 @@ module.exports.changeStatus = async (req, res) => {
 
 // [GET] /admin/product-category/edit/:id
 module.exports.edit = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("product-category_edit")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     try {
         const id = req.params.id
         const record = await ProductCategory.findOne({
@@ -122,7 +143,7 @@ module.exports.edit = async (req, res) => {
             records: treeRecords
         })
     } catch {
-        req.flash("error", "Đường dẫn không tồn tại!")
+        req.flash("error", "Danh mục không tồn tại!")
         res.redirect(`${systemConfig.prefixAdmin}/product-category`)
     }
 }
@@ -176,7 +197,7 @@ module.exports.detail = async (req, res) => {
             parentCategory: parentCategory
         })
     } catch (error) {
-        req.flash("error", "Đường dẫn không tồn tại !")
+        req.flash("error", "Danh mục không tồn tại !")
         res.redirect(`${systemConfig.prefixAdmin}/product-category`)
     }
 }
