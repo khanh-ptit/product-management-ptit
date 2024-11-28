@@ -28,7 +28,9 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin
 app.locals.moment = moment
 
 const routeAdmin = require("./routes/admin/index.route")
+const routeClient = require("./routes/client/index.route")
 routeAdmin(app)
+routeClient(app)
 
 app.get("*", (req, res) => {
     res.redirect("/admin/error/404")

@@ -1,0 +1,301 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title 1st Store - Thời trang thể thao
+        meta(name="description" content="")
+        meta(name="keywords" content="")
+
+        //- Favicons
+        link(rel="icon" href="https://cdn-icons-png.freepik.com/512/57/57601.png")
+        link(rel="apple-touch-icon" href="assets/img/apple-touch-icon.png")
+
+        //- Fonts
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap")
+
+        //- Vendor CSS Files
+        link(rel="stylesheet" href="/client/assets/vendor/bootstrap/css/bootstrap.min.css")
+        link(rel="stylesheet" href="/client/assets/vendor/bootstrap-icons/bootstrap-icons.css")
+        link(rel="stylesheet" href="/client/assets/vendor/aos/aos.css")
+        link(rel="stylesheet" href="/client/assets/vendor/glightbox/css/glightbox.min.css")
+        link(rel="stylesheet" href="/client/assets/vendor/swiper/swiper-bundle.min.css")
+
+        //- Main CSS File
+        link(rel="stylesheet" href="/client/assets/css/main.css")
+
+    body(class="index-page")
+    
+        header#header.header.d-flex.align-items-center.fixed-top
+            .header-container.container-fluid.container-xl.position-relative.d-flex.align-items-center.justify-content-between
+                a(href="index.html" class="logo d-flex align-items-center me-auto me-xl-0")
+                    img(src="https://bizweb.dktcdn.net/100/435/594/themes/833214/assets/logo.png?1732654474002" alt="")
+                    h1.sitename.ml-3 1st Store
+
+
+                nav#navmenu.navmenu
+                    ul
+                        li
+                            a(href="#intro" class="active") Trang chủ
+                        li
+                            a(href="#about") Về chúng tôi
+                        li
+                            a(href="#partners") Đối tác
+                        li
+                            a(href="#staff") Nhân viên
+                        li
+                            a(href="#product") Sản phẩm
+                        li
+                            a(href="#contact") Liên hệ
+
+                    i.mobile-nav-toggle.d-xl-none.bi.bi-list
+
+                a.btn-getstarted(href=`${prefixAdmin}/dashboard`) Bắt đầu quản lý
+
+        main.main
+            section#intro.hero.section
+                .container(data-aos="fade-up", data-aos-delay="100")
+                    .row.align-items-center
+                        .col-lg-6
+                            .hero-content(data-aos="fade-up", data-aos-delay="200")
+                                .company-badge.mb-4
+                                    i.bi.bi-gear-fill.me-2
+                                    | Chúng tôi đồng hành cùng bạn
+                                h1.mb-4
+                                    | Khám phá 
+                                    br
+                                    | Phong cách thể thao 
+                                    br
+                                    span.accent-text Tại 1st Store
+                                p.mb-4.mb-md-5
+                                    | 1st Store cung cấp những sản phẩm thể thao chất lượng, phong cách hiện đại và giá cả hợp lý.
+                                    | Cùng chúng tôi chinh phục mọi thử thách với trang phục và phụ kiện tối ưu.
+                                .hero-buttons
+                                    a.btn.btn-primary.me-0.me-sm-2.mx-1(href="#about") Khám phá
+                                    a.btn.btn-link.mt-2.mt-sm-0.glightbox(href="https://www.youtube.com/watch?v=gVcvV7NK8OM")
+                                        i.bi.bi-play-circle.me-1
+                                        | Xem Video
+                        .col-lg-6
+                            .hero-image(data-aos="zoom-out", data-aos-delay="300")
+                                img.img-fluid(src="https://scontent.fhan14-2.fna.fbcdn.net/v/t39.30808-6/345431187_591829646250659_4407213235016916106_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=86c6b0&_nc_eui2=AeHFkxiwWJm_B9jDIQyWGCN5BBWL4DE1RhAEFYvgMTVGEAL1xBEfKA1IcelBi6HDS9-EMQuVWnh6jBnOfIuiz-KL&_nc_ohc=RUvLxTFD4TYQ7kNvgHq3k8b&_nc_zt=23&_nc_ht=scontent.fhan14-2.fna&_nc_gid=AUcei0I4JJgjU8LRy0zH_XX&oh=00_AYDp8ZxoM_X8iDG8zZaRSWaAoC14hBYZOfbcma858758cw&oe=674E16AC", alt="Hero Image")
+                                
+                    .row.stats-row.gy-4.mt-5(data-aos="fade-up", data-aos-delay="500")
+                        .col-lg-3.col-md-6
+                            .stat-item
+                                .stat-icon
+                                    i.bi.bi-trophy
+                                .stat-content
+                                    h4 50+ Giải Thưởng
+                                    p.mb-0 Sản phẩm thể thao chất lượng
+                        .col-lg-3.col-md-6
+                            .stat-item
+                                .stat-icon
+                                    i.bi.bi-briefcase
+                                .stat-content
+                                    h4 100+ Sản phẩm
+                                    p.mb-0 Phong cách và đa dạng
+                        .col-lg-3.col-md-6
+                            .stat-item
+                                .stat-icon
+                                    i.bi.bi-graph-up
+                                .stat-content
+                                    h4 1000+ Khách Hàng
+                                    p.mb-0 Lựa chọn tin cậy của bạn
+                        .col-lg-3.col-md-6
+                            .stat-item
+                                .stat-icon
+                                    i.bi.bi-award
+                                .stat-content
+                                    h4 5 Sao Đánh Giá
+                                    p.mb-0 Được khách hàng yêu thích
+
+            section#about.about.section
+                .container(data-aos="fade-up", data-aos-delay="100")
+                    .row.gy-4.align-items-center.justify-content-between
+                        .col-xl-5(data-aos="fade-up", data-aos-delay="200")
+                            span.about-meta GIỚI THIỆU VỀ CHÚNG TÔI
+                            h2.about-title Khơi dậy đam mê thể thao
+                            p.about-description 1st Store mang đến các sản phẩm thể thao cao cấp, giúp bạn chinh phục mọi mục tiêu và nâng tầm trải nghiệm luyện tập. Chúng tôi cam kết đồng hành cùng khách hàng trên hành trình đạt được sức khỏe và phong cách.
+                            
+                            .row.feature-list-wrapper
+                                .col-md-6
+                                    ul.feature-list
+                                        li
+                                            i.bi.bi-check-circle-fill
+                                            | Sản phẩm chính hãng 100%
+                                        li
+                                            i.bi.bi-check-circle-fill
+                                            | Thiết kế tối ưu, phong cách
+                                        li
+                                            i.bi.bi-check-circle-fill
+                                            | Dịch vụ giao hàng nhanh
+                                .col-md-6
+                                    ul.feature-list
+                                        li
+                                            i.bi.bi-check-circle-fill
+                                            | Đổi trả dễ dàng
+                                        li
+                                            i.bi.bi-check-circle-fill
+                                            | Hỗ trợ khách hàng 24/7
+                                        li
+                                            i.bi.bi-check-circle-fill
+                                            | Ưu đãi thành viên hấp dẫn
+
+                            .info-wrapper
+                                .row.gy-4
+                                    .col-lg-5
+                                        .profile.d-flex.align-items-center.gap-3
+                                            img.profile-image(src="https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/326505269_1282989375616574_3379516883126678208_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFmNu8zORjGldGp4-Qknmwp37nPBJeQNJXfuc8El5A0lUlgP1WnkDun8d30H8vgO3vFgWePliO-vsDi_ij7J4z4&_nc_ohc=KPVo7FZMII4Q7kNvgHvTWvS&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=Atuoxo2YTj5S5jqtmDRnoeQ&oh=00_AYCCu3SHbCpv39Twjz_3YiqAUZFX3Bc7jidzfmL2KuVBhA&oe=674E19A7", alt="CEO Profile")
+                                            .profile-details
+                                                h4.profile-name Lê Quốc Khánh
+                                                p.profile-position Người sáng lập
+                                    .col-lg-7
+                                        .contact-info.d-flex.align-items-center.gap-2
+                                            i.bi.bi-telephone-fill
+                                            .contact-details
+                                                p.contact-label Liên hệ ngay
+                                                p.contact-number +84 979 126 098
+
+                        .col-xl-6(data-aos="fade-up", data-aos-delay="300")
+                            .image-wrapper
+                                .images.position-relative(data-aos="zoom-out", data-aos-delay="400")
+                                    img.img-fluid.main-image.rounded-4(src="https://scontent.fhan14-4.fna.fbcdn.net/v/t39.30808-6/432769651_876779164459286_5508067920435775408_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEaJ1nbFMc_rJQlwwkbExdd7M-aWvvGFBXsz5pa-8YUFTQrTnJz7qiHqqhhW_MZfbXnhRPspbRWjIKSQWii3hEs&_nc_ohc=PloJbQ-PSuAQ7kNvgH9yw_W&_nc_zt=23&_nc_ht=scontent.fhan14-4.fna&_nc_gid=AdUFVAddidgVwCeH4Mcmtmk&oh=00_AYBNx5e2SE1B2pyw2v6MUuW8te3HhywSoQ0_RnEz6S360A&oe=674E08BF", alt="Store Image")
+                                    //- img.img-fluid.small-image.rounded-4(src="/client/assets/img/about-2.webp", alt="Team Work")
+                                .experience-badge.floating
+                                    h3 10+ 
+                                        span Năm
+                                    p Đồng hành phát triển thể thao
+            
+            //- Partners
+            section#partners.clients.section
+                .container(data-aos="fade-up", data-aos-delay="100")
+                    .swiper.init-swiper
+                        script(type="application/json", class="swiper-config")
+                            | {
+                            |   "loop": true,
+                            |   "speed": 600,
+                            |   "autoplay": {
+                            |     "delay": 5000
+                            |   },
+                            |   "slidesPerView": "auto",
+                            |   "pagination": {
+                            |     "el": ".swiper-pagination",
+                            |     "type": "bullets",
+                            |     "clickable": true
+                            |   },
+                            |   "breakpoints": {
+                            |     "320": {
+                            |       "slidesPerView": 2,
+                            |       "spaceBetween": 40
+                            |     },
+                            |     "480": {
+                            |       "slidesPerView": 3,
+                            |       "spaceBetween": 60
+                            |     },
+                            |     "640": {
+                            |       "slidesPerView": 4,
+                            |       "spaceBetween": 80
+                            |     },
+                            |     "992": {
+                            |       "slidesPerView": 6,
+                            |       "spaceBetween": 120
+                            |     }
+                            |   }
+                            | }
+                        .swiper-wrapper.align-items-center
+                            .swiper-slide
+                                img.img-fluid(src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg", alt="Adidas Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://logos-download.com/wp-content/uploads/2016/03/Nike_logo_emblem_logotype.png", alt="Nike Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://www.step.org.uk/app/uploads/2018/07/Puma-logo-PNG-Transparent-Background.png", alt="Puma Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://upload.wikimedia.org/wikipedia/commons/4/44/Under_armour_logo.svg", alt="Under Armour Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://dongduongsport.com/wp-content/uploads/2022/08/logo-jogarbola-dongduongsport.com_.png", alt="Asics Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://jordan1.vn/wp-content/uploads/2023/09/kappa-logo-700x394_3a9e76a6b31e43ee892da8028aef2d9a_1024x1024.png", alt="Reebok Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/New_Balance_logo.svg/800px-New_Balance_logo.svg.png", alt="New Balance Logo")
+                            .swiper-slide
+                                img.img-fluid(src="https://iconape.com/wp-content/png_logo_vector/grand-sport-logo.png", alt="Converse Logo")
+                        .swiper-pagination
+
+            //- // Contact Section
+            section#contact.contact.section.light-background
+                //- // Section Title
+                .container.section-title(data-aos="fade-up")
+                    h2 Contact
+                    p Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit
+
+                //- // Section Content
+                .container(data-aos="fade-up", data-aos-delay="100")
+                    .row.g-4.g-lg-5
+                        .col-lg-5
+                            .info-box(data-aos="fade-up", data-aos-delay="200")
+                                h3 Contact Info
+                                p Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis.
+
+                                .info-item(data-aos="fade-up", data-aos-delay="300")
+                                    .icon-box
+                                        i.bi.bi-geo-alt
+                                    .content
+                                        h4 Our Location
+                                        p A108 Adam Street
+                                        p New York, NY 535022
+
+                                .info-item(data-aos="fade-up", data-aos-delay="400")
+                                    .icon-box
+                                        i.bi.bi-telephone
+                                    .content
+                                        h4 Phone Number
+                                        p +1 5589 55488 55
+                                        p +1 6678 254445 41
+
+                                .info-item(data-aos="fade-up", data-aos-delay="500")
+                                    .icon-box
+                                        i.bi.bi-envelope
+                                    .content
+                                        h4 Email Address
+                                        p info@example.com
+                                        p contact@example.com
+
+                        .col-lg-7
+                            .contact-form(data-aos="fade-up", data-aos-delay="300")
+                                h3 Get In Touch
+                                p Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis.
+
+                                form.php-email-form(action="forms/contact.php", method="post", data-aos="fade-up", data-aos-delay="200")
+                                    .row.gy-4
+                                        .col-md-6
+                                            input.form-control(type="text", name="name", placeholder="Your Name", required="")
+                                        .col-md-6
+                                            input.form-control(type="email", name="email", placeholder="Your Email", required="")
+                                        .col-12
+                                            input.form-control(type="text", name="subject", placeholder="Subject", required="")
+                                        .col-12
+                                            textarea.form-control(name="message", rows="6", placeholder="Message", required="")
+                                        .col-12.text-center
+                                            .loading Loading
+                                            .error-message
+                                            .sent-message Your message has been sent. Thank you!
+                                            button.btn(type="submit") Send Message
+
+
+        a(href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center")
+            i.bi.bi-arrow-up-short
+
+    //- Vendor JS Files
+    script(src="/client/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")
+    script(src="/client/assets/vendor/php-email-form/validate.js")
+    script(src="/client/assets/vendor/aos/aos.js")
+    script(src="/client/assets/vendor/glightbox/js/glightbox.min.js")
+    script(src="/client/assets/vendor/swiper/swiper-bundle.min.js")
+    script(src="/client/assets/vendor/purecounter/purecounter_vanilla.js")
+
+    //- Main JS File
+    script(src="/client/assets/js/main.js")
+    script.
+        AOS.init();
