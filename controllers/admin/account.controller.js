@@ -8,6 +8,14 @@ const paginationHelper = require("../../helpers/pagination")
 
 // [GET] /admin/accounts
 module.exports.index = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("accounts_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     const filterStatus = filterStatusHelper(req.query)
     let find = {
         deleted: false
@@ -70,6 +78,13 @@ module.exports.index = async (req, res) => {
 
 // [GET] /admin/accounts/create
 module.exports.create = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("accounts_create")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     const roles = await Role.find({
         deleted: false
     })
@@ -122,6 +137,13 @@ module.exports.changeStatus = async (req, res) => {
 
 // [GET] /admin/accounts/edit/:id
 module.exports.edit = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("accounts_edit")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     const id = req.params.id
     const account = await Account.findOne({
         _id: id,
@@ -155,6 +177,13 @@ module.exports.editPatch = async (req, res) => {
 
 // [GET] /admin/accounts/detail/:id
 module.exports.detail = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("accounts_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     const id = req.params.id
     const account = await Account.findOne({
         _id: id

@@ -38,10 +38,11 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
                 span Danh mục sản phẩm
 
     //- Nav Item - Accounts
-    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/accounts`) ? 'active' : ''))
-        a.nav-link(href=`${prefixAdmin}/accounts`)
-            i.fas.fa-fw.fa-users
-            span Quản lý tài khoản
+    if (role.permissions.includes('accounts_view'))
+        li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/accounts`) ? 'active' : ''))
+            a.nav-link(href=`${prefixAdmin}/accounts`)
+                i.fas.fa-fw.fa-users
+                span Quản lý tài khoản
 
     //- Nav Item - Roles (Group Permissions)
     li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/roles`) ? 'active' : ''))

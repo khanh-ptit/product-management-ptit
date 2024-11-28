@@ -24,16 +24,18 @@ block content
                 .col-4 
                     +sort("accounts") 
 
-    .card.mb-3
-        .card-header Thao tác và thêm mới
-        .card-body
-                .row
-                    .col-8
-                        +form-change-multi(`${prefixAdmin}/accounts/change-multi?_method=PATCH`, 'accounts')
-                    .col-4
-                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/accounts/create`)
-                            i.fas.fa-plus.fa-sm.text-white-50
-                            |  Tạo mới tài khoản
+    if (role.permissions.includes("accounts_create") || role.permissions.includes("accounts_edit") || role.permissions.includes("accounts_delete"))
+        .card.mb-3
+            .card-header Thao tác và thêm mới
+            .card-body
+                    .row
+                        .col-8
+                            +form-change-multi(`${prefixAdmin}/accounts/change-multi?_method=PATCH`, 'accounts')
+                        if (role.permissions.includes("accounts_create"))
+                            .col-4
+                                a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/accounts/create`)
+                                    i.fas.fa-plus.fa-sm.text-white-50
+                                    |  Tạo mới tài khoản
 
     //- Bảng danh sách sản phẩm
     .table-responsive
@@ -72,36 +74,46 @@ block content
                         td #{item.email}
                         td #{item.roleInfo.title}
                         td
-                            if (item.status == "active")
-                                a(
-                                    href="javascript:;" 
-                                    data-status="active"
-                                    data-id=item.id
-                                    button-change-status
-                                    class="badge badge-success") Hoạt động
+                            if (role.permissions.includes("accounts_edit"))
+                                if (item.status == "active")
+                                    a(
+                                        href="javascript:;" 
+                                        data-status="active"
+                                        data-id=item.id
+                                        button-change-status
+                                        class="badge badge-success") Hoạt động
+                                else 
+                                    a(
+                                        href="javascript:;"
+                                        data-status="inactive"
+                                        data-id=item.id
+                                        button-change-status
+                                        class="badge badge-danger") Dừng hoạt động
                             else 
-                                a(
-                                    href="javascript:;"
-                                    data-status="inactive"
-                                    data-id=item.id
-                                    button-change-status
-                                    class="badge badge-danger") Dừng hoạt động
+                                if (item.status == "active")
+                                    span(class="badge badge-success") Hoạt động
+                                else 
+                                    span(class="badge badge-danger") Dừng hoạt động
+
                         td
                             a(
                                 href=`${prefixAdmin}/accounts/detail/${item.id}`
                                 class="btn btn-secondary btn-sm"
                             ) Xem
-                            a(
-                                href=`${prefixAdmin}/accounts/edit/${item.id}`
-                                class="btn btn-warning btn-sm ml-1"
-                            ) Sửa
-                            button(
-                                class="btn btn-danger btn-sm ml-1"
-                                data-id=item.id
-                                button-delete
-                            ) Xóa
+                            if (role.permissions.includes("accounts_edit"))
+                                a(
+                                    href=`${prefixAdmin}/accounts/edit/${item.id}`
+                                    class="btn btn-warning btn-sm ml-1"
+                                ) Sửa
+                            if (role.permissions.includes("accounts_delete"))
+                                button(
+                                    class="btn btn-danger btn-sm ml-1"
+                                    data-id=item.id
+                                    button-delete
+                                ) Xóa
                         td 
                             +format-dateTime(item.createdAt)
+
     +pagination(pagination)
 
     form(
