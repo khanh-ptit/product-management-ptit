@@ -24,16 +24,18 @@ block content
                 .col-4 
                     +sort('products') 
 
-    .card.mb-3
-        .card-header Thao tác và thêm mới
-        .card-body
-                .row
-                    .col-8
-                        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, 'products')
-                    .col-4
-                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/products/create`)
-                            i.fas.fa-plus.fa-sm.text-white-50
-                            |  Tạo mới sản phẩm
+    if (role.permissions.includes("products_create") || role.permissions.includes("products_edit") || role.permissions.includes("products_delete"))
+        .card.mb-3
+            .card-header Thao tác và thêm mới
+            .card-body
+                    .row
+                        .col-8
+                            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, 'products')
+                        if (role.permissions.includes("products_create"))
+                            .col-4
+                                a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/products/create`)
+                                    i.fas.fa-plus.fa-sm.text-white-50
+                                    |  Tạo mới sản phẩm
 
     //- Bảng danh sách sản phẩm
     .table-responsive
@@ -79,36 +81,46 @@ block content
                                 name="position"
                             )
                         td
-                            if (item.stock == 0) 
-                                span(class="badge badge-warning") Hết hàng
-                            else if (item.status == "active")
-                                a(
-                                    href="javascript:;" 
-                                    data-status="active"
-                                    data-id=item.id
-                                    button-change-status
-                                    class="badge badge-success") Hoạt động
-                            else if (item.status == "inactive")
-                                a(
-                                    href="javascript:;"
-                                    data-status="inactive"
-                                    data-id=item.id
-                                    button-change-status
-                                    class="badge badge-danger") Dừng hoạt động
+                            if (role.permissions.includes("products_edit"))
+                                if (item.stock == 0) 
+                                    span(class="badge badge-warning") Hết hàng
+                                else if (item.status == "active")
+                                    a(
+                                        href="javascript:;" 
+                                        data-status="active"
+                                        data-id=item.id
+                                        button-change-status
+                                        class="badge badge-success") Hoạt động
+                                else if (item.status == "inactive")
+                                    a(
+                                        href="javascript:;"
+                                        data-status="inactive"
+                                        data-id=item.id
+                                        button-change-status
+                                        class="badge badge-danger") Dừng hoạt động
+                            else 
+                                if (item.stock == 0) 
+                                    span(class="badge badge-warning") Hết hàng
+                                else if (item.status == "active")
+                                    span(class="badge badge-success") Hoạt động
+                                else if (item.status == "inactive")
+                                    span(class="badge badge-danger") Dừng hoạt động
                         td
                             a(
                                 href=`${prefixAdmin}/products/detail/${item.id}`
                                 class="btn btn-secondary btn-sm"
                             ) Xem
-                            a(
-                                href=`${prefixAdmin}/products/edit/${item.id}`
-                                class="btn btn-warning btn-sm ml-1"
-                            ) Sửa
-                            button(
-                                class="btn btn-danger btn-sm ml-1"
-                                data-id=item.id
-                                button-delete
-                            ) Xóa
+                            if (role.permissions.includes("products_edit"))
+                                a(
+                                    href=`${prefixAdmin}/products/edit/${item.id}`
+                                    class="btn btn-warning btn-sm ml-1"
+                                ) Sửa
+                            if (role.permissions.includes("products_delete"))
+                                button(
+                                    class="btn btn-danger btn-sm ml-1"
+                                    data-id=item.id
+                                    button-delete
+                                ) Xóa
                         if (item.infoAccountCreate)
                             td 
                                 p #{item.infoAccountCreate.fullName}

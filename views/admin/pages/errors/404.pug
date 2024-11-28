@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block content
+    //- Begin Page Content
+    .container-fluid.text-center
+        .row.justify-content-center
+            .col-lg-6
+                .error.mx-auto(data-text="404") 404
+                h1.display-4.text-gray-800.mb-3 Oops! Trang không tồn tại.
+                p.lead.text-gray-500.mb-4 Trang bạn đang tìm kiếm không khả dụng hoặc đã bị di chuyển.
+                a.btn.btn-primary(href=`${prefixAdmin}/dashboard`)
+                    i.fa.fa-arrow-left.mr-2
+                    | Trở về trang chủ
+                

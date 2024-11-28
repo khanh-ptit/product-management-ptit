@@ -17,10 +17,11 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
             span Tổng quan
 
     //- Nav Item - Products
-    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/products`) ? 'active' : ''))
-        a.nav-link(href=`${prefixAdmin}/products`)
-            i.fas.fa-fw.fa-box
-            span Quản lý sản phẩm
+    if (role.permissions.includes('products_view'))
+        li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/products`) ? 'active' : ''))
+            a.nav-link(href=`${prefixAdmin}/products`)
+                i.fas.fa-fw.fa-box
+                span Quản lý sản phẩm
 
     //- Nav Item - Orders (Newly Added)
     li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/orders`) ? 'active' : ''))

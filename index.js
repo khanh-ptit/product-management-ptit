@@ -30,6 +30,10 @@ app.locals.moment = moment
 const routeAdmin = require("./routes/admin/index.route")
 routeAdmin(app)
 
+app.get("*", (req, res) => {
+    res.redirect("/admin/error/404")
+})
+
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
 })

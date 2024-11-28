@@ -9,6 +9,15 @@ const createTreeHelper = require("../../helpers/createTree")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
+    const role = res.locals.role;
+
+    // console.log(role.permissions)
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("products_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     const filterStatus = filterStatusHelper(req.query)
     let find = {
         deleted: false
@@ -67,6 +76,17 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_delete"
+    if (!role.permissions.includes("products_edit")) {
+        res.json({
+            code: 403,
+            message: "Bạn không có quyền thực hiện thao tác này !"
+        })
+        return
+    }
+
     const status = req.params.status
     const id = req.params.id
 
@@ -81,6 +101,17 @@ module.exports.changeStatus = async (req, res) => {
 
 // [DELETE] /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_delete"
+    if (!role.permissions.includes("products_delete")) {
+        res.json({
+            code: 403,
+            message: "Bạn không có quyền thực hiện thao tác này !"
+        })
+        return
+    }
+
     const id = req.params.id
 
     await Product.updateOne({
@@ -153,6 +184,15 @@ module.exports.changeMulti = async (req, res) => {
 
 //[GET] /admin/products/create
 module.exports.create = async (req, res) => {
+    const role = res.locals.role;
+
+    // console.log(role.permissions)
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("products_create")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     let find = {
         deleted: false
     }
@@ -192,21 +232,34 @@ module.exports.createPost = async (req, res) => {
 
 //[GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
-    const id = req.params.id
-    const record = await Product.findOne({
-        _id: id,
-        deleted: false
-    })
-    const category = await ProductCategory.find({
-        deleted: false
-    })
-    const treeCategory = createTreeHelper.tree(category)
-    // console.log(record)
-    res.render("admin/pages/products/edit.pug", {
-        pageTitle: "Chỉnh sửa sản phẩm",
-        product: record,
-        category: treeCategory
-    })
+    const role = res.locals.role;
+
+    // console.log(role.permissions)
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("products_edit")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+    try {
+        const id = req.params.id
+        const record = await Product.findOne({
+            _id: id,
+            deleted: false
+        })
+        const category = await ProductCategory.find({
+            deleted: false
+        })
+        const treeCategory = createTreeHelper.tree(category)
+        // console.log(record)
+        res.render("admin/pages/products/edit.pug", {
+            pageTitle: "Chỉnh sửa sản phẩm",
+            product: record,
+            category: treeCategory
+        })
+    } catch (error) {
+        req.flash("error", "Đường dẫn không hợp lệ !")
+        res.redirect(`${systemConfig.prefixAdmin}/products`)
+    } 
 }
 
 // [PATCH] /admin/products/edit/:id
@@ -250,6 +303,14 @@ module.exports.editPatch = async (req, res) => {
 
 // [GET] /admin/products/detail/:id
 module.exports.detail = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("products_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    } 
+    
     try {
         const id = req.params.id
         const find = {
@@ -270,6 +331,7 @@ module.exports.detail = async (req, res) => {
             product: product
         })
     } catch (error) {
+        req.flash("error", "Đường dẫn không hợp lệ !")
         res.redirect(`${systemConfig.prefixAdmin}/products`)
     }
 }
