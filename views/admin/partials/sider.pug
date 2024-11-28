@@ -24,10 +24,11 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
                 span Quản lý sản phẩm
 
     //- Nav Item - Orders (Newly Added)
-    li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/orders`) ? 'active' : ''))
-        a.nav-link(href=`${prefixAdmin}/orders`)
-            i.fas.fa-fw.fa-receipt
-            span Quản lý đơn hàng
+    if (role.permissions.includes('orders_view'))
+        li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/orders`) ? 'active' : ''))
+            a.nav-link(href=`${prefixAdmin}/orders`)
+                i.fas.fa-fw.fa-receipt
+                span Quản lý đơn hàng
 
     //- Nav Item - Categories
     if (role.permissions.includes('product-category_view'))

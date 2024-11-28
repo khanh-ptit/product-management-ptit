@@ -9,6 +9,14 @@ const sendMailHelper = require("../../helpers/sendMail")
 
 // [GET] /admin/orders
 module.exports.index = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("orders_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     try {
         const filterStatus = filterStatusHelper(req.query)
         let find = {
@@ -85,6 +93,14 @@ module.exports.index = async (req, res) => {
 
 // [GET] /admin/orders/create
 module.exports.create = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("orders_create")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     try {
         const products = await Product.find({
             deleted: false,
@@ -239,9 +255,16 @@ module.exports.createPost = async (req, res) => {
     }
 };
 
-
 // [GET] /admin/orders/detail/:id
 module.exports.detail = async (req, res) => {
+    const role = res.locals.role;
+
+    // Kiểm tra quyền "products_view"
+    if (!role.permissions.includes("orders_view")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     try {
         const orderId = req.params.id;
 
@@ -463,6 +486,13 @@ module.exports.changeStatus = async (req, res) => {
 
 // [GET] /admin/orders/print/:id
 module.exports.print = async (req, res) => {
+    const role = res.locals.role;
+
+    if (!role.permissions.includes("orders_print")) {
+        res.redirect(`${systemConfig.prefixAdmin}/error/403`)
+        return
+    }
+
     try {
         const id = req.params.id;
         // console.log(id)

@@ -73,4 +73,5 @@ block content
                     //- Nút quay lại
                     .form-group.text-center
                         a.btn.btn-secondary.btn-lg.m-2(href=`${prefixAdmin}/orders`) Quay lại
-                        a.btn.btn-warning.btn-lg.m-2(href=`${prefixAdmin}/orders/print/${order._id}`) In Hóa Đơn
+                        if (role.permissions.includes("orders_print"))
+                            a.btn.btn-warning.btn-lg.m-2(href=`${prefixAdmin}/orders/print/${order._id}`) In Hóa Đơn

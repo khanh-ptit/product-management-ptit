@@ -24,17 +24,18 @@ block content
                 .col-4
                     +sort('orders')
 
-    .card.mb-3
-        .card-header Thao tác và thêm mới
-        .card-body
-                .row
-                    .col-8
-                        +form-change-multi(`${prefixAdmin}/orders/change-multi?_method=PATCH`)
-                    .col-4
-                        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/orders/create`)
-                            i.fas.fa-plus.fa-sm.text-white-50
-                            |  Tạo mới đơn hàng
-
+    if (role.permissions.includes("orders_create") || role.permissions.includes("orders_delete"))
+        .card.mb-3
+            .card-header Thao tác và thêm mới
+            .card-body
+                    .row
+                        .col-8
+                            +form-change-multi(`${prefixAdmin}/orders/change-multi?_method=PATCH`, "orders")
+                        if (role.permissions.includes("orders_create"))
+                            .col-4
+                                a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm(href=`${prefixAdmin}/orders/create`)
+                                    i.fas.fa-plus.fa-sm.text-white-50
+                                    |  Tạo mới đơn hàng
 
     .table-responsive
         table(
@@ -82,12 +83,15 @@ block content
                                 span(
                                     class="badge badge-success") Đã Thanh Toán
                             else if (order.status == "unpaid")
-                                a(
-                                    href="javascript:;"
-                                    data-status="unpaid"
-                                    data-id=order.id
-                                    button-change-status
-                                    class="badge badge-warning") Chưa Thanh Toán
+                                if (role.permissions.includes("orders_edit"))
+                                    a(
+                                        href="javascript:;"
+                                        data-status="unpaid"
+                                        data-id=order.id
+                                        button-change-status
+                                        class="badge badge-warning") Chưa Thanh Toán
+                                else 
+                                    span(class="badge badge-warning") Chưa Thanh Toán
                             else 
                                 a(
                                     class="badge badge-secondary") Khác
@@ -102,15 +106,17 @@ block content
                                 href=`/admin/orders/detail/${order._id}`
                                 class="btn btn-secondary btn-sm"
                             ) Xem
-                            a(
-                                href=`/admin/orders/print/${order._id}`
-                                class="btn btn-info btn-sm ml-1"
-                            ) In
-                            button(
-                                class="btn btn-danger btn-sm ml-1"
-                                data-id=order._id
-                                button-delete
-                            ) Xóa
+                            if (role.permissions.includes("orders_print"))
+                                a(
+                                    href=`/admin/orders/print/${order._id}`
+                                    class="btn btn-info btn-sm ml-1"
+                                ) In
+                            if (role.permissions.includes("orders_delete"))
+                                button(
+                                    class="btn btn-danger btn-sm ml-1"
+                                    data-id=order._id
+                                    button-delete
+                                ) Xóa
     +pagination(pagination)
 
     form(
