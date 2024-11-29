@@ -52,7 +52,7 @@ ul.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion(id="accordionSi
                 span Quản lý nhóm quyền
 
     //- Nav Item - Permissions
-    if (role.permissions.includes('roles_permissons'))
+    if (role.permissions.includes('roles_permissions'))
         li.nav-item(class=(currentPath && currentPath.startsWith(`${prefixAdmin}/roles/permissions`) ? 'active' : ''))
             a.nav-link(href=`${prefixAdmin}/roles/permissions`)
                 i.fas.fa-fw.fa-key
