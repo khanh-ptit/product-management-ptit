@@ -1,3 +1,11 @@
 .sitename {
     margin-left: 20px; /* Tăng khoảng cách để chữ dịch xa hơn */
 }
+
+.feature-thumbnail {
+    width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của khung cha */
+    height: 200px; /* Đặt chiều cao cố định để giữ tỷ lệ đồng nhất */
+    object-fit: cover; /* Cắt hình ảnh vừa khung mà không làm biến dạng */
+    border-radius: 8px; /* Bo tròn các góc hình ảnh */
+    margin-bottom: 15px; /* Tạo khoảng cách giữa hình ảnh và tiêu đề */
+}

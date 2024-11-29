@@ -1,7 +1,27 @@
+const Product = require("../../models/product.model");
+const Account = require("../../models/account.model");
 const sendMailHelper = require("../../helpers/sendMailClient")
 
 module.exports.index = async (req, res) => {
-    res.render("client/pages/home/index.pug")
+    const top3Products = await Product.find({
+        deleted: false // Lọc các sản phẩm không bị xóa nếu cần
+    })
+    .sort({
+        sold: -1
+    }) // Sắp xếp giảm dần theo trường 'sold'
+    .limit(3); // Lấy tối đa 3 sản phẩm
+
+    const top3Accounts = await Account.find({
+        deleted: false
+    })
+    .sort({
+        profit: -1
+    })
+    .limit(3)
+    res.render("client/pages/home/index.pug", {
+        top3Products: top3Products,
+        top3Accounts: top3Accounts
+    })
 }
 
 // Controller đăng ký nhân viên

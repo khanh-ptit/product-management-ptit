@@ -35,7 +35,7 @@ html(lang="en")
 
         header#header.header.d-flex.align-items-center.fixed-top
             .header-container.container-fluid.container-xl.position-relative.d-flex.align-items-center.justify-content-between
-                a(href="index.html" class="logo d-flex align-items-center me-auto me-xl-0")
+                a(href="#intro" class="logo d-flex align-items-center me-auto me-xl-0")
                     img(src="https://bizweb.dktcdn.net/100/435/594/themes/833214/assets/logo.png?1732654474002" alt="")
                     h1.sitename.ml-3 1st Store
 
@@ -45,13 +45,13 @@ html(lang="en")
                         li
                             a(href="#intro" class="active") Trang chủ
                         li
+                            a(href="#product") Sản phẩm
+                        li
                             a(href="#about") Về chúng tôi
                         li
                             a(href="#partners") Đối tác
                         li
                             a(href="#staff") Nhân viên
-                        li
-                            a(href="#product") Sản phẩm
                         li
                             a(href="#contact") Đăng ký
 
@@ -115,6 +115,43 @@ html(lang="en")
                                 .stat-content
                                     h4 5 Sao Đánh Giá
                                     p.mb-0 Được khách hàng yêu thích
+
+            section#product.features-cards.section
+                .container
+                    style.
+                        .feature-thumbnail {
+                            width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của khung cha */
+                            height: 250px; /* Tăng chiều cao hình ảnh */
+                            object-fit: contain; /* Hiển thị hình ảnh vừa khung mà không bị biến dạng */
+                            border-radius: 8px; /* Bo tròn các góc hình ảnh */
+                            margin-bottom: 15px; /* Tạo khoảng cách giữa hình ảnh và tiêu đề */
+                        }
+                        .feature-box {
+                            text-align: center; /* Căn giữa nội dung bên trong */
+                            padding: 20px; /* Thêm khoảng cách bên trong */
+                            border-radius: 8px; /* Bo tròn các góc thẻ */
+                        }
+                        .feature-box h4 {
+                            font-size: 1.2rem; /* Kích thước tiêu đề */
+                            font-weight: bold; /* In đậm tiêu đề */
+                            margin-bottom: 10px; /* Tạo khoảng cách giữa tiêu đề và đoạn văn */
+                        }
+                        .feature-box p {
+                            color: black;
+                            margin: 0; /* Loại bỏ khoảng cách mặc định */
+                            line-height: 1.5; /* Điều chỉnh khoảng cách giữa các dòng */
+                        }
+                        .feature-box.orange { background-color: #ffa726; color: white; }
+                        .feature-box.blue { background-color: #42a5f5; color: white; }
+                        .feature-box.green { background-color: #66bb6a; color: white; }
+                    h3.text-center.mb-4.text-primary Những sản phẩm bán chạy nhất
+                    .row.gy-4.justify-content-center
+                        each product, index in top3Products
+                            .col-lg-4.col-md-6(data-aos="zoom-in" data-aos-delay=(100 * (index + 1)))
+                                .feature-box(class=(index === 0 ? 'orange' : index === 1 ? 'blue' : 'green'))
+                                    img.feature-thumbnail(src=product.thumbnail alt=product.title)
+                                    h4= product.title
+                                    p Lượt bán: #{product.sold}
 
             section#about.about.section
                 .container(data-aos="fade-up", data-aos-delay="100")
@@ -228,6 +265,52 @@ html(lang="en")
                                 img.img-fluid(src="https://iconape.com/wp-content/png_logo_vector/grand-sport-logo.png", alt="Converse Logo")
                         .swiper-pagination
 
+            section#staff.features-cards.section
+                .container
+                    style.
+                        .feature-thumbnail {
+                            width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của khung cha */
+                            height: 250px; /* Tăng chiều cao hình ảnh */
+                            object-fit: contain; /* Hiển thị hình ảnh vừa khung mà không bị biến dạng */
+                            margin-bottom: 15px; /* Tạo khoảng cách giữa hình ảnh và tiêu đề */
+                        }
+                        .feature-avatar {
+                            width: 100px; /* Đặt chiều rộng cho avatar */
+                            height: 100px; /* Đặt chiều cao cho avatar */
+                            object-fit: cover; /* Cắt ảnh nếu cần thiết để vừa với khung */
+                            border-radius: 50%; /* Bo tròn ảnh avatar */
+                            margin-bottom: 15px; /* Khoảng cách dưới avatar */
+                        }
+                        .feature-box {
+                            text-align: center; /* Căn giữa nội dung bên trong */
+                            padding: 20px; /* Thêm khoảng cách bên trong */
+                            border-radius: 8px; /* Bo tròn các góc thẻ */
+                        }
+                        .feature-box h4 {
+                            font-size: 1.2rem; /* Kích thước tiêu đề */
+                            font-weight: bold; /* In đậm tiêu đề */
+                            margin-bottom: 10px; /* Tạo khoảng cách giữa tiêu đề và đoạn văn */
+                        }
+                        .feature-box p {
+                            color: black;
+                            margin: 0; /* Loại bỏ khoảng cách mặc định */
+                            line-height: 1.5; /* Điều chỉnh khoảng cách giữa các dòng */
+                        }
+                        .feature-box.orange { background-color: #ffa726; color: white; }
+                        .feature-box.blue { background-color: #42a5f5; color: white; }
+                        .feature-box.green { background-color: #66bb6a; color: white; }
+
+                    h3.text-center.mb-4.text-primary Những nhân viên có doanh thu cao nhất
+                    .row.gy-4.justify-content-center
+                        each account, index in top3Accounts
+                            .col-lg-4.col-md-6(data-aos="zoom-in" data-aos-delay=(100 * (index + 1)))
+                                .feature-box(class=(index === 0 ? 'orange' : index === 1 ? 'blue' : 'green'))
+                                    img.feature-avatar(src=account.avatar alt=account.fullName)
+                                    h4= account.fullName
+                                    p Doanh thu: #{account.profit} $
+
+            
+
             //- Contact Section
             section#contact.contact.section.light-background
                 //- Section Title
@@ -296,7 +379,78 @@ html(lang="en")
                                         .col-12.text-center
                                             button.btn.btn-primary.btn-lg(type="submit") Gửi Đơn Đăng Ký
 
+        footer#footer.footer
+            .container.footer-top
+                .row.gy-4
+                    .col-lg-4.col-md-6.footer-about
+                        a.logo.d-flex.align-items-center(href="index.html")
+                            span.sitename 1st Store
+                        .footer-contact.pt-3
+                            p Số 96A, đường Trần Phú
+                            p quận Hà Đông, Tp.Hà Nội
+                            p.mt-3
+                                strong Số điện thoại: 
+                                span +84 979 126 098
+                            p
+                                strong Email: 
+                                span khanhhs11vtt@gmail.com
+                        .social-links.d-flex.mt-4
+                            a(href="https://www.facebook.com/khanhleis11" target="_blank" title="Facebook")
+                                i.bi.bi-facebook
+                            a(href="https://www.tiktok.com/@khanhleis11" target="_blank" title="TikTok")
+                                i.bi.bi-tiktok
+                            a(href="https://www.instagram.com/khanhptit110/" target="_blank" title="Instagram")
+                                i.bi.bi-instagram
+                            a(href="https://github.com/khanh-ptit/" target="_blank" title="GitHub")
+                                i.bi.bi-github
 
+                    .col-lg-2.col-md-3.footer-links
+                        h4 Liên kết hữu ích
+                        ul
+                            li
+                                a(href="#intro") Trang chủ
+                            li
+                                a(href="#about") Về chúng tôi
+                            li
+                                a(href="#partners") Đối tác
+                            li
+                                a(href="#staff") Nhân viên 
+                            li
+                                a(href="#contact") Đăng ký
+                    .col-lg-2.col-md-3.footer-links
+                        h4 Trang web quản trị
+                        ul
+                            li
+                                a(href="#") Quản lý sản phẩm
+                            li
+                                a(href="#") Quản lý đơn hàng
+                            li
+                                a(href="#") Quản lý danh mục
+                            li
+                                a(href="#") Phân quyền 
+                            li
+                                a(href="#") Quản lý người dùng
+                    .col-lg-4.col-md-6.footer-map
+                        h4 Bản đồ
+                        iframe(
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d783.1505700056757!2d105.78682991306933!3d20.980090032042337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ad2a2ee98b2f%3A0x58f577d5cca9d3f6!2zSOG7jWMgdmnhu4duIEPDtG5nIG5naOG7hyBCxrB1IGNow61uaCBWaeG7hW4gdGjDtG5nIC0gUFRJVA!5e0!3m2!1svi!2s!4v1732846006714!5m2!1svi!2s",
+                            width="100%",
+                            height="250",
+                            style="border:0;",
+                            allowfullscreen="",
+                            loading="lazy",
+                            referrerpolicy="no-referrer-when-downgrade"
+                        )
+
+            .container.copyright.text-center.mt-4
+                p
+                    | ©
+                    span Bản quyền
+                    strong.px-1.sitename 1st Store
+                    span Mọi quyền được bảo lưu
+                .credits
+                    | Được thiết kế bởi <a href="https://www.facebook.com/khanhleis11/">Lê Quốc Khánh</a>
+                    
         a(href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center")
             i.bi.bi-arrow-up-short
 
