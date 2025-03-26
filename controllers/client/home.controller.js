@@ -2,6 +2,7 @@ const Product = require("../../models/product.model");
 const Account = require("../../models/account.model");
 const sendMailHelper = require("../../helpers/sendMailClient")
 
+// [GET] /home
 module.exports.index = async (req, res) => {
     const top3Products = await Product.find({
         deleted: false // Lọc các sản phẩm không bị xóa nếu cần
@@ -24,7 +25,7 @@ module.exports.index = async (req, res) => {
     })
 }
 
-// Controller đăng ký nhân viên
+// [GET] /home/registerstaff
 module.exports.registerStaff = async (req, res) => {
     try {
         // Lấy thông tin từ req.body
